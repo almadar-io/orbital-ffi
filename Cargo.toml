@@ -1,0 +1,30 @@
+[package]
+name = "orbital-ffi"
+version = "18.0.0"
+edition = "2021"
+license = "BUSL-1.1"
+repository = "https://github.com/almadar-io/orbital-ffi"
+description = "The one native library both mobile shells link: renderer C ABI + kernel C ABI + JNI forwarders"
+
+[lib]
+name = "orbital_ffi"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[features]
+default = []
+# In-app observation + dispatch channel for `orb verify` (debug shells only).
+verify-bridge = []
+
+[dependencies]
+orbital-game-renderer = { git = "https://github.com/almadar-io/orbital-game-renderer", branch = "main", features = ["http"] }
+orbital-core = { git = "https://github.com/almadar-io/orbital-core", branch = "main" }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+parking_lot = "0.12"
+chrono = { version = "0.4", features = ["serde"] }
+# Real JNI string/array marshaling for jni_kernel_bridge.rs + jni_bridge.rs.
+# Default features are empty (no java-locator/libloading invocation API) —
+# these bridges only marshal args the JVM already handed them, so the crate
+# builds and typechecks on every host/cross target, not just Android.
+jni = "0.21.1"
+
