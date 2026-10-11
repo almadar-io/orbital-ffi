@@ -1,1 +1,1252 @@
-{"name":"Basic Entity Test","version":"1.0.0","description":"Simple CRUD operations test schema","themeDefinitions":[{"name":"minimalist","displayName":"Minimalist","tokens":{"colors":{"ring":"#18181b","input":"#d4d4d8","error":"#dc2626","series-1":"#0b618e","secondary":"#fafafa","error-foreground":"#ffffff","series-2":"#b45f3a","series-3":"#589373","diagram-label":"#65656e","warning-foreground":"#000000","background":"#f8fafc","secondary-foreground":"#18181b","card":"#ffffff","muted-foreground":"#65656e","card-foreground":"#18181b","success-foreground":"#ffffff","muted":"#f4f4f5","accent-foreground":"#fafafa","series-8":"#3a8a9a","diagram-axis":"#65656e","series-6":"#536d73","border":"#e4e4e7","accent":"#18181b","success":"#15803d","scrim":"rgba(0, 0, 0, 0.6)","primary-hover":"#27272a","warning":"#ca8a04","diagram-ink":"#18181b","foreground":"#18181b","info":"#2563eb","series-5":"#a3902c","diagram-highlight":"#2563eb","series-4":"#8a5a9a","primary-foreground":"#fafafa","series-7":"#a04a5a","info-foreground":"#ffffff","diagram-grid":"#e4e4e7","diagram-guide":"#8d8d96","diagram-fill":"#f4f4f5","primary":"#18181b","secondary-hover":"#f4f4f5","surface":"#f4f4f5"},"radii":{"sm":"0px","full":"9999px","none":"0px","md":"0px","lg":"0px","xl":"0px"},"typography":{"font-weight-medium":"500","transition-slow":"400ms","transition-normal":"240ms","line-height":"1.75","transition-fast":"150ms","active-scale":"0.99","focus-ring-width":"2px","font-weight-normal":"400","hover-scale":"1.01","letter-spacing":"-0.005em","hover-translate-y":"-1px","border-width-thick":"1px","border-width":"1px","font-weight-bold":"600","font-family":"\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif","transition-timing":"cubic-bezier(0.4, 0, 0.2, 1)","hover-translate-x":"0","active-translate-y":"0","focus-ring-offset":"2px","focus-ring-color":"#18181b","icon-color":"currentColor","border-width-thin":"1px"},"shadows":{"main":"none","lg":"none","active":"none","sm":"none","inner":"none","none":"none","hover":"none"},"density":{"spacing":{"space0":"0px","space1":"4px","space2":"8px","space3":"12px","space4":"16px","space5":"20px","space6":"24px","space7":"28px","space8":"32px","space9":"36px","space10":"40px","space11":"44px","space12":"48px"},"buttonHeightSm":"28px","buttonHeightMd":"44px","buttonHeightLg":"44px","inputHeightSm":"28px","inputHeightMd":"44px","inputHeightLg":"44px","rowHeightCompact":"32px","rowHeightNormal":"52px","rowHeightSpacious":"48px","cardPaddingSm":"12px","cardPaddingMd":"32px","cardPaddingLg":"40px","dialogPadding":"24px","sectionGap":"64px"},"typeScale":{"displayFamily":"\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif","bodyFamily":"\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif","monoFamily":"ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace","fontImport":"https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap","headingWeight":"300","headingTransform":"none","headingTracking":"-0.03em","headingStyle":"normal","headingShadow":"none","scale":{"xs":{"size":"12px","lineHeight":"16px"},"sm":{"size":"14px","lineHeight":"20px"},"base":{"size":"16px","lineHeight":"24px"},"lg":{"size":"18px","lineHeight":"28px"},"xl":{"size":"20px","lineHeight":"28px"},"2xl":{"size":"24px","lineHeight":"32px"},"3xl":{"size":"30px","lineHeight":"36px"},"4xl":{"size":"36px","lineHeight":"40px"},"display-1":{"size":"48px","lineHeight":"52px"},"display-2":{"size":"60px","lineHeight":"64px"}},"intents":{"headingMajor":{"slot":"display","size":"2xl","weight":"bold"},"headingMinor":{"slot":"display","size":"lg","weight":"bold"},"bodyEmphasis":{"slot":"body","size":"base","weight":"medium"},"bodyDefault":{"slot":"body","size":"sm","weight":"normal"},"bodyQuiet":{"slot":"body","size":"sm","weight":"normal"},"caption":{"slot":"body","size":"xs","weight":"normal"},"numeric":{"slot":"mono","size":"sm","weight":"medium"}}},"motion":{"durations":{"instant":"0ms","fast":"var(--transition-fast)","normal":"var(--transition-normal)","slow":"var(--transition-slow)","dramatic":"600ms"},"easings":{"linear":"linear","standard":"var(--transition-timing)","emphasized":"cubic-bezier(0.2, 0, 0, 1)","spring":"cubic-bezier(0.34, 1.56, 0.64, 1)"},"shapes":{"modalEnter":"none","modalExit":"none","popoverEnter":"none","popoverExit":"none","toastEnter":"none","toastExit":"none","pageEnter":"none"}},"iconography":{"family":"lucide","strokeWidth":"1.5","defaultSize":"16px"},"elevation":{"cardElevation":"none","popoverElevation":"none","dialogElevation":"none","toastElevation":"none","interactiveElevation":"none","pressedElevation":"none"},"geometry":{"radiusContainer":"0px","radiusInteractive":"0px","radiusPill":"9999px","borderHairline":"1px","borderStandard":"1px","borderHeavy":"1px","cornerShape":"round","cornerShapePill":"round","borderStyle":"none","borderStyleInteractive":"solid"},"surface":{"edgeMask":"url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'><path d='M0 100 Q720 0 1440 100 Z'/></svg>\")","edgeHeight":"clamp(16px, 4vw, 56px)","textureMask":"url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><path d='M0 .5H40M.5 0V40' stroke='black' stroke-width='1' fill='none'/></svg>\")","textureSize":"40px 40px","accentImage":"linear-gradient(180deg, color-mix(in oklab, var(--color-primary) 8%, var(--color-background)), var(--color-background))"},"diagram":{"strokeThin":"1","strokeNormal":"1","strokeBold":"2","lineCap":"butt","lineJoin":"miter","dash":"3 3","dot":"1 3","fillStyle":"outline","fillOpacity":"0.08","roughness":"0","glow":"0","shadow":"none","marker":"line","labelFont":"body","labelSize":"xs","labelWeight":"400","labelCase":"none","corner":"0px"},"scene":{"materialRoughness":"0.8","materialMetalness":"0","materialFlat":"0","materialOutline":"0","lightAmbient":"0.7","lightKey":"0.8","lightKeyColor":"#ffffff","fog":"0"}},"variants":{"dark":{"colors":{"series-1":"#929bdf","primary-foreground":"#18181b","error-foreground":"#000000","diagram-label":"#a1a1aa","diagram-axis":"#a1a1aa","primary":"#fafafa","success-foreground":"#000000","muted-foreground":"#a1a1aa","error":"#f87171","accent":"#fafafa","secondary-foreground":"#fafafa","series-5":"#cebb6b","info-foreground":"#000000","warning-foreground":"#000000","muted":"#27272a","secondary":"#27272a","input":"#3f3f46","primary-hover":"#e4e4e7","scrim":"rgba(0, 0, 0, 0.7)","foreground":"#fafafa","series-4":"#c49ad4","series-2":"#e0906a","card-foreground":"#fafafa","card":"#18181b","border":"#27272a","secondary-hover":"#3f3f46","accent-foreground":"#18181b","surface":"#27272a","info":"#60a5fa","series-6":"#758996","success":"#4ade80","background":"#09090b","diagram-guide":"#78787f","diagram-highlight":"#60a5fa","ring":"#fafafa","warning":"#fbbf24","series-3":"#6fc09a","series-8":"#6fbfd0","diagram-fill":"#27272a","diagram-grid":"#27272a","diagram-ink":"#fafafa","series-7":"#de8aa1"},"typography":{"icon-color":"currentColor","hover-translate-x":"0","line-height":"1.75","active-scale":"0.99","focus-ring-width":"2px","active-translate-y":"0","border-width":"1px","font-weight-bold":"600","border-width-thin":"1px","hover-scale":"1.01","transition-fast":"150ms","font-weight-normal":"400","font-weight-medium":"500","transition-timing":"cubic-bezier(0.4, 0, 0.2, 1)","border-width-thick":"1px","transition-normal":"240ms","focus-ring-offset":"2px","focus-ring-color":"#fafafa","transition-slow":"400ms","font-family":"\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif","letter-spacing":"-0.005em","hover-translate-y":"-1px"}}}}],"orbitals":[{"name":"Task Management","id":"orb_QQYV5KH77QKKVKNCCMB74KT95R","entity":{"name":"Task","id":"ent_70DG003H98RMM5P9ZQ8CB23T44","collection":"tasks","fields":[{"name":"id","type":"string","required":true,"primaryKey":true},{"name":"title","type":"string","required":true},{"name":"description","type":"string"},{"name":"completed","type":"boolean","default":false},{"name":"createdAt","type":"timestamp","default":"@now"}]},"traits":[{"name":"TaskCRUD","id":"trt_6QFSYRAAD256HE16VT9JJ8A9S5","effectRow":[{"kind":"emit","resource":"INIT"},{"kind":"fetch","resource":"Task"},{"kind":"persist","resource":"Task"},{"kind":"render-ui","resource":"main"}],"category":"interaction","linkedEntity":"Task","linkedEntityId":"ent_70DG003H98RMM5P9ZQ8CB23T44","entityRefIds":{"Task":"ent_70DG003H98RMM5P9ZQ8CB23T44"},"emits":[{"event":"INIT","eventId":"evt_DM12TZJ9DZ4PZW7AN34AWTZKCV","scope":"internal"}],"stateMachine":{"states":[{"name":"listing","isInitial":true},{"name":"creating"},{"name":"editing"}],"events":[{"key":"INIT","id":"evt_DM12TZJ9DZ4PZW7AN34AWTZKCV","name":"Initialize"},{"key":"CREATE","id":"evt_R2VXGXXQCTVPD4S3T06ZH6X46K","name":"Create Task"},{"key":"EDIT","id":"evt_SW1B0Y1MGRT8CAVSH45ASRPF57","name":"Edit Task","payloadSchema":[{"name":"row","type":"object"}]},{"key":"SAVE","id":"evt_2SR48WYS9SCMWX2QRA93YMFDM8","name":"Save","payloadSchema":[{"name":"data","type":"object"},{"name":"id","type":"string"}]},{"key":"DELETE","id":"evt_GFRGZGBSJQWSBRGN883G5PS4N1","name":"Delete","payloadSchema":[{"name":"row","type":"object"}]},{"key":"CANCEL","id":"evt_41NXT6D6PYKBFB8JG1F1K5E1FV","name":"Cancel"}],"transitions":[{"from":"listing","to":"listing","event":"INIT","eventId":"evt_DM12TZJ9DZ4PZW7AN34AWTZKCV","effects":[["fetch","Task"],["render-ui","main",{"actions":[{"label":"New Task","event":"CREATE"}],"type":"page-header","title":"Tasks"}],["render-ui","main",{"entity":"Task","itemActions":[{"label":"Edit","event":"EDIT"},{"event":"DELETE","label":"Delete"}],"fields":["title","completed","createdAt"],"type":"entity-table"}]]},{"from":"listing","to":"creating","event":"CREATE","eventId":"evt_R2VXGXXQCTVPD4S3T06ZH6X46K","effects":[["render-ui","main",{"backEvent":"CANCEL","type":"page-header","title":"New Task","showBack":true}],["render-ui","main",{"onCancel":"CANCEL","entity":"Task","fields":["title","description"],"onSubmit":"SAVE","type":"form-section"}]]},{"from":"creating","to":"listing","event":"SAVE","eventId":"evt_2SR48WYS9SCMWX2QRA93YMFDM8","effects":[["persist","create","Task","@payload.data"],["emit","INIT"]]},{"from":"creating","to":"listing","event":"CANCEL","eventId":"evt_41NXT6D6PYKBFB8JG1F1K5E1FV","effects":[["emit","INIT"]]},{"from":"listing","to":"editing","event":"EDIT","eventId":"evt_SW1B0Y1MGRT8CAVSH45ASRPF57","effects":[["fetch","Task",{"id":"@payload.row.id"}],["render-ui","main",{"title":"Edit Task","showBack":true,"backEvent":"CANCEL","type":"page-header"}],["render-ui","main",{"entity":"Task","fields":["title","description","completed"],"onCancel":"CANCEL","entityId":"@payload.row.id","onSubmit":"SAVE","type":"form-section"}]]},{"from":"editing","to":"listing","event":"SAVE","eventId":"evt_2SR48WYS9SCMWX2QRA93YMFDM8","effects":[["persist","update","Task","@payload.data"],["emit","INIT"]]},{"from":"editing","to":"listing","event":"CANCEL","eventId":"evt_41NXT6D6PYKBFB8JG1F1K5E1FV","effects":[["emit","INIT"]]},{"from":"listing","to":"listing","event":"DELETE","eventId":"evt_GFRGZGBSJQWSBRGN883G5PS4N1","effects":[["persist","delete","Task","@payload.row.id"],["emit","INIT"]]}]}}],"pages":[{"name":"TasksPage","id":"pag_6V3MS93888M44A0YFXQ78PMJ2C","path":"/tasks","viewType":"list","primaryEntity":"Task","isInitial":true,"traits":[{"ref":"TaskCRUD","refId":"trt_6QFSYRAAD256HE16VT9JJ8A9S5"}]}]},{"name":"Chore Management","id":"orb_W9RQWW8BG55R2ZCQRZPSFR039K","entity":{"name":"Chore","id":"ent_PA223BZSQCWVPCXSRC1QMPDN0M","collection":"chores","fields":[{"name":"id","type":"string","required":true,"primaryKey":true},{"name":"title","type":"string","required":true},{"name":"description","type":"string"},{"name":"completed","type":"boolean","default":false},{"name":"createdAt","type":"timestamp","default":"@now"}]},"traits":[{"name":"ChoreCRUD","id":"trt_FH1JNAQXYAYZ532YYJ1WATY9PS","effectRow":[{"kind":"emit","resource":"INIT"},{"kind":"fetch","resource":"Chore"},{"kind":"persist","resource":"Chore"},{"kind":"render-ui","resource":"main"}],"category":"interaction","linkedEntity":"Chore","linkedEntityId":"ent_PA223BZSQCWVPCXSRC1QMPDN0M","entityRefIds":{"Chore":"ent_PA223BZSQCWVPCXSRC1QMPDN0M"},"emits":[{"event":"INIT","eventId":"evt_9QG1FE5F4PQJB9DZ8X51H0JBZW","scope":"internal"}],"stateMachine":{"states":[{"name":"listing","isInitial":true},{"name":"creating"},{"name":"editing"}],"events":[{"key":"INIT","id":"evt_9QG1FE5F4PQJB9DZ8X51H0JBZW","name":"Initialize"},{"key":"CREATE","id":"evt_YYDTGMHY6HZ38G53F2JTA3ZF5C","name":"Create Chore"},{"key":"EDIT","id":"evt_BCKP3RSFF5QQJSXGRYEX3ECSQH","name":"Edit Chore","payloadSchema":[{"name":"row","type":"object"}]},{"key":"SAVE","id":"evt_T8R523XQWQVYBVT8CBJTH0EXE8","name":"Save","payloadSchema":[{"name":"data","type":"object"},{"name":"id","type":"string"}]},{"key":"DELETE","id":"evt_EH1ZS3S9YEMZ77Z33P57SPMNQB","name":"Delete","payloadSchema":[{"name":"row","type":"object"}]},{"key":"CANCEL","id":"evt_S17KBK875Q3JVH6X2PYSKJ16VM","name":"Cancel"}],"transitions":[{"from":"listing","to":"listing","event":"INIT","eventId":"evt_9QG1FE5F4PQJB9DZ8X51H0JBZW","effects":[["fetch","Chore"],["render-ui","main",{"title":"Chores","type":"page-header","actions":[{"label":"New Chore","event":"CREATE"}]}],["render-ui","main",{"type":"entity-table","entity":"Chore","itemActions":[{"label":"Edit","event":"EDIT"},{"event":"DELETE","label":"Delete"}],"fields":["title","completed","createdAt"]}]]},{"from":"listing","to":"creating","event":"CREATE","eventId":"evt_YYDTGMHY6HZ38G53F2JTA3ZF5C","effects":[["render-ui","main",{"title":"New Chore","type":"page-header","backEvent":"CANCEL","showBack":true}],["render-ui","main",{"onCancel":"CANCEL","entity":"Chore","type":"form-section","fields":["title","description"],"onSubmit":"SAVE"}]]},{"from":"creating","to":"listing","event":"SAVE","eventId":"evt_T8R523XQWQVYBVT8CBJTH0EXE8","effects":[["persist","create","Chore","@payload.data"],["emit","INIT"]]},{"from":"creating","to":"listing","event":"CANCEL","eventId":"evt_S17KBK875Q3JVH6X2PYSKJ16VM","effects":[["emit","INIT"]]},{"from":"listing","to":"editing","event":"EDIT","eventId":"evt_BCKP3RSFF5QQJSXGRYEX3ECSQH","effects":[["fetch","Chore",{"id":"@payload.row.id"}],["render-ui","main",{"type":"page-header","backEvent":"CANCEL","showBack":true,"title":"Edit Chore"}],["render-ui","main",{"entity":"Chore","entityId":"@payload.row.id","onSubmit":"SAVE","onCancel":"CANCEL","type":"form-section","fields":["title","description","completed"]}]]},{"from":"editing","to":"listing","event":"SAVE","eventId":"evt_T8R523XQWQVYBVT8CBJTH0EXE8","effects":[["persist","update","Chore","@payload.data"],["emit","INIT"]]},{"from":"editing","to":"listing","event":"CANCEL","eventId":"evt_S17KBK875Q3JVH6X2PYSKJ16VM","effects":[["emit","INIT"]]},{"from":"listing","to":"listing","event":"DELETE","eventId":"evt_EH1ZS3S9YEMZ77Z33P57SPMNQB","effects":[["persist","delete","Chore","@payload.row.id"],["emit","INIT"]]}]}}],"pages":[]}],"schemaVersion":1,"ledger":{"schemaVersion":1,"entries":{"ent_70DG003H98RMM5P9ZQ8CB23T44":{"id":"ent_70DG003H98RMM5P9ZQ8CB23T44","kind":"entity","bakedName":"Task","curName":"Task","renames":[],"owner":"workspace"},"ent_PA223BZSQCWVPCXSRC1QMPDN0M":{"id":"ent_PA223BZSQCWVPCXSRC1QMPDN0M","kind":"entity","bakedName":"Chore","curName":"Chore","renames":[],"owner":"workspace"},"evt_2SR48WYS9SCMWX2QRA93YMFDM8":{"id":"evt_2SR48WYS9SCMWX2QRA93YMFDM8","kind":"event","bakedName":"SAVE","curName":"SAVE","renames":[],"owner":"workspace","parent":"trt_6QFSYRAAD256HE16VT9JJ8A9S5"},"evt_41NXT6D6PYKBFB8JG1F1K5E1FV":{"id":"evt_41NXT6D6PYKBFB8JG1F1K5E1FV","kind":"event","bakedName":"CANCEL","curName":"CANCEL","renames":[],"owner":"workspace","parent":"trt_6QFSYRAAD256HE16VT9JJ8A9S5"},"evt_9QG1FE5F4PQJB9DZ8X51H0JBZW":{"id":"evt_9QG1FE5F4PQJB9DZ8X51H0JBZW","kind":"event","bakedName":"INIT","curName":"INIT","renames":[],"owner":"workspace","parent":"trt_FH1JNAQXYAYZ532YYJ1WATY9PS"},"evt_BCKP3RSFF5QQJSXGRYEX3ECSQH":{"id":"evt_BCKP3RSFF5QQJSXGRYEX3ECSQH","kind":"event","bakedName":"EDIT","curName":"EDIT","renames":[],"owner":"workspace","parent":"trt_FH1JNAQXYAYZ532YYJ1WATY9PS"},"evt_DM12TZJ9DZ4PZW7AN34AWTZKCV":{"id":"evt_DM12TZJ9DZ4PZW7AN34AWTZKCV","kind":"event","bakedName":"INIT","curName":"INIT","renames":[],"owner":"workspace","parent":"trt_6QFSYRAAD256HE16VT9JJ8A9S5"},"evt_EH1ZS3S9YEMZ77Z33P57SPMNQB":{"id":"evt_EH1ZS3S9YEMZ77Z33P57SPMNQB","kind":"event","bakedName":"DELETE","curName":"DELETE","renames":[],"owner":"workspace","parent":"trt_FH1JNAQXYAYZ532YYJ1WATY9PS"},"evt_GFRGZGBSJQWSBRGN883G5PS4N1":{"id":"evt_GFRGZGBSJQWSBRGN883G5PS4N1","kind":"event","bakedName":"DELETE","curName":"DELETE","renames":[],"owner":"workspace","parent":"trt_6QFSYRAAD256HE16VT9JJ8A9S5"},"evt_R2VXGXXQCTVPD4S3T06ZH6X46K":{"id":"evt_R2VXGXXQCTVPD4S3T06ZH6X46K","kind":"event","bakedName":"CREATE","curName":"CREATE","renames":[],"owner":"workspace","parent":"trt_6QFSYRAAD256HE16VT9JJ8A9S5"},"evt_S17KBK875Q3JVH6X2PYSKJ16VM":{"id":"evt_S17KBK875Q3JVH6X2PYSKJ16VM","kind":"event","bakedName":"CANCEL","curName":"CANCEL","renames":[],"owner":"workspace","parent":"trt_FH1JNAQXYAYZ532YYJ1WATY9PS"},"evt_SW1B0Y1MGRT8CAVSH45ASRPF57":{"id":"evt_SW1B0Y1MGRT8CAVSH45ASRPF57","kind":"event","bakedName":"EDIT","curName":"EDIT","renames":[],"owner":"workspace","parent":"trt_6QFSYRAAD256HE16VT9JJ8A9S5"},"evt_T8R523XQWQVYBVT8CBJTH0EXE8":{"id":"evt_T8R523XQWQVYBVT8CBJTH0EXE8","kind":"event","bakedName":"SAVE","curName":"SAVE","renames":[],"owner":"workspace","parent":"trt_FH1JNAQXYAYZ532YYJ1WATY9PS"},"evt_YYDTGMHY6HZ38G53F2JTA3ZF5C":{"id":"evt_YYDTGMHY6HZ38G53F2JTA3ZF5C","kind":"event","bakedName":"CREATE","curName":"CREATE","renames":[],"owner":"workspace","parent":"trt_FH1JNAQXYAYZ532YYJ1WATY9PS"},"orb_QQYV5KH77QKKVKNCCMB74KT95R":{"id":"orb_QQYV5KH77QKKVKNCCMB74KT95R","kind":"orbital","bakedName":"Task Management","curName":"Task Management","renames":[],"owner":"workspace"},"orb_W9RQWW8BG55R2ZCQRZPSFR039K":{"id":"orb_W9RQWW8BG55R2ZCQRZPSFR039K","kind":"orbital","bakedName":"Chore Management","curName":"Chore Management","renames":[],"owner":"workspace"},"pag_6V3MS93888M44A0YFXQ78PMJ2C":{"id":"pag_6V3MS93888M44A0YFXQ78PMJ2C","kind":"page","bakedName":"TasksPage","curName":"TasksPage","renames":[],"owner":"workspace"},"trt_6QFSYRAAD256HE16VT9JJ8A9S5":{"id":"trt_6QFSYRAAD256HE16VT9JJ8A9S5","kind":"trait","bakedName":"TaskCRUD","curName":"TaskCRUD","renames":[],"owner":"workspace"},"trt_FH1JNAQXYAYZ532YYJ1WATY9PS":{"id":"trt_FH1JNAQXYAYZ532YYJ1WATY9PS","kind":"trait","bakedName":"ChoreCRUD","curName":"ChoreCRUD","renames":[],"owner":"workspace"}}}}
+{
+  "description": "Simple CRUD operations test schema",
+  "ledger": {
+    "entries": {
+      "ent_70DG003H98RMM5P9ZQ8CB23T44": {
+        "bakedName": "Task",
+        "curName": "Task",
+        "id": "ent_70DG003H98RMM5P9ZQ8CB23T44",
+        "kind": "entity",
+        "owner": "workspace",
+        "renames": []
+      },
+      "ent_PA223BZSQCWVPCXSRC1QMPDN0M": {
+        "bakedName": "Chore",
+        "curName": "Chore",
+        "id": "ent_PA223BZSQCWVPCXSRC1QMPDN0M",
+        "kind": "entity",
+        "owner": "workspace",
+        "renames": []
+      },
+      "evt_2SR48WYS9SCMWX2QRA93YMFDM8": {
+        "bakedName": "SAVE",
+        "curName": "SAVE",
+        "id": "evt_2SR48WYS9SCMWX2QRA93YMFDM8",
+        "kind": "event",
+        "owner": "workspace",
+        "parent": "trt_6QFSYRAAD256HE16VT9JJ8A9S5",
+        "renames": []
+      },
+      "evt_41NXT6D6PYKBFB8JG1F1K5E1FV": {
+        "bakedName": "CANCEL",
+        "curName": "CANCEL",
+        "id": "evt_41NXT6D6PYKBFB8JG1F1K5E1FV",
+        "kind": "event",
+        "owner": "workspace",
+        "parent": "trt_6QFSYRAAD256HE16VT9JJ8A9S5",
+        "renames": []
+      },
+      "evt_9QG1FE5F4PQJB9DZ8X51H0JBZW": {
+        "bakedName": "INIT",
+        "curName": "INIT",
+        "id": "evt_9QG1FE5F4PQJB9DZ8X51H0JBZW",
+        "kind": "event",
+        "owner": "workspace",
+        "parent": "trt_FH1JNAQXYAYZ532YYJ1WATY9PS",
+        "renames": []
+      },
+      "evt_BCKP3RSFF5QQJSXGRYEX3ECSQH": {
+        "bakedName": "EDIT",
+        "curName": "EDIT",
+        "id": "evt_BCKP3RSFF5QQJSXGRYEX3ECSQH",
+        "kind": "event",
+        "owner": "workspace",
+        "parent": "trt_FH1JNAQXYAYZ532YYJ1WATY9PS",
+        "renames": []
+      },
+      "evt_DM12TZJ9DZ4PZW7AN34AWTZKCV": {
+        "bakedName": "INIT",
+        "curName": "INIT",
+        "id": "evt_DM12TZJ9DZ4PZW7AN34AWTZKCV",
+        "kind": "event",
+        "owner": "workspace",
+        "parent": "trt_6QFSYRAAD256HE16VT9JJ8A9S5",
+        "renames": []
+      },
+      "evt_EH1ZS3S9YEMZ77Z33P57SPMNQB": {
+        "bakedName": "DELETE",
+        "curName": "DELETE",
+        "id": "evt_EH1ZS3S9YEMZ77Z33P57SPMNQB",
+        "kind": "event",
+        "owner": "workspace",
+        "parent": "trt_FH1JNAQXYAYZ532YYJ1WATY9PS",
+        "renames": []
+      },
+      "evt_GFRGZGBSJQWSBRGN883G5PS4N1": {
+        "bakedName": "DELETE",
+        "curName": "DELETE",
+        "id": "evt_GFRGZGBSJQWSBRGN883G5PS4N1",
+        "kind": "event",
+        "owner": "workspace",
+        "parent": "trt_6QFSYRAAD256HE16VT9JJ8A9S5",
+        "renames": []
+      },
+      "evt_R2VXGXXQCTVPD4S3T06ZH6X46K": {
+        "bakedName": "CREATE",
+        "curName": "CREATE",
+        "id": "evt_R2VXGXXQCTVPD4S3T06ZH6X46K",
+        "kind": "event",
+        "owner": "workspace",
+        "parent": "trt_6QFSYRAAD256HE16VT9JJ8A9S5",
+        "renames": []
+      },
+      "evt_S17KBK875Q3JVH6X2PYSKJ16VM": {
+        "bakedName": "CANCEL",
+        "curName": "CANCEL",
+        "id": "evt_S17KBK875Q3JVH6X2PYSKJ16VM",
+        "kind": "event",
+        "owner": "workspace",
+        "parent": "trt_FH1JNAQXYAYZ532YYJ1WATY9PS",
+        "renames": []
+      },
+      "evt_SW1B0Y1MGRT8CAVSH45ASRPF57": {
+        "bakedName": "EDIT",
+        "curName": "EDIT",
+        "id": "evt_SW1B0Y1MGRT8CAVSH45ASRPF57",
+        "kind": "event",
+        "owner": "workspace",
+        "parent": "trt_6QFSYRAAD256HE16VT9JJ8A9S5",
+        "renames": []
+      },
+      "evt_T8R523XQWQVYBVT8CBJTH0EXE8": {
+        "bakedName": "SAVE",
+        "curName": "SAVE",
+        "id": "evt_T8R523XQWQVYBVT8CBJTH0EXE8",
+        "kind": "event",
+        "owner": "workspace",
+        "parent": "trt_FH1JNAQXYAYZ532YYJ1WATY9PS",
+        "renames": []
+      },
+      "evt_YYDTGMHY6HZ38G53F2JTA3ZF5C": {
+        "bakedName": "CREATE",
+        "curName": "CREATE",
+        "id": "evt_YYDTGMHY6HZ38G53F2JTA3ZF5C",
+        "kind": "event",
+        "owner": "workspace",
+        "parent": "trt_FH1JNAQXYAYZ532YYJ1WATY9PS",
+        "renames": []
+      },
+      "orb_QQYV5KH77QKKVKNCCMB74KT95R": {
+        "bakedName": "Task Management",
+        "curName": "Task Management",
+        "id": "orb_QQYV5KH77QKKVKNCCMB74KT95R",
+        "kind": "orbital",
+        "owner": "workspace",
+        "renames": []
+      },
+      "orb_W9RQWW8BG55R2ZCQRZPSFR039K": {
+        "bakedName": "Chore Management",
+        "curName": "Chore Management",
+        "id": "orb_W9RQWW8BG55R2ZCQRZPSFR039K",
+        "kind": "orbital",
+        "owner": "workspace",
+        "renames": []
+      },
+      "pag_6V3MS93888M44A0YFXQ78PMJ2C": {
+        "bakedName": "TasksPage",
+        "curName": "TasksPage",
+        "id": "pag_6V3MS93888M44A0YFXQ78PMJ2C",
+        "kind": "page",
+        "owner": "workspace",
+        "renames": []
+      },
+      "trt_6QFSYRAAD256HE16VT9JJ8A9S5": {
+        "bakedName": "TaskCRUD",
+        "curName": "TaskCRUD",
+        "id": "trt_6QFSYRAAD256HE16VT9JJ8A9S5",
+        "kind": "trait",
+        "owner": "workspace",
+        "renames": []
+      },
+      "trt_FH1JNAQXYAYZ532YYJ1WATY9PS": {
+        "bakedName": "ChoreCRUD",
+        "curName": "ChoreCRUD",
+        "id": "trt_FH1JNAQXYAYZ532YYJ1WATY9PS",
+        "kind": "trait",
+        "owner": "workspace",
+        "renames": []
+      }
+    },
+    "schemaVersion": 1
+  },
+  "name": "Basic Entity Test",
+  "orbitals": [
+    {
+      "entity": {
+        "collection": "tasks",
+        "fields": [
+          {
+            "name": "id",
+            "primaryKey": true,
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "default": false,
+            "name": "completed",
+            "type": "boolean"
+          },
+          {
+            "default": "@now",
+            "name": "createdAt",
+            "type": "timestamp"
+          }
+        ],
+        "id": "ent_70DG003H98RMM5P9ZQ8CB23T44",
+        "name": "Task"
+      },
+      "id": "orb_QQYV5KH77QKKVKNCCMB74KT95R",
+      "name": "Task Management",
+      "pages": [
+        {
+          "id": "pag_6V3MS93888M44A0YFXQ78PMJ2C",
+          "isInitial": true,
+          "name": "TasksPage",
+          "path": "/tasks",
+          "primaryEntity": "Task",
+          "traits": [
+            {
+              "ref": "TaskCRUD",
+              "refId": "trt_6QFSYRAAD256HE16VT9JJ8A9S5"
+            }
+          ],
+          "viewType": "list"
+        }
+      ],
+      "traits": [
+        {
+          "category": "interaction",
+          "effectRow": [
+            {
+              "kind": "emit",
+              "resource": "INIT"
+            },
+            {
+              "kind": "fetch",
+              "resource": "Task"
+            },
+            {
+              "kind": "persist",
+              "resource": "Task"
+            },
+            {
+              "kind": "render-ui",
+              "resource": "main"
+            }
+          ],
+          "emits": [
+            {
+              "event": "INIT",
+              "eventId": "evt_DM12TZJ9DZ4PZW7AN34AWTZKCV",
+              "scope": "internal"
+            }
+          ],
+          "entityRefIds": {
+            "Task": "ent_70DG003H98RMM5P9ZQ8CB23T44"
+          },
+          "id": "trt_6QFSYRAAD256HE16VT9JJ8A9S5",
+          "linkedEntity": "Task",
+          "linkedEntityId": "ent_70DG003H98RMM5P9ZQ8CB23T44",
+          "name": "TaskCRUD",
+          "stateMachine": {
+            "events": [
+              {
+                "id": "evt_DM12TZJ9DZ4PZW7AN34AWTZKCV",
+                "key": "INIT",
+                "name": "Initialize"
+              },
+              {
+                "id": "evt_R2VXGXXQCTVPD4S3T06ZH6X46K",
+                "key": "CREATE",
+                "name": "Create Task"
+              },
+              {
+                "id": "evt_SW1B0Y1MGRT8CAVSH45ASRPF57",
+                "key": "EDIT",
+                "name": "Edit Task",
+                "payloadSchema": [
+                  {
+                    "name": "row",
+                    "type": "object"
+                  }
+                ]
+              },
+              {
+                "id": "evt_2SR48WYS9SCMWX2QRA93YMFDM8",
+                "key": "SAVE",
+                "name": "Save",
+                "payloadSchema": [
+                  {
+                    "name": "data",
+                    "type": "object"
+                  },
+                  {
+                    "name": "id",
+                    "type": "string"
+                  }
+                ]
+              },
+              {
+                "id": "evt_GFRGZGBSJQWSBRGN883G5PS4N1",
+                "key": "DELETE",
+                "name": "Delete",
+                "payloadSchema": [
+                  {
+                    "name": "row",
+                    "type": "object"
+                  }
+                ]
+              },
+              {
+                "id": "evt_41NXT6D6PYKBFB8JG1F1K5E1FV",
+                "key": "CANCEL",
+                "name": "Cancel"
+              }
+            ],
+            "states": [
+              {
+                "isInitial": true,
+                "name": "listing"
+              },
+              {
+                "name": "creating"
+              },
+              {
+                "name": "editing"
+              }
+            ],
+            "transitions": [
+              {
+                "effects": [
+                  [
+                    "fetch",
+                    "Task"
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "actions": [
+                        {
+                          "event": "CREATE",
+                          "label": "New Task"
+                        }
+                      ],
+                      "title": "Tasks",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "entity": "Task",
+                      "fields": [
+                        "title",
+                        "completed",
+                        "createdAt"
+                      ],
+                      "itemActions": [
+                        {
+                          "event": "EDIT",
+                          "label": "Edit"
+                        },
+                        {
+                          "event": "DELETE",
+                          "label": "Delete"
+                        }
+                      ],
+                      "type": "entity-table"
+                    }
+                  ]
+                ],
+                "event": "INIT",
+                "eventId": "evt_DM12TZJ9DZ4PZW7AN34AWTZKCV",
+                "from": "listing",
+                "to": "listing"
+              },
+              {
+                "effects": [
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "backEvent": "CANCEL",
+                      "showBack": true,
+                      "title": "New Task",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "entity": "Task",
+                      "fields": [
+                        "title",
+                        "description"
+                      ],
+                      "onCancel": "CANCEL",
+                      "onSubmit": "SAVE",
+                      "type": "form-section"
+                    }
+                  ]
+                ],
+                "event": "CREATE",
+                "eventId": "evt_R2VXGXXQCTVPD4S3T06ZH6X46K",
+                "from": "listing",
+                "to": "creating"
+              },
+              {
+                "effects": [
+                  [
+                    "persist",
+                    "create",
+                    "Task",
+                    "@payload.data"
+                  ],
+                  [
+                    "emit",
+                    "INIT"
+                  ]
+                ],
+                "event": "SAVE",
+                "eventId": "evt_2SR48WYS9SCMWX2QRA93YMFDM8",
+                "from": "creating",
+                "to": "listing"
+              },
+              {
+                "effects": [
+                  [
+                    "emit",
+                    "INIT"
+                  ]
+                ],
+                "event": "CANCEL",
+                "eventId": "evt_41NXT6D6PYKBFB8JG1F1K5E1FV",
+                "from": "creating",
+                "to": "listing"
+              },
+              {
+                "effects": [
+                  [
+                    "fetch",
+                    "Task",
+                    {
+                      "id": "@payload.row.id"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "backEvent": "CANCEL",
+                      "showBack": true,
+                      "title": "Edit Task",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "entity": "Task",
+                      "entityId": "@payload.row.id",
+                      "fields": [
+                        "title",
+                        "description",
+                        "completed"
+                      ],
+                      "onCancel": "CANCEL",
+                      "onSubmit": "SAVE",
+                      "type": "form-section"
+                    }
+                  ]
+                ],
+                "event": "EDIT",
+                "eventId": "evt_SW1B0Y1MGRT8CAVSH45ASRPF57",
+                "from": "listing",
+                "to": "editing"
+              },
+              {
+                "effects": [
+                  [
+                    "persist",
+                    "update",
+                    "Task",
+                    "@payload.data"
+                  ],
+                  [
+                    "emit",
+                    "INIT"
+                  ]
+                ],
+                "event": "SAVE",
+                "eventId": "evt_2SR48WYS9SCMWX2QRA93YMFDM8",
+                "from": "editing",
+                "to": "listing"
+              },
+              {
+                "effects": [
+                  [
+                    "emit",
+                    "INIT"
+                  ]
+                ],
+                "event": "CANCEL",
+                "eventId": "evt_41NXT6D6PYKBFB8JG1F1K5E1FV",
+                "from": "editing",
+                "to": "listing"
+              },
+              {
+                "effects": [
+                  [
+                    "persist",
+                    "delete",
+                    "Task",
+                    "@payload.row.id"
+                  ],
+                  [
+                    "emit",
+                    "INIT"
+                  ]
+                ],
+                "event": "DELETE",
+                "eventId": "evt_GFRGZGBSJQWSBRGN883G5PS4N1",
+                "from": "listing",
+                "to": "listing"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "entity": {
+        "collection": "chores",
+        "fields": [
+          {
+            "name": "id",
+            "primaryKey": true,
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "title",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "description",
+            "type": "string"
+          },
+          {
+            "default": false,
+            "name": "completed",
+            "type": "boolean"
+          },
+          {
+            "default": "@now",
+            "name": "createdAt",
+            "type": "timestamp"
+          }
+        ],
+        "id": "ent_PA223BZSQCWVPCXSRC1QMPDN0M",
+        "name": "Chore"
+      },
+      "id": "orb_W9RQWW8BG55R2ZCQRZPSFR039K",
+      "name": "Chore Management",
+      "pages": [],
+      "traits": [
+        {
+          "category": "interaction",
+          "effectRow": [
+            {
+              "kind": "emit",
+              "resource": "INIT"
+            },
+            {
+              "kind": "fetch",
+              "resource": "Chore"
+            },
+            {
+              "kind": "persist",
+              "resource": "Chore"
+            },
+            {
+              "kind": "render-ui",
+              "resource": "main"
+            }
+          ],
+          "emits": [
+            {
+              "event": "INIT",
+              "eventId": "evt_9QG1FE5F4PQJB9DZ8X51H0JBZW",
+              "scope": "internal"
+            }
+          ],
+          "entityRefIds": {
+            "Chore": "ent_PA223BZSQCWVPCXSRC1QMPDN0M"
+          },
+          "id": "trt_FH1JNAQXYAYZ532YYJ1WATY9PS",
+          "linkedEntity": "Chore",
+          "linkedEntityId": "ent_PA223BZSQCWVPCXSRC1QMPDN0M",
+          "name": "ChoreCRUD",
+          "stateMachine": {
+            "events": [
+              {
+                "id": "evt_9QG1FE5F4PQJB9DZ8X51H0JBZW",
+                "key": "INIT",
+                "name": "Initialize"
+              },
+              {
+                "id": "evt_YYDTGMHY6HZ38G53F2JTA3ZF5C",
+                "key": "CREATE",
+                "name": "Create Chore"
+              },
+              {
+                "id": "evt_BCKP3RSFF5QQJSXGRYEX3ECSQH",
+                "key": "EDIT",
+                "name": "Edit Chore",
+                "payloadSchema": [
+                  {
+                    "name": "row",
+                    "type": "object"
+                  }
+                ]
+              },
+              {
+                "id": "evt_T8R523XQWQVYBVT8CBJTH0EXE8",
+                "key": "SAVE",
+                "name": "Save",
+                "payloadSchema": [
+                  {
+                    "name": "data",
+                    "type": "object"
+                  },
+                  {
+                    "name": "id",
+                    "type": "string"
+                  }
+                ]
+              },
+              {
+                "id": "evt_EH1ZS3S9YEMZ77Z33P57SPMNQB",
+                "key": "DELETE",
+                "name": "Delete",
+                "payloadSchema": [
+                  {
+                    "name": "row",
+                    "type": "object"
+                  }
+                ]
+              },
+              {
+                "id": "evt_S17KBK875Q3JVH6X2PYSKJ16VM",
+                "key": "CANCEL",
+                "name": "Cancel"
+              }
+            ],
+            "states": [
+              {
+                "isInitial": true,
+                "name": "listing"
+              },
+              {
+                "name": "creating"
+              },
+              {
+                "name": "editing"
+              }
+            ],
+            "transitions": [
+              {
+                "effects": [
+                  [
+                    "fetch",
+                    "Chore"
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "actions": [
+                        {
+                          "event": "CREATE",
+                          "label": "New Chore"
+                        }
+                      ],
+                      "title": "Chores",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "entity": "Chore",
+                      "fields": [
+                        "title",
+                        "completed",
+                        "createdAt"
+                      ],
+                      "itemActions": [
+                        {
+                          "event": "EDIT",
+                          "label": "Edit"
+                        },
+                        {
+                          "event": "DELETE",
+                          "label": "Delete"
+                        }
+                      ],
+                      "type": "entity-table"
+                    }
+                  ]
+                ],
+                "event": "INIT",
+                "eventId": "evt_9QG1FE5F4PQJB9DZ8X51H0JBZW",
+                "from": "listing",
+                "to": "listing"
+              },
+              {
+                "effects": [
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "backEvent": "CANCEL",
+                      "showBack": true,
+                      "title": "New Chore",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "entity": "Chore",
+                      "fields": [
+                        "title",
+                        "description"
+                      ],
+                      "onCancel": "CANCEL",
+                      "onSubmit": "SAVE",
+                      "type": "form-section"
+                    }
+                  ]
+                ],
+                "event": "CREATE",
+                "eventId": "evt_YYDTGMHY6HZ38G53F2JTA3ZF5C",
+                "from": "listing",
+                "to": "creating"
+              },
+              {
+                "effects": [
+                  [
+                    "persist",
+                    "create",
+                    "Chore",
+                    "@payload.data"
+                  ],
+                  [
+                    "emit",
+                    "INIT"
+                  ]
+                ],
+                "event": "SAVE",
+                "eventId": "evt_T8R523XQWQVYBVT8CBJTH0EXE8",
+                "from": "creating",
+                "to": "listing"
+              },
+              {
+                "effects": [
+                  [
+                    "emit",
+                    "INIT"
+                  ]
+                ],
+                "event": "CANCEL",
+                "eventId": "evt_S17KBK875Q3JVH6X2PYSKJ16VM",
+                "from": "creating",
+                "to": "listing"
+              },
+              {
+                "effects": [
+                  [
+                    "fetch",
+                    "Chore",
+                    {
+                      "id": "@payload.row.id"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "backEvent": "CANCEL",
+                      "showBack": true,
+                      "title": "Edit Chore",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "entity": "Chore",
+                      "entityId": "@payload.row.id",
+                      "fields": [
+                        "title",
+                        "description",
+                        "completed"
+                      ],
+                      "onCancel": "CANCEL",
+                      "onSubmit": "SAVE",
+                      "type": "form-section"
+                    }
+                  ]
+                ],
+                "event": "EDIT",
+                "eventId": "evt_BCKP3RSFF5QQJSXGRYEX3ECSQH",
+                "from": "listing",
+                "to": "editing"
+              },
+              {
+                "effects": [
+                  [
+                    "persist",
+                    "update",
+                    "Chore",
+                    "@payload.data"
+                  ],
+                  [
+                    "emit",
+                    "INIT"
+                  ]
+                ],
+                "event": "SAVE",
+                "eventId": "evt_T8R523XQWQVYBVT8CBJTH0EXE8",
+                "from": "editing",
+                "to": "listing"
+              },
+              {
+                "effects": [
+                  [
+                    "emit",
+                    "INIT"
+                  ]
+                ],
+                "event": "CANCEL",
+                "eventId": "evt_S17KBK875Q3JVH6X2PYSKJ16VM",
+                "from": "editing",
+                "to": "listing"
+              },
+              {
+                "effects": [
+                  [
+                    "persist",
+                    "delete",
+                    "Chore",
+                    "@payload.row.id"
+                  ],
+                  [
+                    "emit",
+                    "INIT"
+                  ]
+                ],
+                "event": "DELETE",
+                "eventId": "evt_EH1ZS3S9YEMZ77Z33P57SPMNQB",
+                "from": "listing",
+                "to": "listing"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 1,
+  "themeDefinitions": [
+    {
+      "displayName": "Minimalist",
+      "name": "minimalist",
+      "tokens": {
+        "colors": {
+          "accent": "#18181b",
+          "accent-foreground": "#fafafa",
+          "background": "#f8fafc",
+          "border": "#e4e4e7",
+          "card": "#ffffff",
+          "card-foreground": "#18181b",
+          "diagram-axis": "#65656e",
+          "diagram-fill": "#f4f4f5",
+          "diagram-grid": "#e4e4e7",
+          "diagram-guide": "#8d8d96",
+          "diagram-highlight": "#2563eb",
+          "diagram-ink": "#18181b",
+          "diagram-label": "#65656e",
+          "error": "#dc2626",
+          "error-foreground": "#ffffff",
+          "foreground": "#18181b",
+          "info": "#2563eb",
+          "info-foreground": "#ffffff",
+          "input": "#d4d4d8",
+          "muted": "#f4f4f5",
+          "muted-foreground": "#65656e",
+          "primary": "#18181b",
+          "primary-foreground": "#fafafa",
+          "primary-hover": "#27272a",
+          "ring": "#18181b",
+          "scrim": "rgba(0, 0, 0, 0.6)",
+          "secondary": "#fafafa",
+          "secondary-foreground": "#18181b",
+          "secondary-hover": "#f4f4f5",
+          "series-1": "#0b618e",
+          "series-2": "#b45f3a",
+          "series-3": "#589373",
+          "series-4": "#8a5a9a",
+          "series-5": "#a3902c",
+          "series-6": "#536d73",
+          "series-7": "#a04a5a",
+          "series-8": "#3a8a9a",
+          "success": "#15803d",
+          "success-foreground": "#ffffff",
+          "surface": "#f4f4f5",
+          "warning": "#ca8a04",
+          "warning-foreground": "#000000"
+        },
+        "density": {
+          "buttonHeightLg": "44px",
+          "buttonHeightMd": "44px",
+          "buttonHeightSm": "28px",
+          "cardPaddingLg": "40px",
+          "cardPaddingMd": "32px",
+          "cardPaddingSm": "12px",
+          "dialogPadding": "24px",
+          "inputHeightLg": "44px",
+          "inputHeightMd": "44px",
+          "inputHeightSm": "28px",
+          "rowHeightCompact": "32px",
+          "rowHeightNormal": "52px",
+          "rowHeightSpacious": "48px",
+          "sectionGap": "64px",
+          "spacing": {
+            "space0": "0px",
+            "space1": "4px",
+            "space10": "40px",
+            "space11": "44px",
+            "space12": "48px",
+            "space2": "8px",
+            "space3": "12px",
+            "space4": "16px",
+            "space5": "20px",
+            "space6": "24px",
+            "space7": "28px",
+            "space8": "32px",
+            "space9": "36px"
+          }
+        },
+        "diagram": {
+          "corner": "0px",
+          "dash": "3 3",
+          "dot": "1 3",
+          "fillOpacity": "0.08",
+          "fillStyle": "outline",
+          "glow": "0",
+          "labelCase": "none",
+          "labelFont": "body",
+          "labelSize": "xs",
+          "labelWeight": "400",
+          "lineCap": "butt",
+          "lineJoin": "miter",
+          "marker": "line",
+          "roughness": "0",
+          "shadow": "none",
+          "strokeBold": "2",
+          "strokeNormal": "1",
+          "strokeThin": "1"
+        },
+        "elevation": {
+          "cardElevation": "none",
+          "dialogElevation": "none",
+          "interactiveElevation": "none",
+          "popoverElevation": "none",
+          "pressedElevation": "none",
+          "toastElevation": "none"
+        },
+        "geometry": {
+          "borderHairline": "1px",
+          "borderHeavy": "1px",
+          "borderStandard": "1px",
+          "borderStyle": "none",
+          "borderStyleInteractive": "solid",
+          "cornerShape": "round",
+          "cornerShapePill": "round",
+          "radiusContainer": "0px",
+          "radiusInteractive": "0px",
+          "radiusPill": "9999px"
+        },
+        "iconography": {
+          "defaultSize": "16px",
+          "family": "lucide",
+          "strokeWidth": "1.5"
+        },
+        "motion": {
+          "durations": {
+            "dramatic": "600ms",
+            "fast": "var(--transition-fast)",
+            "instant": "0ms",
+            "normal": "var(--transition-normal)",
+            "slow": "var(--transition-slow)"
+          },
+          "easings": {
+            "emphasized": "cubic-bezier(0.2, 0, 0, 1)",
+            "linear": "linear",
+            "spring": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+            "standard": "var(--transition-timing)"
+          },
+          "shapes": {
+            "modalEnter": "none",
+            "modalExit": "none",
+            "pageEnter": "none",
+            "popoverEnter": "none",
+            "popoverExit": "none",
+            "toastEnter": "none",
+            "toastExit": "none"
+          }
+        },
+        "radii": {
+          "full": "9999px",
+          "lg": "0px",
+          "md": "0px",
+          "none": "0px",
+          "sm": "0px",
+          "xl": "0px"
+        },
+        "scene": {
+          "fog": "0",
+          "lightAmbient": "0.7",
+          "lightKey": "0.8",
+          "lightKeyColor": "#ffffff",
+          "materialFlat": "0",
+          "materialMetalness": "0",
+          "materialOutline": "0",
+          "materialRoughness": "0.8"
+        },
+        "shadows": {
+          "active": "none",
+          "hover": "none",
+          "inner": "none",
+          "lg": "none",
+          "main": "none",
+          "none": "none",
+          "sm": "none"
+        },
+        "surface": {
+          "accentImage": "linear-gradient(180deg, color-mix(in oklab, var(--color-primary) 8%, var(--color-background)), var(--color-background))",
+          "edgeHeight": "clamp(16px, 4vw, 56px)",
+          "edgeMask": "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'><path d='M0 100 Q720 0 1440 100 Z'/></svg>\")",
+          "textureMask": "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><path d='M0 .5H40M.5 0V40' stroke='black' stroke-width='1' fill='none'/></svg>\")",
+          "textureSize": "40px 40px"
+        },
+        "typeScale": {
+          "bodyFamily": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "displayFamily": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontImport": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap",
+          "headingShadow": "none",
+          "headingStyle": "normal",
+          "headingTracking": "-0.03em",
+          "headingTransform": "none",
+          "headingWeight": "300",
+          "intents": {
+            "bodyDefault": {
+              "size": "sm",
+              "slot": "body",
+              "weight": "normal"
+            },
+            "bodyEmphasis": {
+              "size": "base",
+              "slot": "body",
+              "weight": "medium"
+            },
+            "bodyQuiet": {
+              "size": "sm",
+              "slot": "body",
+              "weight": "normal"
+            },
+            "caption": {
+              "size": "xs",
+              "slot": "body",
+              "weight": "normal"
+            },
+            "headingMajor": {
+              "size": "2xl",
+              "slot": "display",
+              "weight": "bold"
+            },
+            "headingMinor": {
+              "size": "lg",
+              "slot": "display",
+              "weight": "bold"
+            },
+            "numeric": {
+              "size": "sm",
+              "slot": "mono",
+              "weight": "medium"
+            }
+          },
+          "monoFamily": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+          "scale": {
+            "2xl": {
+              "lineHeight": "32px",
+              "size": "24px"
+            },
+            "3xl": {
+              "lineHeight": "36px",
+              "size": "30px"
+            },
+            "4xl": {
+              "lineHeight": "40px",
+              "size": "36px"
+            },
+            "base": {
+              "lineHeight": "24px",
+              "size": "16px"
+            },
+            "display-1": {
+              "lineHeight": "52px",
+              "size": "48px"
+            },
+            "display-2": {
+              "lineHeight": "64px",
+              "size": "60px"
+            },
+            "lg": {
+              "lineHeight": "28px",
+              "size": "18px"
+            },
+            "sm": {
+              "lineHeight": "20px",
+              "size": "14px"
+            },
+            "xl": {
+              "lineHeight": "28px",
+              "size": "20px"
+            },
+            "xs": {
+              "lineHeight": "16px",
+              "size": "12px"
+            }
+          }
+        },
+        "typography": {
+          "active-scale": "0.99",
+          "active-translate-y": "0",
+          "border-width": "1px",
+          "border-width-thick": "1px",
+          "border-width-thin": "1px",
+          "focus-ring-color": "#18181b",
+          "focus-ring-offset": "2px",
+          "focus-ring-width": "2px",
+          "font-family": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "font-weight-bold": "600",
+          "font-weight-medium": "500",
+          "font-weight-normal": "400",
+          "hover-scale": "1.01",
+          "hover-translate-x": "0",
+          "hover-translate-y": "-1px",
+          "icon-color": "currentColor",
+          "letter-spacing": "-0.005em",
+          "line-height": "1.75",
+          "transition-fast": "150ms",
+          "transition-normal": "240ms",
+          "transition-slow": "400ms",
+          "transition-timing": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      },
+      "variants": {
+        "dark": {
+          "colors": {
+            "accent": "#fafafa",
+            "accent-foreground": "#18181b",
+            "background": "#09090b",
+            "border": "#27272a",
+            "card": "#18181b",
+            "card-foreground": "#fafafa",
+            "diagram-axis": "#a1a1aa",
+            "diagram-fill": "#27272a",
+            "diagram-grid": "#27272a",
+            "diagram-guide": "#78787f",
+            "diagram-highlight": "#60a5fa",
+            "diagram-ink": "#fafafa",
+            "diagram-label": "#a1a1aa",
+            "error": "#f87171",
+            "error-foreground": "#000000",
+            "foreground": "#fafafa",
+            "info": "#60a5fa",
+            "info-foreground": "#000000",
+            "input": "#3f3f46",
+            "muted": "#27272a",
+            "muted-foreground": "#a1a1aa",
+            "primary": "#fafafa",
+            "primary-foreground": "#18181b",
+            "primary-hover": "#e4e4e7",
+            "ring": "#fafafa",
+            "scrim": "rgba(0, 0, 0, 0.7)",
+            "secondary": "#27272a",
+            "secondary-foreground": "#fafafa",
+            "secondary-hover": "#3f3f46",
+            "series-1": "#929bdf",
+            "series-2": "#e0906a",
+            "series-3": "#6fc09a",
+            "series-4": "#c49ad4",
+            "series-5": "#cebb6b",
+            "series-6": "#758996",
+            "series-7": "#de8aa1",
+            "series-8": "#6fbfd0",
+            "success": "#4ade80",
+            "success-foreground": "#000000",
+            "surface": "#27272a",
+            "warning": "#fbbf24",
+            "warning-foreground": "#000000"
+          },
+          "typography": {
+            "active-scale": "0.99",
+            "active-translate-y": "0",
+            "border-width": "1px",
+            "border-width-thick": "1px",
+            "border-width-thin": "1px",
+            "focus-ring-color": "#fafafa",
+            "focus-ring-offset": "2px",
+            "focus-ring-width": "2px",
+            "font-family": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "font-weight-bold": "600",
+            "font-weight-medium": "500",
+            "font-weight-normal": "400",
+            "hover-scale": "1.01",
+            "hover-translate-x": "0",
+            "hover-translate-y": "-1px",
+            "icon-color": "currentColor",
+            "letter-spacing": "-0.005em",
+            "line-height": "1.75",
+            "transition-fast": "150ms",
+            "transition-normal": "240ms",
+            "transition-slow": "400ms",
+            "transition-timing": "cubic-bezier(0.4, 0, 0.2, 1)"
+          }
+        }
+      }
+    }
+  ],
+  "version": "1.0.0"
+}

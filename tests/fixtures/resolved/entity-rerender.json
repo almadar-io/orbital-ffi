@@ -1,1 +1,685 @@
-{"name":"entity-rerender","version":"1.0.0","description":"Native repaint conformance row: a tick that writes a shared entity repaints a sibling trait whose render-ui reads it, and leaves a sibling that reads nothing alone.","themeDefinitions":[{"name":"minimalist","displayName":"Minimalist","tokens":{"colors":{"ring":"#18181b","input":"#d4d4d8","error":"#dc2626","series-1":"#0b618e","secondary":"#fafafa","error-foreground":"#ffffff","series-2":"#b45f3a","series-3":"#589373","diagram-label":"#65656e","warning-foreground":"#000000","background":"#f8fafc","secondary-foreground":"#18181b","card":"#ffffff","muted-foreground":"#65656e","card-foreground":"#18181b","success-foreground":"#ffffff","muted":"#f4f4f5","accent-foreground":"#fafafa","series-8":"#3a8a9a","diagram-axis":"#65656e","series-6":"#536d73","border":"#e4e4e7","accent":"#18181b","success":"#15803d","scrim":"rgba(0, 0, 0, 0.6)","primary-hover":"#27272a","warning":"#ca8a04","diagram-ink":"#18181b","foreground":"#18181b","info":"#2563eb","series-5":"#a3902c","diagram-highlight":"#2563eb","series-4":"#8a5a9a","primary-foreground":"#fafafa","series-7":"#a04a5a","info-foreground":"#ffffff","diagram-grid":"#e4e4e7","diagram-guide":"#8d8d96","diagram-fill":"#f4f4f5","primary":"#18181b","secondary-hover":"#f4f4f5","surface":"#f4f4f5"},"radii":{"sm":"0px","full":"9999px","none":"0px","md":"0px","lg":"0px","xl":"0px"},"typography":{"font-weight-medium":"500","transition-slow":"400ms","transition-normal":"240ms","line-height":"1.75","transition-fast":"150ms","active-scale":"0.99","focus-ring-width":"2px","font-weight-normal":"400","hover-scale":"1.01","letter-spacing":"-0.005em","hover-translate-y":"-1px","border-width-thick":"1px","border-width":"1px","font-weight-bold":"600","font-family":"\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif","transition-timing":"cubic-bezier(0.4, 0, 0.2, 1)","hover-translate-x":"0","active-translate-y":"0","focus-ring-offset":"2px","focus-ring-color":"#18181b","icon-color":"currentColor","border-width-thin":"1px"},"shadows":{"main":"none","lg":"none","active":"none","sm":"none","inner":"none","none":"none","hover":"none"},"density":{"spacing":{"space0":"0px","space1":"4px","space2":"8px","space3":"12px","space4":"16px","space5":"20px","space6":"24px","space7":"28px","space8":"32px","space9":"36px","space10":"40px","space11":"44px","space12":"48px"},"buttonHeightSm":"28px","buttonHeightMd":"44px","buttonHeightLg":"44px","inputHeightSm":"28px","inputHeightMd":"44px","inputHeightLg":"44px","rowHeightCompact":"32px","rowHeightNormal":"52px","rowHeightSpacious":"48px","cardPaddingSm":"12px","cardPaddingMd":"32px","cardPaddingLg":"40px","dialogPadding":"24px","sectionGap":"64px"},"typeScale":{"displayFamily":"\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif","bodyFamily":"\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif","monoFamily":"ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace","fontImport":"https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap","headingWeight":"300","headingTransform":"none","headingTracking":"-0.03em","headingStyle":"normal","headingShadow":"none","scale":{"xs":{"size":"12px","lineHeight":"16px"},"sm":{"size":"14px","lineHeight":"20px"},"base":{"size":"16px","lineHeight":"24px"},"lg":{"size":"18px","lineHeight":"28px"},"xl":{"size":"20px","lineHeight":"28px"},"2xl":{"size":"24px","lineHeight":"32px"},"3xl":{"size":"30px","lineHeight":"36px"},"4xl":{"size":"36px","lineHeight":"40px"},"display-1":{"size":"48px","lineHeight":"52px"},"display-2":{"size":"60px","lineHeight":"64px"}},"intents":{"headingMajor":{"slot":"display","size":"2xl","weight":"bold"},"headingMinor":{"slot":"display","size":"lg","weight":"bold"},"bodyEmphasis":{"slot":"body","size":"base","weight":"medium"},"bodyDefault":{"slot":"body","size":"sm","weight":"normal"},"bodyQuiet":{"slot":"body","size":"sm","weight":"normal"},"caption":{"slot":"body","size":"xs","weight":"normal"},"numeric":{"slot":"mono","size":"sm","weight":"medium"}}},"motion":{"durations":{"instant":"0ms","fast":"var(--transition-fast)","normal":"var(--transition-normal)","slow":"var(--transition-slow)","dramatic":"600ms"},"easings":{"linear":"linear","standard":"var(--transition-timing)","emphasized":"cubic-bezier(0.2, 0, 0, 1)","spring":"cubic-bezier(0.34, 1.56, 0.64, 1)"},"shapes":{"modalEnter":"none","modalExit":"none","popoverEnter":"none","popoverExit":"none","toastEnter":"none","toastExit":"none","pageEnter":"none"}},"iconography":{"family":"lucide","strokeWidth":"1.5","defaultSize":"16px"},"elevation":{"cardElevation":"none","popoverElevation":"none","dialogElevation":"none","toastElevation":"none","interactiveElevation":"none","pressedElevation":"none"},"geometry":{"radiusContainer":"0px","radiusInteractive":"0px","radiusPill":"9999px","borderHairline":"1px","borderStandard":"1px","borderHeavy":"1px","cornerShape":"round","cornerShapePill":"round","borderStyle":"none","borderStyleInteractive":"solid"},"surface":{"edgeMask":"url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'><path d='M0 100 Q720 0 1440 100 Z'/></svg>\")","edgeHeight":"clamp(16px, 4vw, 56px)","textureMask":"url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><path d='M0 .5H40M.5 0V40' stroke='black' stroke-width='1' fill='none'/></svg>\")","textureSize":"40px 40px","accentImage":"linear-gradient(180deg, color-mix(in oklab, var(--color-primary) 8%, var(--color-background)), var(--color-background))"},"diagram":{"strokeThin":"1","strokeNormal":"1","strokeBold":"2","lineCap":"butt","lineJoin":"miter","dash":"3 3","dot":"1 3","fillStyle":"outline","fillOpacity":"0.08","roughness":"0","glow":"0","shadow":"none","marker":"line","labelFont":"body","labelSize":"xs","labelWeight":"400","labelCase":"none","corner":"0px"},"scene":{"materialRoughness":"0.8","materialMetalness":"0","materialFlat":"0","materialOutline":"0","lightAmbient":"0.7","lightKey":"0.8","lightKeyColor":"#ffffff","fog":"0"}},"variants":{"dark":{"colors":{"series-1":"#929bdf","primary-foreground":"#18181b","error-foreground":"#000000","diagram-label":"#a1a1aa","diagram-axis":"#a1a1aa","primary":"#fafafa","success-foreground":"#000000","muted-foreground":"#a1a1aa","error":"#f87171","accent":"#fafafa","secondary-foreground":"#fafafa","series-5":"#cebb6b","info-foreground":"#000000","warning-foreground":"#000000","muted":"#27272a","secondary":"#27272a","input":"#3f3f46","primary-hover":"#e4e4e7","scrim":"rgba(0, 0, 0, 0.7)","foreground":"#fafafa","series-4":"#c49ad4","series-2":"#e0906a","card-foreground":"#fafafa","card":"#18181b","border":"#27272a","secondary-hover":"#3f3f46","accent-foreground":"#18181b","surface":"#27272a","info":"#60a5fa","series-6":"#758996","success":"#4ade80","background":"#09090b","diagram-guide":"#78787f","diagram-highlight":"#60a5fa","ring":"#fafafa","warning":"#fbbf24","series-3":"#6fc09a","series-8":"#6fbfd0","diagram-fill":"#27272a","diagram-grid":"#27272a","diagram-ink":"#fafafa","series-7":"#de8aa1"},"typography":{"icon-color":"currentColor","hover-translate-x":"0","line-height":"1.75","active-scale":"0.99","focus-ring-width":"2px","active-translate-y":"0","border-width":"1px","font-weight-bold":"600","border-width-thin":"1px","hover-scale":"1.01","transition-fast":"150ms","font-weight-normal":"400","font-weight-medium":"500","transition-timing":"cubic-bezier(0.4, 0, 0.2, 1)","border-width-thick":"1px","transition-normal":"240ms","focus-ring-offset":"2px","focus-ring-color":"#fafafa","transition-slow":"400ms","font-family":"\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif","letter-spacing":"-0.005em","hover-translate-y":"-1px"}}}}],"orbitals":[{"name":"EntityRerenderOrbital","id":"orb_01M4GGP69BX5M2PPYTN8N4NPSB","entity":{"name":"Arena","id":"ent_01M4GGP69BRBY1WXS1XDC6PV08","persistence":"runtime","fields":[{"name":"id","type":"string","required":true},{"name":"score","type":"number","default":0.0}],"shared":true},"traits":[{"name":"Mover","id":"trt_01M4GGP69BX1FDAAJ41B8BQWHH","effectRow":[{"kind":"render-ui","resource":"main"},{"kind":"set","resource":"@entity.score","site":"tick"},{"kind":"ticks","site":"tick"}],"category":"interaction","linkedEntity":"Arena","linkedEntityId":"ent_01M4GGP69BRBY1WXS1XDC6PV08","entityRefIds":{"Arena":"ent_01M4GGP69BRBY1WXS1XDC6PV08"},"stateMachine":{"states":[{"name":"running","isInitial":true}],"events":[{"key":"INIT","id":"evt_01M4GGP69B9PCSHHPD4AGV3766","name":"Initialize"}],"transitions":[{"from":"running","to":"running","event":"INIT","eventId":"evt_01M4GGP69B9PCSHHPD4AGV3766","effects":[["render-ui","main",{"content":"Mover","type":"typography"}]]}]},"ticks":[{"name":"step","interval":1000.0,"effects":[["set","@entity.score",["+","@entity.score",1.0]]]}],"scope":"instance","local":true},{"name":"ScoreBoard","id":"trt_01M4GGP69BX11XR7CAEBQ7S453","effectRow":[{"kind":"render-ui","resource":"hud"}],"category":"interaction","linkedEntity":"Arena","linkedEntityId":"ent_01M4GGP69BRBY1WXS1XDC6PV08","entityRefIds":{"Arena":"ent_01M4GGP69BRBY1WXS1XDC6PV08"},"stateMachine":{"states":[{"name":"showing","isInitial":true}],"events":[{"key":"INIT","id":"evt_01M4GGP69B61BTWTJ1ZHARE9E9","name":"Initialize"}],"transitions":[{"from":"showing","to":"showing","event":"INIT","eventId":"evt_01M4GGP69B61BTWTJ1ZHARE9E9","effects":[["render-ui","hud",{"type":"stat-display","label":"Score","value":"@entity.score"}]]}]},"scope":"instance","local":true},{"name":"Caption","id":"trt_01M4GGP69B8R9VK2Q9Q6FR7M3F","effectRow":[{"kind":"render-ui","resource":"sidebar"}],"category":"interaction","linkedEntity":"Arena","linkedEntityId":"ent_01M4GGP69BRBY1WXS1XDC6PV08","entityRefIds":{"Arena":"ent_01M4GGP69BRBY1WXS1XDC6PV08"},"stateMachine":{"states":[{"name":"showing","isInitial":true}],"events":[{"key":"INIT","id":"evt_01M4GGP69B4W2NCWHRR9VKZ334","name":"Initialize"}],"transitions":[{"from":"showing","to":"showing","event":"INIT","eventId":"evt_01M4GGP69B4W2NCWHRR9VKZ334","effects":[["render-ui","sidebar",{"content":"Static caption","type":"typography"}]]}]},"scope":"instance","local":true}],"pages":[{"name":"ArenaPage","id":"pag_01M4GGP69BAS0D152CW2C3JK6C","path":"/arena","traits":[{"ref":"Mover","refId":"trt_01M4GGP69BX1FDAAJ41B8BQWHH"},{"ref":"ScoreBoard","refId":"trt_01M4GGP69BX11XR7CAEBQ7S453"},{"ref":"Caption","refId":"trt_01M4GGP69B8R9VK2Q9Q6FR7M3F"}]}]}],"schemaVersion":1,"ledger":{"schemaVersion":1,"entries":{"ent_01M4GGP69BRBY1WXS1XDC6PV08":{"id":"ent_01M4GGP69BRBY1WXS1XDC6PV08","kind":"entity","bakedName":"Arena","curName":"Arena","renames":[],"owner":"workspace"},"evt_01M4GGP69B4W2NCWHRR9VKZ334":{"id":"evt_01M4GGP69B4W2NCWHRR9VKZ334","kind":"event","bakedName":"INIT","curName":"INIT","renames":[],"owner":"workspace","parent":"trt_01M4GGP69B8R9VK2Q9Q6FR7M3F"},"evt_01M4GGP69B61BTWTJ1ZHARE9E9":{"id":"evt_01M4GGP69B61BTWTJ1ZHARE9E9","kind":"event","bakedName":"INIT","curName":"INIT","renames":[],"owner":"workspace","parent":"trt_01M4GGP69BX11XR7CAEBQ7S453"},"evt_01M4GGP69B9PCSHHPD4AGV3766":{"id":"evt_01M4GGP69B9PCSHHPD4AGV3766","kind":"event","bakedName":"INIT","curName":"INIT","renames":[],"owner":"workspace","parent":"trt_01M4GGP69BX1FDAAJ41B8BQWHH"},"orb_01M4GGP69BX5M2PPYTN8N4NPSB":{"id":"orb_01M4GGP69BX5M2PPYTN8N4NPSB","kind":"orbital","bakedName":"EntityRerenderOrbital","curName":"EntityRerenderOrbital","renames":[],"owner":"workspace"},"pag_01M4GGP69BAS0D152CW2C3JK6C":{"id":"pag_01M4GGP69BAS0D152CW2C3JK6C","kind":"page","bakedName":"ArenaPage","curName":"ArenaPage","renames":[],"owner":"workspace"},"trt_01M4GGP69B8R9VK2Q9Q6FR7M3F":{"id":"trt_01M4GGP69B8R9VK2Q9Q6FR7M3F","kind":"trait","bakedName":"Caption","curName":"Caption","renames":[],"owner":"workspace"},"trt_01M4GGP69BX11XR7CAEBQ7S453":{"id":"trt_01M4GGP69BX11XR7CAEBQ7S453","kind":"trait","bakedName":"ScoreBoard","curName":"ScoreBoard","renames":[],"owner":"workspace"},"trt_01M4GGP69BX1FDAAJ41B8BQWHH":{"id":"trt_01M4GGP69BX1FDAAJ41B8BQWHH","kind":"trait","bakedName":"Mover","curName":"Mover","renames":[],"owner":"workspace"}}}}
+{
+  "description": "Native repaint conformance row: a tick that writes a shared entity repaints a sibling trait whose render-ui reads it, and leaves a sibling that reads nothing alone.",
+  "ledger": {
+    "entries": {
+      "ent_01M4GGP69BRBY1WXS1XDC6PV08": {
+        "bakedName": "Arena",
+        "curName": "Arena",
+        "id": "ent_01M4GGP69BRBY1WXS1XDC6PV08",
+        "kind": "entity",
+        "owner": "workspace",
+        "renames": []
+      },
+      "evt_01M4GGP69B4W2NCWHRR9VKZ334": {
+        "bakedName": "INIT",
+        "curName": "INIT",
+        "id": "evt_01M4GGP69B4W2NCWHRR9VKZ334",
+        "kind": "event",
+        "owner": "workspace",
+        "parent": "trt_01M4GGP69B8R9VK2Q9Q6FR7M3F",
+        "renames": []
+      },
+      "evt_01M4GGP69B61BTWTJ1ZHARE9E9": {
+        "bakedName": "INIT",
+        "curName": "INIT",
+        "id": "evt_01M4GGP69B61BTWTJ1ZHARE9E9",
+        "kind": "event",
+        "owner": "workspace",
+        "parent": "trt_01M4GGP69BX11XR7CAEBQ7S453",
+        "renames": []
+      },
+      "evt_01M4GGP69B9PCSHHPD4AGV3766": {
+        "bakedName": "INIT",
+        "curName": "INIT",
+        "id": "evt_01M4GGP69B9PCSHHPD4AGV3766",
+        "kind": "event",
+        "owner": "workspace",
+        "parent": "trt_01M4GGP69BX1FDAAJ41B8BQWHH",
+        "renames": []
+      },
+      "orb_01M4GGP69BX5M2PPYTN8N4NPSB": {
+        "bakedName": "EntityRerenderOrbital",
+        "curName": "EntityRerenderOrbital",
+        "id": "orb_01M4GGP69BX5M2PPYTN8N4NPSB",
+        "kind": "orbital",
+        "owner": "workspace",
+        "renames": []
+      },
+      "pag_01M4GGP69BAS0D152CW2C3JK6C": {
+        "bakedName": "ArenaPage",
+        "curName": "ArenaPage",
+        "id": "pag_01M4GGP69BAS0D152CW2C3JK6C",
+        "kind": "page",
+        "owner": "workspace",
+        "renames": []
+      },
+      "trt_01M4GGP69B8R9VK2Q9Q6FR7M3F": {
+        "bakedName": "Caption",
+        "curName": "Caption",
+        "id": "trt_01M4GGP69B8R9VK2Q9Q6FR7M3F",
+        "kind": "trait",
+        "owner": "workspace",
+        "renames": []
+      },
+      "trt_01M4GGP69BX11XR7CAEBQ7S453": {
+        "bakedName": "ScoreBoard",
+        "curName": "ScoreBoard",
+        "id": "trt_01M4GGP69BX11XR7CAEBQ7S453",
+        "kind": "trait",
+        "owner": "workspace",
+        "renames": []
+      },
+      "trt_01M4GGP69BX1FDAAJ41B8BQWHH": {
+        "bakedName": "Mover",
+        "curName": "Mover",
+        "id": "trt_01M4GGP69BX1FDAAJ41B8BQWHH",
+        "kind": "trait",
+        "owner": "workspace",
+        "renames": []
+      }
+    },
+    "schemaVersion": 1
+  },
+  "name": "entity-rerender",
+  "orbitals": [
+    {
+      "entity": {
+        "fields": [
+          {
+            "name": "id",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "default": 0.0,
+            "name": "score",
+            "type": "number"
+          }
+        ],
+        "id": "ent_01M4GGP69BRBY1WXS1XDC6PV08",
+        "name": "Arena",
+        "persistence": "runtime",
+        "shared": true
+      },
+      "id": "orb_01M4GGP69BX5M2PPYTN8N4NPSB",
+      "name": "EntityRerenderOrbital",
+      "pages": [
+        {
+          "id": "pag_01M4GGP69BAS0D152CW2C3JK6C",
+          "name": "ArenaPage",
+          "path": "/arena",
+          "traits": [
+            {
+              "ref": "Mover",
+              "refId": "trt_01M4GGP69BX1FDAAJ41B8BQWHH"
+            },
+            {
+              "ref": "ScoreBoard",
+              "refId": "trt_01M4GGP69BX11XR7CAEBQ7S453"
+            },
+            {
+              "ref": "Caption",
+              "refId": "trt_01M4GGP69B8R9VK2Q9Q6FR7M3F"
+            }
+          ]
+        }
+      ],
+      "traits": [
+        {
+          "category": "interaction",
+          "effectRow": [
+            {
+              "kind": "render-ui",
+              "resource": "main"
+            },
+            {
+              "kind": "set",
+              "resource": "@entity.score",
+              "site": "tick"
+            },
+            {
+              "kind": "ticks",
+              "site": "tick"
+            }
+          ],
+          "entityRefIds": {
+            "Arena": "ent_01M4GGP69BRBY1WXS1XDC6PV08"
+          },
+          "id": "trt_01M4GGP69BX1FDAAJ41B8BQWHH",
+          "linkedEntity": "Arena",
+          "linkedEntityId": "ent_01M4GGP69BRBY1WXS1XDC6PV08",
+          "local": true,
+          "name": "Mover",
+          "scope": "instance",
+          "stateMachine": {
+            "events": [
+              {
+                "id": "evt_01M4GGP69B9PCSHHPD4AGV3766",
+                "key": "INIT",
+                "name": "Initialize"
+              }
+            ],
+            "states": [
+              {
+                "isInitial": true,
+                "name": "running"
+              }
+            ],
+            "transitions": [
+              {
+                "effects": [
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "content": "Mover",
+                      "type": "typography"
+                    }
+                  ]
+                ],
+                "event": "INIT",
+                "eventId": "evt_01M4GGP69B9PCSHHPD4AGV3766",
+                "from": "running",
+                "to": "running"
+              }
+            ]
+          },
+          "ticks": [
+            {
+              "effects": [
+                [
+                  "set",
+                  "@entity.score",
+                  [
+                    "+",
+                    "@entity.score",
+                    1.0
+                  ]
+                ]
+              ],
+              "interval": 1000.0,
+              "name": "step"
+            }
+          ]
+        },
+        {
+          "category": "interaction",
+          "effectRow": [
+            {
+              "kind": "render-ui",
+              "resource": "hud"
+            }
+          ],
+          "entityRefIds": {
+            "Arena": "ent_01M4GGP69BRBY1WXS1XDC6PV08"
+          },
+          "id": "trt_01M4GGP69BX11XR7CAEBQ7S453",
+          "linkedEntity": "Arena",
+          "linkedEntityId": "ent_01M4GGP69BRBY1WXS1XDC6PV08",
+          "local": true,
+          "name": "ScoreBoard",
+          "scope": "instance",
+          "stateMachine": {
+            "events": [
+              {
+                "id": "evt_01M4GGP69B61BTWTJ1ZHARE9E9",
+                "key": "INIT",
+                "name": "Initialize"
+              }
+            ],
+            "states": [
+              {
+                "isInitial": true,
+                "name": "showing"
+              }
+            ],
+            "transitions": [
+              {
+                "effects": [
+                  [
+                    "render-ui",
+                    "hud",
+                    {
+                      "label": "Score",
+                      "type": "stat-display",
+                      "value": "@entity.score"
+                    }
+                  ]
+                ],
+                "event": "INIT",
+                "eventId": "evt_01M4GGP69B61BTWTJ1ZHARE9E9",
+                "from": "showing",
+                "to": "showing"
+              }
+            ]
+          }
+        },
+        {
+          "category": "interaction",
+          "effectRow": [
+            {
+              "kind": "render-ui",
+              "resource": "sidebar"
+            }
+          ],
+          "entityRefIds": {
+            "Arena": "ent_01M4GGP69BRBY1WXS1XDC6PV08"
+          },
+          "id": "trt_01M4GGP69B8R9VK2Q9Q6FR7M3F",
+          "linkedEntity": "Arena",
+          "linkedEntityId": "ent_01M4GGP69BRBY1WXS1XDC6PV08",
+          "local": true,
+          "name": "Caption",
+          "scope": "instance",
+          "stateMachine": {
+            "events": [
+              {
+                "id": "evt_01M4GGP69B4W2NCWHRR9VKZ334",
+                "key": "INIT",
+                "name": "Initialize"
+              }
+            ],
+            "states": [
+              {
+                "isInitial": true,
+                "name": "showing"
+              }
+            ],
+            "transitions": [
+              {
+                "effects": [
+                  [
+                    "render-ui",
+                    "sidebar",
+                    {
+                      "content": "Static caption",
+                      "type": "typography"
+                    }
+                  ]
+                ],
+                "event": "INIT",
+                "eventId": "evt_01M4GGP69B4W2NCWHRR9VKZ334",
+                "from": "showing",
+                "to": "showing"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "schemaVersion": 1,
+  "themeDefinitions": [
+    {
+      "displayName": "Minimalist",
+      "name": "minimalist",
+      "tokens": {
+        "colors": {
+          "accent": "#18181b",
+          "accent-foreground": "#fafafa",
+          "background": "#f8fafc",
+          "border": "#e4e4e7",
+          "card": "#ffffff",
+          "card-foreground": "#18181b",
+          "diagram-axis": "#65656e",
+          "diagram-fill": "#f4f4f5",
+          "diagram-grid": "#e4e4e7",
+          "diagram-guide": "#8d8d96",
+          "diagram-highlight": "#2563eb",
+          "diagram-ink": "#18181b",
+          "diagram-label": "#65656e",
+          "error": "#dc2626",
+          "error-foreground": "#ffffff",
+          "foreground": "#18181b",
+          "info": "#2563eb",
+          "info-foreground": "#ffffff",
+          "input": "#d4d4d8",
+          "muted": "#f4f4f5",
+          "muted-foreground": "#65656e",
+          "primary": "#18181b",
+          "primary-foreground": "#fafafa",
+          "primary-hover": "#27272a",
+          "ring": "#18181b",
+          "scrim": "rgba(0, 0, 0, 0.6)",
+          "secondary": "#fafafa",
+          "secondary-foreground": "#18181b",
+          "secondary-hover": "#f4f4f5",
+          "series-1": "#0b618e",
+          "series-2": "#b45f3a",
+          "series-3": "#589373",
+          "series-4": "#8a5a9a",
+          "series-5": "#a3902c",
+          "series-6": "#536d73",
+          "series-7": "#a04a5a",
+          "series-8": "#3a8a9a",
+          "success": "#15803d",
+          "success-foreground": "#ffffff",
+          "surface": "#f4f4f5",
+          "warning": "#ca8a04",
+          "warning-foreground": "#000000"
+        },
+        "density": {
+          "buttonHeightLg": "44px",
+          "buttonHeightMd": "44px",
+          "buttonHeightSm": "28px",
+          "cardPaddingLg": "40px",
+          "cardPaddingMd": "32px",
+          "cardPaddingSm": "12px",
+          "dialogPadding": "24px",
+          "inputHeightLg": "44px",
+          "inputHeightMd": "44px",
+          "inputHeightSm": "28px",
+          "rowHeightCompact": "32px",
+          "rowHeightNormal": "52px",
+          "rowHeightSpacious": "48px",
+          "sectionGap": "64px",
+          "spacing": {
+            "space0": "0px",
+            "space1": "4px",
+            "space10": "40px",
+            "space11": "44px",
+            "space12": "48px",
+            "space2": "8px",
+            "space3": "12px",
+            "space4": "16px",
+            "space5": "20px",
+            "space6": "24px",
+            "space7": "28px",
+            "space8": "32px",
+            "space9": "36px"
+          }
+        },
+        "diagram": {
+          "corner": "0px",
+          "dash": "3 3",
+          "dot": "1 3",
+          "fillOpacity": "0.08",
+          "fillStyle": "outline",
+          "glow": "0",
+          "labelCase": "none",
+          "labelFont": "body",
+          "labelSize": "xs",
+          "labelWeight": "400",
+          "lineCap": "butt",
+          "lineJoin": "miter",
+          "marker": "line",
+          "roughness": "0",
+          "shadow": "none",
+          "strokeBold": "2",
+          "strokeNormal": "1",
+          "strokeThin": "1"
+        },
+        "elevation": {
+          "cardElevation": "none",
+          "dialogElevation": "none",
+          "interactiveElevation": "none",
+          "popoverElevation": "none",
+          "pressedElevation": "none",
+          "toastElevation": "none"
+        },
+        "geometry": {
+          "borderHairline": "1px",
+          "borderHeavy": "1px",
+          "borderStandard": "1px",
+          "borderStyle": "none",
+          "borderStyleInteractive": "solid",
+          "cornerShape": "round",
+          "cornerShapePill": "round",
+          "radiusContainer": "0px",
+          "radiusInteractive": "0px",
+          "radiusPill": "9999px"
+        },
+        "iconography": {
+          "defaultSize": "16px",
+          "family": "lucide",
+          "strokeWidth": "1.5"
+        },
+        "motion": {
+          "durations": {
+            "dramatic": "600ms",
+            "fast": "var(--transition-fast)",
+            "instant": "0ms",
+            "normal": "var(--transition-normal)",
+            "slow": "var(--transition-slow)"
+          },
+          "easings": {
+            "emphasized": "cubic-bezier(0.2, 0, 0, 1)",
+            "linear": "linear",
+            "spring": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+            "standard": "var(--transition-timing)"
+          },
+          "shapes": {
+            "modalEnter": "none",
+            "modalExit": "none",
+            "pageEnter": "none",
+            "popoverEnter": "none",
+            "popoverExit": "none",
+            "toastEnter": "none",
+            "toastExit": "none"
+          }
+        },
+        "radii": {
+          "full": "9999px",
+          "lg": "0px",
+          "md": "0px",
+          "none": "0px",
+          "sm": "0px",
+          "xl": "0px"
+        },
+        "scene": {
+          "fog": "0",
+          "lightAmbient": "0.7",
+          "lightKey": "0.8",
+          "lightKeyColor": "#ffffff",
+          "materialFlat": "0",
+          "materialMetalness": "0",
+          "materialOutline": "0",
+          "materialRoughness": "0.8"
+        },
+        "shadows": {
+          "active": "none",
+          "hover": "none",
+          "inner": "none",
+          "lg": "none",
+          "main": "none",
+          "none": "none",
+          "sm": "none"
+        },
+        "surface": {
+          "accentImage": "linear-gradient(180deg, color-mix(in oklab, var(--color-primary) 8%, var(--color-background)), var(--color-background))",
+          "edgeHeight": "clamp(16px, 4vw, 56px)",
+          "edgeMask": "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'><path d='M0 100 Q720 0 1440 100 Z'/></svg>\")",
+          "textureMask": "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><path d='M0 .5H40M.5 0V40' stroke='black' stroke-width='1' fill='none'/></svg>\")",
+          "textureSize": "40px 40px"
+        },
+        "typeScale": {
+          "bodyFamily": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "displayFamily": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "fontImport": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap",
+          "headingShadow": "none",
+          "headingStyle": "normal",
+          "headingTracking": "-0.03em",
+          "headingTransform": "none",
+          "headingWeight": "300",
+          "intents": {
+            "bodyDefault": {
+              "size": "sm",
+              "slot": "body",
+              "weight": "normal"
+            },
+            "bodyEmphasis": {
+              "size": "base",
+              "slot": "body",
+              "weight": "medium"
+            },
+            "bodyQuiet": {
+              "size": "sm",
+              "slot": "body",
+              "weight": "normal"
+            },
+            "caption": {
+              "size": "xs",
+              "slot": "body",
+              "weight": "normal"
+            },
+            "headingMajor": {
+              "size": "2xl",
+              "slot": "display",
+              "weight": "bold"
+            },
+            "headingMinor": {
+              "size": "lg",
+              "slot": "display",
+              "weight": "bold"
+            },
+            "numeric": {
+              "size": "sm",
+              "slot": "mono",
+              "weight": "medium"
+            }
+          },
+          "monoFamily": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+          "scale": {
+            "2xl": {
+              "lineHeight": "32px",
+              "size": "24px"
+            },
+            "3xl": {
+              "lineHeight": "36px",
+              "size": "30px"
+            },
+            "4xl": {
+              "lineHeight": "40px",
+              "size": "36px"
+            },
+            "base": {
+              "lineHeight": "24px",
+              "size": "16px"
+            },
+            "display-1": {
+              "lineHeight": "52px",
+              "size": "48px"
+            },
+            "display-2": {
+              "lineHeight": "64px",
+              "size": "60px"
+            },
+            "lg": {
+              "lineHeight": "28px",
+              "size": "18px"
+            },
+            "sm": {
+              "lineHeight": "20px",
+              "size": "14px"
+            },
+            "xl": {
+              "lineHeight": "28px",
+              "size": "20px"
+            },
+            "xs": {
+              "lineHeight": "16px",
+              "size": "12px"
+            }
+          }
+        },
+        "typography": {
+          "active-scale": "0.99",
+          "active-translate-y": "0",
+          "border-width": "1px",
+          "border-width-thick": "1px",
+          "border-width-thin": "1px",
+          "focus-ring-color": "#18181b",
+          "focus-ring-offset": "2px",
+          "focus-ring-width": "2px",
+          "font-family": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "font-weight-bold": "600",
+          "font-weight-medium": "500",
+          "font-weight-normal": "400",
+          "hover-scale": "1.01",
+          "hover-translate-x": "0",
+          "hover-translate-y": "-1px",
+          "icon-color": "currentColor",
+          "letter-spacing": "-0.005em",
+          "line-height": "1.75",
+          "transition-fast": "150ms",
+          "transition-normal": "240ms",
+          "transition-slow": "400ms",
+          "transition-timing": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      },
+      "variants": {
+        "dark": {
+          "colors": {
+            "accent": "#fafafa",
+            "accent-foreground": "#18181b",
+            "background": "#09090b",
+            "border": "#27272a",
+            "card": "#18181b",
+            "card-foreground": "#fafafa",
+            "diagram-axis": "#a1a1aa",
+            "diagram-fill": "#27272a",
+            "diagram-grid": "#27272a",
+            "diagram-guide": "#78787f",
+            "diagram-highlight": "#60a5fa",
+            "diagram-ink": "#fafafa",
+            "diagram-label": "#a1a1aa",
+            "error": "#f87171",
+            "error-foreground": "#000000",
+            "foreground": "#fafafa",
+            "info": "#60a5fa",
+            "info-foreground": "#000000",
+            "input": "#3f3f46",
+            "muted": "#27272a",
+            "muted-foreground": "#a1a1aa",
+            "primary": "#fafafa",
+            "primary-foreground": "#18181b",
+            "primary-hover": "#e4e4e7",
+            "ring": "#fafafa",
+            "scrim": "rgba(0, 0, 0, 0.7)",
+            "secondary": "#27272a",
+            "secondary-foreground": "#fafafa",
+            "secondary-hover": "#3f3f46",
+            "series-1": "#929bdf",
+            "series-2": "#e0906a",
+            "series-3": "#6fc09a",
+            "series-4": "#c49ad4",
+            "series-5": "#cebb6b",
+            "series-6": "#758996",
+            "series-7": "#de8aa1",
+            "series-8": "#6fbfd0",
+            "success": "#4ade80",
+            "success-foreground": "#000000",
+            "surface": "#27272a",
+            "warning": "#fbbf24",
+            "warning-foreground": "#000000"
+          },
+          "typography": {
+            "active-scale": "0.99",
+            "active-translate-y": "0",
+            "border-width": "1px",
+            "border-width-thick": "1px",
+            "border-width-thin": "1px",
+            "focus-ring-color": "#fafafa",
+            "focus-ring-offset": "2px",
+            "focus-ring-width": "2px",
+            "font-family": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+            "font-weight-bold": "600",
+            "font-weight-medium": "500",
+            "font-weight-normal": "400",
+            "hover-scale": "1.01",
+            "hover-translate-x": "0",
+            "hover-translate-y": "-1px",
+            "icon-color": "currentColor",
+            "letter-spacing": "-0.005em",
+            "line-height": "1.75",
+            "transition-fast": "150ms",
+            "transition-normal": "240ms",
+            "transition-slow": "400ms",
+            "transition-timing": "cubic-bezier(0.4, 0, 0.2, 1)"
+          }
+        }
+      }
+    }
+  ],
+  "version": "1.0.0"
+}

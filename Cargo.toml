@@ -16,7 +16,7 @@ default = []
 verify-bridge = []
 
 [dependencies]
-orbital-game-renderer = { git = "https://github.com/almadar-io/orbital-game-renderer", branch = "main", features = ["http"] }
+orbital-canvas = { git = "https://github.com/almadar-io/orbital-canvas", branch = "main", features = ["http"] }
 orbital-core = { git = "https://github.com/almadar-io/orbital-core", branch = "main" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"

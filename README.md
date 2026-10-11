@@ -4,7 +4,7 @@ The native library both mobile shells link: the renderer C ABI, the runtime-kern
 
 Part of [Almadar](https://almadar.io)'s Orbital compiler, which turns a `.lolo`/`.orb` program into a full-stack app. The `orb` CLI (npm `@almadar/orb`) bundles this crate; you only need this repo to read, build or change it.
 
-Depends on [`orbital-core`](https://github.com/almadar-io/orbital-core), [`orbital-game-renderer`](https://github.com/almadar-io/orbital-game-renderer).
+Depends on [`orbital-core`](https://github.com/almadar-io/orbital-core), [`orbital-canvas`](https://github.com/almadar-io/orbital-canvas).
 
 ## Layout
 

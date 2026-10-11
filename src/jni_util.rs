@@ -5,7 +5,7 @@
 //! JNI boundary into the JVM. One place so neither bridge hand-rolls either.
 //!
 //! Both bridges keep forwarding onto the crate's existing `*const c_char` C
-//! ABI (`kernel_c_api`, `orbital_game_renderer::c_api`) instead of duplicating
+//! ABI (`kernel_c_api`, `orbital_canvas::c_api`) instead of duplicating
 //! kernel/renderer logic against `jni`'s object API: a JNI fn marshals its
 //! `JString` args into owned `CString`s, calls the C ABI function, marshals
 //! the `*mut c_char` result back into a `jstring` via [`take_c_string_as_jstring`],
