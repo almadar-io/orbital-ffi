@@ -1855,6 +1855,9 @@ mod tests {
             event: Some("E".into()),
             payload: CoreValue::Null,
             entry: None,
+            fired_arm: None,
+            guards: Vec::new(),
+            effect_runs: Vec::new(),
         };
         recorder.record_applied(
             &|t: &str| {
@@ -2267,6 +2270,9 @@ mod tests {
             event: Some("SAVE".into()),
             payload: CoreValue::Null,
             entry: None,
+            fired_arm: None,
+            guards: Vec::new(),
+            effect_runs: Vec::new(),
         };
         let blocked = ProcessEventResult {
             executed: false,
@@ -2399,6 +2405,9 @@ mod tests {
             event: Some("DataListLoaded".into()),
             payload,
             entry: None,
+            fired_arm: None,
+            guards: Vec::new(),
+            effect_runs: Vec::new(),
         };
         recorder.record_applied(
             &|_: &str| "Orb".to_string(),
