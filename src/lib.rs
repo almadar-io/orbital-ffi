@@ -10,6 +10,8 @@ pub mod kernel_c_api;
 pub mod verify_bridge;
 
 #[cfg(test)]
+mod embed_golden_tests;
+#[cfg(test)]
 mod frame_tests;
 
 /// Resolved schemas the kernel tests boot from; `orbital-rust`'s

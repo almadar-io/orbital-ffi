@@ -647,6 +647,51 @@ impl HandleBridge {
     }
 }
 
+/// The recorder watching an embedded kernel.
+pub struct RecorderObserver(pub Arc<Recorder>);
+
+impl orbital_core::embed::EmbedObserver for RecorderObserver {
+    fn dispatched(
+        &self,
+        trait_name: &str,
+        event: &str,
+        payload: &CoreValue,
+        dispatch: &orbital_core::runtime::ClientDispatch,
+        tick: Option<&str>,
+    ) {
+        self.0.record_dispatch_from(
+            trait_name,
+            event,
+            payload,
+            &dispatch.response,
+            &dispatch.outcomes,
+            dispatch.server_legs.len(),
+            tick,
+        );
+    }
+
+    fn applied(
+        &self,
+        owners: &orbital_core::runtime::TraitOwners,
+        response: &EventResponse,
+        outcomes: &[(String, ProcessEventResult)],
+    ) {
+        self.0.record_applied(
+            &|trait_name: &str| owners.label(trait_name),
+            response,
+            outcomes,
+        );
+    }
+
+    fn restored(&self) {
+        self.0.note_restore();
+    }
+
+    fn tick_fired(&self, trait_name: &str, tick: &str) {
+        self.0.note_tick_fired(trait_name, tick);
+    }
+}
+
 /// The `entity_id` `dispatch_with_server_leg` defaults to, so state reads address the same instance.
 const SINGLETON: &str = "singleton";
 
@@ -1858,6 +1903,7 @@ mod tests {
             fired_arm: None,
             guards: Vec::new(),
             effect_runs: Vec::new(),
+            cascade_dropped: Vec::new(),
         };
         recorder.record_applied(
             &|t: &str| {
@@ -2273,6 +2319,7 @@ mod tests {
             fired_arm: None,
             guards: Vec::new(),
             effect_runs: Vec::new(),
+            cascade_dropped: Vec::new(),
         };
         let blocked = ProcessEventResult {
             executed: false,
@@ -2318,6 +2365,7 @@ mod tests {
                 success: false,
                 denied: Some(true),
                 error: Some("access denied".into()),
+                code: None,
             }]),
             ..Default::default()
         };
@@ -2408,6 +2456,7 @@ mod tests {
             fired_arm: None,
             guards: Vec::new(),
             effect_runs: Vec::new(),
+            cascade_dropped: Vec::new(),
         };
         recorder.record_applied(
             &|_: &str| "Orb".to_string(),

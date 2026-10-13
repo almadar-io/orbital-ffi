@@ -1,0 +1,876 @@
+[
+  {
+    "orbital": "Chore Management",
+    "seed": {
+      "trait": "ChoreCRUD",
+      "event": "INIT"
+    },
+    "response": {
+      "success": true,
+      "transitioned": true,
+      "states": {
+        "ChoreCRUD": "listing"
+      },
+      "emittedEvents": [],
+      "entityByTrait": {
+        "ChoreCRUD": {
+          "createdAt": "@now",
+          "completed": false
+        }
+      },
+      "clientEffects": [
+        [
+          "render-ui",
+          "main",
+          {
+            "actions": [
+              {
+                "label": "New Chore",
+                "event": "CREATE"
+              }
+            ],
+            "title": "Chores",
+            "type": "page-header"
+          }
+        ],
+        [
+          "render-ui",
+          "main",
+          {
+            "fields": [
+              "title",
+              "completed",
+              "createdAt"
+            ],
+            "itemActions": [
+              {
+                "label": "Edit",
+                "event": "EDIT"
+              },
+              {
+                "label": "Delete",
+                "event": "DELETE"
+              }
+            ],
+            "entity": "Chore",
+            "type": "entity-table"
+          }
+        ]
+      ],
+      "clientEffectsByTrait": [
+        {
+          "traitName": "ChoreCRUD",
+          "effect": [
+            "render-ui",
+            "main",
+            {
+              "actions": [
+                {
+                  "label": "New Chore",
+                  "event": "CREATE"
+                }
+              ],
+              "title": "Chores",
+              "type": "page-header"
+            }
+          ],
+          "event": "INIT",
+          "fromState": "listing"
+        },
+        {
+          "traitName": "ChoreCRUD",
+          "effect": [
+            "render-ui",
+            "main",
+            {
+              "fields": [
+                "title",
+                "completed",
+                "createdAt"
+              ],
+              "itemActions": [
+                {
+                  "label": "Edit",
+                  "event": "EDIT"
+                },
+                {
+                  "label": "Delete",
+                  "event": "DELETE"
+                }
+              ],
+              "entity": "Chore",
+              "type": "entity-table"
+            }
+          ],
+          "event": "INIT",
+          "fromState": "listing"
+        }
+      ],
+      "effectResults": [
+        {
+          "effect": "fetch",
+          "entityType": "Chore",
+          "success": false
+        }
+      ],
+      "transitions": [
+        {
+          "trait": "ChoreCRUD",
+          "from": "listing",
+          "to": "listing",
+          "event": "INIT",
+          "effects": [
+            {
+              "type": "fetch",
+              "args": [
+                "Chore"
+              ],
+              "status": "executed"
+            },
+            {
+              "type": "render-ui",
+              "args": [
+                "main",
+                {
+                  "actions": [
+                    {
+                      "label": "New Chore",
+                      "event": "CREATE"
+                    }
+                  ],
+                  "title": "Chores",
+                  "type": "page-header"
+                }
+              ],
+              "status": "skipped"
+            },
+            {
+              "type": "render-ui",
+              "args": [
+                "main",
+                {
+                  "itemActions": [
+                    {
+                      "label": "Edit",
+                      "event": "EDIT"
+                    },
+                    {
+                      "event": "DELETE",
+                      "label": "Delete"
+                    }
+                  ],
+                  "type": "entity-table",
+                  "entity": "Chore",
+                  "fields": [
+                    "title",
+                    "completed",
+                    "createdAt"
+                  ]
+                }
+              ],
+              "status": "skipped"
+            }
+          ]
+        }
+      ]
+    },
+    "serverLegs": [
+      {
+        "orbital": "Chore Management",
+        "leg": {
+          "event": "INIT",
+          "payload": {
+            "_awaitingInit": []
+          },
+          "targetTrait": "ChoreCRUD",
+          "clientId": "golden-client",
+          "sourceTrait": "ChoreCRUD",
+          "traits": [
+            {
+              "trait": "ChoreCRUD",
+              "from": "listing",
+              "event": "INIT"
+            }
+          ]
+        }
+      }
+    ],
+    "mode": "persistedAwaited",
+    "snapshot": null,
+    "alreadyDelivered": [
+      [
+        "ChoreCRUD",
+        "INIT"
+      ]
+    ],
+    "awaiting": [
+      {
+        "trait": "ChoreCRUD",
+        "event": "INIT",
+        "from": "listing"
+      }
+    ],
+    "statefulLeg": null,
+    "foldSeeded": []
+  },
+  {
+    "orbital": "Task Management",
+    "seed": {
+      "trait": "TaskCRUD",
+      "event": "INIT"
+    },
+    "response": {
+      "success": true,
+      "transitioned": true,
+      "states": {
+        "TaskCRUD": "listing"
+      },
+      "emittedEvents": [],
+      "entityByTrait": {
+        "TaskCRUD": {
+          "completed": false,
+          "createdAt": "@now"
+        }
+      },
+      "clientEffects": [
+        [
+          "render-ui",
+          "main",
+          {
+            "actions": [
+              {
+                "label": "New Task",
+                "event": "CREATE"
+              }
+            ],
+            "type": "page-header",
+            "title": "Tasks"
+          }
+        ],
+        [
+          "render-ui",
+          "main",
+          {
+            "itemActions": [
+              {
+                "event": "EDIT",
+                "label": "Edit"
+              },
+              {
+                "event": "DELETE",
+                "label": "Delete"
+              }
+            ],
+            "type": "entity-table",
+            "entity": "Task",
+            "fields": [
+              "title",
+              "completed",
+              "createdAt"
+            ]
+          }
+        ]
+      ],
+      "clientEffectsByTrait": [
+        {
+          "traitName": "TaskCRUD",
+          "effect": [
+            "render-ui",
+            "main",
+            {
+              "actions": [
+                {
+                  "label": "New Task",
+                  "event": "CREATE"
+                }
+              ],
+              "type": "page-header",
+              "title": "Tasks"
+            }
+          ],
+          "event": "INIT",
+          "fromState": "listing"
+        },
+        {
+          "traitName": "TaskCRUD",
+          "effect": [
+            "render-ui",
+            "main",
+            {
+              "itemActions": [
+                {
+                  "event": "EDIT",
+                  "label": "Edit"
+                },
+                {
+                  "event": "DELETE",
+                  "label": "Delete"
+                }
+              ],
+              "type": "entity-table",
+              "entity": "Task",
+              "fields": [
+                "title",
+                "completed",
+                "createdAt"
+              ]
+            }
+          ],
+          "event": "INIT",
+          "fromState": "listing"
+        }
+      ],
+      "effectResults": [
+        {
+          "effect": "fetch",
+          "entityType": "Task",
+          "success": false
+        }
+      ],
+      "transitions": [
+        {
+          "trait": "TaskCRUD",
+          "from": "listing",
+          "to": "listing",
+          "event": "INIT",
+          "effects": [
+            {
+              "type": "fetch",
+              "args": [
+                "Task"
+              ],
+              "status": "executed"
+            },
+            {
+              "type": "render-ui",
+              "args": [
+                "main",
+                {
+                  "title": "Tasks",
+                  "type": "page-header",
+                  "actions": [
+                    {
+                      "event": "CREATE",
+                      "label": "New Task"
+                    }
+                  ]
+                }
+              ],
+              "status": "skipped"
+            },
+            {
+              "type": "render-ui",
+              "args": [
+                "main",
+                {
+                  "itemActions": [
+                    {
+                      "event": "EDIT",
+                      "label": "Edit"
+                    },
+                    {
+                      "label": "Delete",
+                      "event": "DELETE"
+                    }
+                  ],
+                  "entity": "Task",
+                  "type": "entity-table",
+                  "fields": [
+                    "title",
+                    "completed",
+                    "createdAt"
+                  ]
+                }
+              ],
+              "status": "skipped"
+            }
+          ]
+        }
+      ]
+    },
+    "serverLegs": [
+      {
+        "orbital": "Task Management",
+        "leg": {
+          "event": "INIT",
+          "payload": {
+            "_awaitingInit": []
+          },
+          "targetTrait": "TaskCRUD",
+          "clientId": "golden-client",
+          "sourceTrait": "TaskCRUD",
+          "traits": [
+            {
+              "trait": "TaskCRUD",
+              "from": "listing",
+              "event": "INIT"
+            }
+          ]
+        }
+      }
+    ],
+    "mode": "persistedAwaited",
+    "snapshot": null,
+    "alreadyDelivered": [
+      [
+        "TaskCRUD",
+        "INIT"
+      ]
+    ],
+    "awaiting": [
+      {
+        "trait": "TaskCRUD",
+        "event": "INIT",
+        "from": "listing"
+      }
+    ],
+    "statefulLeg": null,
+    "foldSeeded": []
+  },
+  {
+    "states": {
+      "ChoreCRUD": "listing",
+      "TaskCRUD": "listing"
+    },
+    "ambiguousTraits": [],
+    "theme": {
+      "key": "minimalist-light",
+      "base": "minimalist",
+      "mode": "light",
+      "tokens": {
+        "colors": {
+          "accent": "#18181b",
+          "accent-foreground": "#fafafa",
+          "background": "#f8fafc",
+          "border": "#e4e4e7",
+          "card": "#ffffff",
+          "card-foreground": "#18181b",
+          "diagram-axis": "#65656e",
+          "diagram-fill": "#f4f4f5",
+          "diagram-grid": "#e4e4e7",
+          "diagram-guide": "#8d8d96",
+          "diagram-highlight": "#2563eb",
+          "diagram-ink": "#18181b",
+          "diagram-label": "#65656e",
+          "error": "#dc2626",
+          "error-foreground": "#ffffff",
+          "foreground": "#18181b",
+          "info": "#2563eb",
+          "info-foreground": "#ffffff",
+          "input": "#d4d4d8",
+          "muted": "#f4f4f5",
+          "muted-foreground": "#65656e",
+          "primary": "#18181b",
+          "primary-foreground": "#fafafa",
+          "primary-hover": "#27272a",
+          "ring": "#18181b",
+          "scrim": "rgba(0, 0, 0, 0.6)",
+          "secondary": "#fafafa",
+          "secondary-foreground": "#18181b",
+          "secondary-hover": "#f4f4f5",
+          "series-1": "#0b618e",
+          "series-2": "#b45f3a",
+          "series-3": "#589373",
+          "series-4": "#8a5a9a",
+          "series-5": "#a3902c",
+          "series-6": "#536d73",
+          "series-7": "#a04a5a",
+          "series-8": "#3a8a9a",
+          "success": "#15803d",
+          "success-foreground": "#ffffff",
+          "surface": "#f4f4f5",
+          "warning": "#ca8a04",
+          "warning-foreground": "#000000"
+        },
+        "radii": {
+          "full": "9999px",
+          "lg": "0px",
+          "md": "0px",
+          "none": "0px",
+          "sm": "0px",
+          "xl": "0px"
+        },
+        "typography": {
+          "active-scale": "0.99",
+          "active-translate-y": "0",
+          "border-width": "1px",
+          "border-width-thick": "1px",
+          "border-width-thin": "1px",
+          "focus-ring-color": "#18181b",
+          "focus-ring-offset": "2px",
+          "focus-ring-width": "2px",
+          "font-family": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "font-weight-bold": "600",
+          "font-weight-medium": "500",
+          "font-weight-normal": "400",
+          "hover-scale": "1.01",
+          "hover-translate-x": "0",
+          "hover-translate-y": "-1px",
+          "icon-color": "currentColor",
+          "letter-spacing": "-0.005em",
+          "line-height": "1.75",
+          "transition-fast": "150ms",
+          "transition-normal": "240ms",
+          "transition-slow": "400ms",
+          "transition-timing": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        "shadows": {
+          "active": "none",
+          "hover": "none",
+          "inner": "none",
+          "lg": "none",
+          "main": "none",
+          "none": "none",
+          "sm": "none"
+        },
+        "density": {
+          "spacing": {
+            "space0": "0px",
+            "space1": "4px",
+            "space2": "8px",
+            "space3": "12px",
+            "space4": "16px",
+            "space5": "20px",
+            "space6": "24px",
+            "space7": "28px",
+            "space8": "32px",
+            "space9": "36px",
+            "space10": "40px",
+            "space11": "44px",
+            "space12": "48px"
+          },
+          "buttonHeightSm": "28px",
+          "buttonHeightMd": "44px",
+          "buttonHeightLg": "44px",
+          "inputHeightSm": "28px",
+          "inputHeightMd": "44px",
+          "inputHeightLg": "44px",
+          "rowHeightCompact": "32px",
+          "rowHeightNormal": "52px",
+          "rowHeightSpacious": "48px",
+          "cardPaddingSm": "12px",
+          "cardPaddingMd": "32px",
+          "cardPaddingLg": "40px",
+          "dialogPadding": "24px",
+          "sectionGap": "64px"
+        },
+        "typeScale": {
+          "displayFamily": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "bodyFamily": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "monoFamily": "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
+          "fontImport": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap",
+          "headingWeight": "300",
+          "headingTransform": "none",
+          "headingTracking": "-0.03em",
+          "headingStyle": "normal",
+          "headingShadow": "none",
+          "scale": {
+            "xs": {
+              "size": "12px",
+              "lineHeight": "16px"
+            },
+            "sm": {
+              "size": "14px",
+              "lineHeight": "20px"
+            },
+            "base": {
+              "size": "16px",
+              "lineHeight": "24px"
+            },
+            "lg": {
+              "size": "18px",
+              "lineHeight": "28px"
+            },
+            "xl": {
+              "size": "20px",
+              "lineHeight": "28px"
+            },
+            "2xl": {
+              "size": "24px",
+              "lineHeight": "32px"
+            },
+            "3xl": {
+              "size": "30px",
+              "lineHeight": "36px"
+            },
+            "4xl": {
+              "size": "36px",
+              "lineHeight": "40px"
+            },
+            "display-1": {
+              "size": "48px",
+              "lineHeight": "52px"
+            },
+            "display-2": {
+              "size": "60px",
+              "lineHeight": "64px"
+            }
+          },
+          "intents": {
+            "headingMajor": {
+              "slot": "display",
+              "size": "2xl",
+              "weight": "bold"
+            },
+            "headingMinor": {
+              "slot": "display",
+              "size": "lg",
+              "weight": "bold"
+            },
+            "bodyEmphasis": {
+              "slot": "body",
+              "size": "base",
+              "weight": "medium"
+            },
+            "bodyDefault": {
+              "slot": "body",
+              "size": "sm",
+              "weight": "normal"
+            },
+            "bodyQuiet": {
+              "slot": "body",
+              "size": "sm",
+              "weight": "normal"
+            },
+            "caption": {
+              "slot": "body",
+              "size": "xs",
+              "weight": "normal"
+            },
+            "numeric": {
+              "slot": "mono",
+              "size": "sm",
+              "weight": "medium"
+            }
+          }
+        },
+        "motion": {
+          "durations": {
+            "instant": "0ms",
+            "fast": "var(--transition-fast)",
+            "normal": "var(--transition-normal)",
+            "slow": "var(--transition-slow)",
+            "dramatic": "600ms"
+          },
+          "easings": {
+            "linear": "linear",
+            "standard": "var(--transition-timing)",
+            "emphasized": "cubic-bezier(0.2, 0, 0, 1)",
+            "spring": "cubic-bezier(0.34, 1.56, 0.64, 1)"
+          },
+          "shapes": {
+            "modalEnter": "none",
+            "modalExit": "none",
+            "popoverEnter": "none",
+            "popoverExit": "none",
+            "toastEnter": "none",
+            "toastExit": "none",
+            "pageEnter": "none"
+          }
+        },
+        "iconography": {
+          "family": "lucide",
+          "strokeWidth": "1.5",
+          "defaultSize": "16px"
+        },
+        "elevation": {
+          "cardElevation": "none",
+          "popoverElevation": "none",
+          "dialogElevation": "none",
+          "toastElevation": "none",
+          "interactiveElevation": "none",
+          "pressedElevation": "none"
+        },
+        "geometry": {
+          "radiusContainer": "0px",
+          "radiusInteractive": "0px",
+          "radiusPill": "9999px",
+          "borderHairline": "1px",
+          "borderStandard": "1px",
+          "borderHeavy": "1px",
+          "cornerShape": "round",
+          "cornerShapePill": "round",
+          "borderStyle": "none",
+          "borderStyleInteractive": "solid"
+        },
+        "surface": {
+          "edgeMask": "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'><path d='M0 100 Q720 0 1440 100 Z'/></svg>\")",
+          "edgeHeight": "clamp(16px, 4vw, 56px)",
+          "textureMask": "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='40' height='40'><path d='M0 .5H40M.5 0V40' stroke='black' stroke-width='1' fill='none'/></svg>\")",
+          "textureSize": "40px 40px",
+          "accentImage": "linear-gradient(180deg, color-mix(in oklab, var(--color-primary) 8%, var(--color-background)), var(--color-background))"
+        },
+        "diagram": {
+          "strokeThin": "1",
+          "strokeNormal": "1",
+          "strokeBold": "2",
+          "lineCap": "butt",
+          "lineJoin": "miter",
+          "dash": "3 3",
+          "dot": "1 3",
+          "fillStyle": "outline",
+          "fillOpacity": "0.08",
+          "roughness": "0",
+          "glow": "0",
+          "shadow": "none",
+          "marker": "line",
+          "labelFont": "body",
+          "labelSize": "xs",
+          "labelWeight": "400",
+          "labelCase": "none",
+          "corner": "0px"
+        },
+        "scene": {
+          "materialRoughness": "0.8",
+          "materialMetalness": "0",
+          "materialFlat": "0",
+          "materialOutline": "0",
+          "lightAmbient": "0.7",
+          "lightKey": "0.8",
+          "lightKeyColor": "#ffffff",
+          "fog": "0"
+        }
+      }
+    },
+    "canvasTheme": {
+      "ground": "rgb(255, 255, 255)",
+      "surfaces": {
+        "muted": "rgb(244, 244, 245)",
+        "card": "rgb(255, 255, 255)",
+        "onPrimary": "rgb(250, 250, 250)"
+      },
+      "tones": {
+        "accent": "rgb(24, 24, 27)",
+        "axis": "rgb(101, 101, 110)",
+        "error": "rgb(220, 38, 38)",
+        "fill": "rgb(244, 244, 245)",
+        "grid": "rgb(228, 228, 231)",
+        "guide": "rgb(141, 141, 150)",
+        "highlight": "rgb(37, 99, 235)",
+        "info": "rgb(37, 99, 235)",
+        "ink": "rgb(24, 24, 27)",
+        "label": "rgb(101, 101, 110)",
+        "muted": "rgb(101, 101, 110)",
+        "primary": "rgb(24, 24, 27)",
+        "series-1": "rgb(11, 97, 142)",
+        "series-2": "rgb(180, 95, 58)",
+        "series-3": "rgb(88, 147, 115)",
+        "series-4": "rgb(138, 90, 154)",
+        "series-5": "rgb(163, 144, 44)",
+        "series-6": "rgb(83, 109, 115)",
+        "series-7": "rgb(160, 74, 90)",
+        "series-8": "rgb(58, 138, 154)",
+        "success": "rgb(21, 128, 61)",
+        "warning": "rgb(202, 138, 4)"
+      },
+      "series": [
+        "rgb(11, 97, 142)",
+        "rgb(180, 95, 58)",
+        "rgb(88, 147, 115)",
+        "rgb(138, 90, 154)",
+        "rgb(163, 144, 44)",
+        "rgb(83, 109, 115)",
+        "rgb(160, 74, 90)",
+        "rgb(58, 138, 154)"
+      ],
+      "strokes": {
+        "thin": 1.0,
+        "normal": 1.0,
+        "bold": 2.0
+      },
+      "lineCap": "butt",
+      "lineJoin": "miter",
+      "dash": [
+        3.0,
+        3.0
+      ],
+      "dot": [
+        1.0,
+        3.0
+      ],
+      "fillStyle": "outline",
+      "fillOpacity": 0.08,
+      "marker": "line",
+      "label": {
+        "size": "xs",
+        "weight": "400",
+        "uppercase": false
+      },
+      "text": {
+        "2xl": 24.0,
+        "base": 16.0,
+        "lg": 18.0,
+        "sm": 14.0,
+        "xl": 20.0,
+        "xs": 12.0
+      },
+      "corner": 0.0
+    },
+    "motion": {
+      "entryDefault": "fade",
+      "staggerMs": 40,
+      "shapes": {
+        "modalEnter": {
+          "scale": 1.0,
+          "translateX": 0.0,
+          "translateY": 0.0,
+          "inlineSigned": false
+        },
+        "modalExit": {
+          "scale": 1.0,
+          "translateX": 0.0,
+          "translateY": 0.0,
+          "inlineSigned": false
+        },
+        "popoverEnter": {
+          "scale": 1.0,
+          "translateX": 0.0,
+          "translateY": 0.0,
+          "inlineSigned": false
+        },
+        "popoverExit": {
+          "scale": 1.0,
+          "translateX": 0.0,
+          "translateY": 0.0,
+          "inlineSigned": false
+        },
+        "toastEnter": {
+          "scale": 1.0,
+          "translateX": 0.0,
+          "translateY": 0.0,
+          "inlineSigned": false
+        },
+        "toastExit": {
+          "scale": 1.0,
+          "translateX": 0.0,
+          "translateY": 0.0,
+          "inlineSigned": false
+        },
+        "pageEnter": {
+          "scale": 1.0,
+          "translateX": 0.0,
+          "translateY": 0.0,
+          "inlineSigned": false
+        },
+        "enterRise": {
+          "scale": 1.0,
+          "translateX": 0.0,
+          "translateY": 12.0,
+          "inlineSigned": false
+        },
+        "enterScale": {
+          "scale": 0.96,
+          "translateX": 0.0,
+          "translateY": 0.0,
+          "inlineSigned": false
+        },
+        "enterSlide": {
+          "scale": 1.0,
+          "translateX": 16.0,
+          "translateY": 0.0,
+          "inlineSigned": true
+        }
+      }
+    }
+  }
+]

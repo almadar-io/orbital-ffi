@@ -28,3 +28,9 @@ chrono = { version = "0.4", features = ["serde"] }
 # builds and typechecks on every host/cross target, not just Android.
 jni = "0.21.1"
 
+[dev-dependencies]
+criterion = { version = "0.5", default-features = false, features = ["cargo_bench_support"] }
+
+[[bench]]
+name = "c_abi_fixtures"
+harness = false

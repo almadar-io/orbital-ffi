@@ -1,0 +1,30 @@
+{
+  "schema": "basic-entity",
+  "clientId": "golden-client",
+  "steps": [
+    { "op": "tickCount" },
+    { "op": "setUser", "user": { "id": "u1", "email": "u1@example.com", "roles": ["admin"] } },
+    { "op": "seed", "entityType": "Task", "rows": [{ "id": "t1", "title": "first" }, { "id": "t2", "title": "second" }] },
+    { "op": "remount", "traits": ["TaskCRUD"] },
+    { "op": "dispatch", "trait": "TaskCRUD", "event": "INIT" },
+    { "op": "getState", "trait": "TaskCRUD" },
+    { "op": "dispatch", "trait": "TaskCRUD", "event": "CREATE" },
+    { "op": "getState", "trait": "TaskCRUD" },
+    { "op": "dispatch", "trait": "TaskCRUD", "event": "SAVE", "payload": { "data": { "title": "third" } } },
+    { "op": "dispatch", "trait": "TaskCRUD", "event": "EDIT", "entityId": "t1", "payload": { "id": "t1" } },
+    { "op": "dispatch", "trait": "TaskCRUD", "event": "CANCEL" },
+    { "op": "apply", "response": { "success": true, "transitioned": true, "states": { "TaskCRUD": "browsing" }, "emittedEvents": [] }, "alreadyDelivered": [["TaskCRUD", "CANCEL"]] },
+    { "op": "dispatch", "trait": "NoSuchTrait", "event": "INIT" },
+    { "op": "lastError" },
+    { "op": "dispatch", "trait": "TaskCRUD", "event": "NOT_AN_EVENT" },
+    { "op": "snapshot" },
+    { "op": "setThemeMode", "mode": "dark" },
+    { "op": "snapshot" },
+    { "op": "setThemeMode", "mode": "sepia" },
+    { "op": "lastError" },
+    { "op": "mount", "traits": ["TaskCRUD"] },
+    { "op": "dispatch", "trait": "TaskCRUD", "event": "INIT" },
+    { "op": "abandon", "trait": "TaskCRUD", "event": "SAVE", "error": "boom" },
+    { "op": "getState", "trait": "NoSuchTrait" }
+  ]
+}

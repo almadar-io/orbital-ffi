@@ -1,0 +1,13 @@
+{
+  "schema": "entity-rerender",
+  "clientId": "golden-client",
+  "steps": [
+    { "op": "dispatch", "trait": "Mover", "event": "INIT" },
+    { "op": "dispatch", "trait": "ScoreBoard", "event": "INIT" },
+    { "op": "dispatch", "trait": "Caption", "event": "INIT" },
+    { "op": "tick", "trait": "Mover", "tick": "step" },
+    { "op": "frame", "nowMs": 0 },
+    { "op": "frame", "nowMs": 2000 },
+    { "op": "snapshot" }
+  ]
+}

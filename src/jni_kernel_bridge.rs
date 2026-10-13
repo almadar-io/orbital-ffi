@@ -58,6 +58,7 @@ pub const KERNEL_JNI_SYMBOLS: &[&str] = &[
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeSetCurrentUser",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeSeed",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeRemount",
+    "Java_generated_patterns_core_OrbitalKernelBridge_nativeMount",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeLastError",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgeStart",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgeStop",

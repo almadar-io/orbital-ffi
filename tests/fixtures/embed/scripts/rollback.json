@@ -1,0 +1,53 @@
+{
+  "schema": "rollback",
+  "clientId": "golden-client",
+  "steps": [
+    {
+      "op": "dispatch",
+      "trait": "Driver",
+      "event": "INIT"
+    },
+    {
+      "op": "dispatch",
+      "trait": "Hud",
+      "event": "INIT"
+    },
+    {
+      "op": "dispatch",
+      "trait": "Driver",
+      "event": "BUMP"
+    },
+    {
+      "op": "restore",
+      "trait": "Driver",
+      "snapshot": {
+        "state": "idle",
+        "entity": {
+          "score": 0
+        }
+      }
+    },
+    {
+      "op": "restore",
+      "trait": "Driver",
+      "snapshot": {
+        "state": "idle",
+        "entity": {
+          "score": 0
+        }
+      }
+    },
+    {
+      "op": "getState",
+      "trait": "Driver"
+    },
+    {
+      "op": "dispatch",
+      "trait": "Driver",
+      "event": "BUMP"
+    },
+    {
+      "op": "snapshot"
+    }
+  ]
+}

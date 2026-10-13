@@ -1,0 +1,26 @@
+{
+  "schema": "tick-counter",
+  "clientId": "golden-client",
+  "steps": [
+    { "op": "tickCount" },
+    { "op": "dispatch", "trait": "Ticker", "event": "INIT" },
+    { "op": "dispatch", "trait": "Listener", "event": "INIT" },
+    { "op": "frame", "nowMs": 0 },
+    { "op": "frame", "nowMs": 16 },
+    { "op": "frame", "nowMs": 1000 },
+    { "op": "frame", "nowMs": 1016 },
+    { "op": "framePause" },
+    { "op": "frame", "nowMs": 5000 },
+    { "op": "frameResume" },
+    { "op": "frame", "nowMs": 5016 },
+    { "op": "frame", "nowMs": 6100 },
+    { "op": "tick", "trait": "Ticker", "tick": "beat" },
+    { "op": "tick", "trait": "Ticker", "tick": "noSuchTick" },
+    { "op": "getState", "trait": "Listener" },
+    { "op": "dispatch", "trait": "Ticker", "event": "STOP" },
+    { "op": "frame", "nowMs": 9000 },
+    { "op": "dispatch", "trait": "Ticker", "event": "RESUME" },
+    { "op": "frame", "nowMs": 12000 },
+    { "op": "snapshot" }
+  ]
+}

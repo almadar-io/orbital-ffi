@@ -1,0 +1,9 @@
+{
+  "schema": "two-orbital-task",
+  "clientId": "golden-client",
+  "steps": [
+    { "op": "dispatch", "trait": "TaskCRUD", "event": "INIT" },
+    { "op": "lastError" },
+    { "op": "snapshot" }
+  ]
+}

@@ -1,6 +1,6 @@
-//! Kernel C ABI: the in-app `orbital_core::runtime::RuntimeKernel` embedded as
-//! a `Client`-environment kernel, exposed for the Swift/Kotlin bridges
-//! (`OrbitalKernelBridge.swift`/`.kt`) via an opaque handle + JSON in/out.
+//! Kernel C ABI: `orbital_core::embed::EmbeddedKernel` (the in-app client-role kernel) exposed
+//! for the Swift/Kotlin bridges (`OrbitalKernelBridge.swift`/`.kt`) via an opaque handle + JSON
+//! in/out. This module only marshals C strings; every decision is the embedded kernel's.
 //!
 //! No compiler runs on device: `orbital_kernel_init` takes an
 //! ALREADY-RESOLVED schema JSON (what `orb compile` embeds as
@@ -10,39 +10,26 @@
 //! `last_error` is a per-handle `Mutex<String>`, NOT thread-local: a UI
 //! thread and a background reconcile thread share one handle.
 
-use orbital_core::runtime::{
-    already_delivered_from, AwaitingTrait, Calendar, ClientDispatch, DispatchMode,
-    InMemoryEntityCache, KernelConfig, RuntimeKernel, ServerLegCollector, ThemeMode, TickClock,
-    TraitOwners, TraitSnapshot,
-};
-use orbital_core::{
-    Effect, EntitySource, EventRequest, EventResponse, OrbitalSchema, ProcessEventResult,
-    RuntimeEnvironment, Value,
-};
+use orbital_core::embed::{parse_theme_mode, EmbeddedKernel};
+#[cfg(feature = "verify-bridge")]
+use orbital_core::runtime::RuntimeKernel;
+use orbital_core::runtime::TraitSnapshot;
+use orbital_core::{EventResponse, OrbitalSchema, Value};
 use parking_lot::{Mutex, RwLock};
 use serde::Serialize;
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
 use std::ffi::{c_char, c_void, CStr, CString};
 use std::panic::{catch_unwind, AssertUnwindSafe};
 use std::ptr;
 use std::sync::Arc;
 
-/// Opaque handle wrapping a `Client`-environment kernel and the ONE
-/// `ServerLegCollector` it was configured with (`KernelConfig.delegate`).
-/// `trait_owners` (trait -> every orbital declaring it) and `client_id` are
-/// resolved once at init and reused by every dispatch. `last_error` is per-handle so two threads sharing this pointer
-/// (the UI thread + a background reconcile thread) never race on a
-/// thread-local.
+/// Opaque handle wrapping the embedded kernel. `last_error` is per-handle so two threads sharing
+/// this pointer (the UI thread + a background reconcile thread) never race on a thread-local.
 pub struct OrbitalKernelHandle {
-    kernel: RuntimeKernel,
-    entities: Arc<InMemoryEntityCache>,
-    trait_owners: TraitOwners,
-    client_id: String,
+    pub(crate) embedded: EmbeddedKernel,
     last_error: Mutex<String>,
-    /// The ONE native frame clock (`orbital_kernel_frame`); only touched under `call_lock`.
-    ticks: Mutex<TickClock>,
     /// Held for the whole of every call that runs the kernel or touches the
-    /// collector: `dispatch_with_server_leg` drains ONE per-handle collector,
+    /// collector: a dispatch drains ONE per-handle collector,
     /// so overlapping calls would steal each other's delegated effects.
     /// Writers (dispatch and every mutator) are exclusive; reads share.
     pub(crate) call_lock: Arc<RwLock<()>>,
@@ -112,44 +99,22 @@ pub unsafe extern "C" fn orbital_kernel_init(
         || -> Result<OrbitalKernelHandle, String> {
             let schema_json = read_str(resolved_schema_json)
                 .ok_or("resolved_schema_json is null/invalid utf-8")?;
-            let client_id = read_str(client_id)
-                .ok_or("client_id is null/invalid utf-8")?
-                .to_string();
-
+            let client_id = read_str(client_id).ok_or("client_id is null/invalid utf-8")?;
             let schema: OrbitalSchema = serde_json::from_str(schema_json)
                 .map_err(|e| format!("parse resolved schema: {e}"))?;
-            if schema.orbitals.is_empty() {
-                return Err("resolved schema declares no orbitals".to_string());
-            }
 
             #[cfg(feature = "verify-bridge")]
             let verify =
                 crate::verify_bridge::HandleBridge::new(crate::verify_bridge::trait_metas(&schema));
-            let tick_clock = TickClock::from_schema(&schema);
-
-            let entities = Arc::new(InMemoryEntityCache::new());
-            let collector = Arc::new(ServerLegCollector::new());
-            let config = KernelConfig {
-                environment: RuntimeEnvironment::Client,
-                delegate: Some(collector.clone() as Arc<dyn orbital_core::EffectDelegate>),
-                ..KernelConfig::default()
-            };
-            let kernel = RuntimeKernel::new(
-                RuntimeEnvironment::Client,
-                Arc::clone(&entities) as Arc<dyn EntitySource>,
-                config,
-            );
-            kernel
-                .register_schema(schema)
-                .map_err(|e| format!("register_schema: {e}"))?;
-            let trait_owners = TraitOwners::from_kernel(&kernel);
+            #[cfg_attr(not(feature = "verify-bridge"), allow(unused_mut))]
+            let mut embedded = EmbeddedKernel::new(schema, client_id)?;
+            #[cfg(feature = "verify-bridge")]
+            embedded.set_observer(Arc::new(crate::verify_bridge::RecorderObserver(
+                Arc::clone(&verify.recorder),
+            )));
 
             Ok(OrbitalKernelHandle {
-                ticks: Mutex::new(tick_clock),
-                kernel,
-                entities,
-                trait_owners,
-                client_id,
+                embedded,
                 last_error: Mutex::new(String::new()),
                 call_lock: Arc::new(RwLock::new(())),
                 #[cfg(feature = "verify-bridge")]
@@ -182,67 +147,6 @@ pub unsafe extern "C" fn orbital_kernel_destroy(handle: *mut OrbitalKernelHandle
     }
 }
 
-/// A server leg and the orbital that owns the trait it is addressed to (the route it posts to).
-#[derive(Serialize)]
-struct RoutedLeg {
-    orbital: String,
-    leg: EventRequest,
-}
-
-/// The `(trait, event)` that began a dispatch; a leg failure is reported against its event.
-#[derive(Serialize)]
-struct SeedWire {
-    #[serde(rename = "trait")]
-    trait_name: String,
-    event: String,
-}
-
-#[derive(Serialize)]
-#[serde(rename_all = "camelCase")]
-struct DispatchWire {
-    orbital: String,
-    seed: SeedWire,
-    response: EventResponse,
-    server_legs: Vec<RoutedLeg>,
-    mode: DispatchMode,
-    snapshot: Option<TraitSnapshot>,
-    already_delivered: Vec<(String, String)>,
-    awaiting: Vec<AwaitingTrait>,
-}
-
-fn dispatch_wire(
-    owners: &TraitOwners,
-    orbital: &str,
-    dispatch: ClientDispatch,
-) -> Result<DispatchWire, String> {
-    let already_delivered: Vec<(String, String)> =
-        already_delivered_from(&dispatch).into_iter().collect();
-    let server_legs = dispatch
-        .server_legs
-        .into_iter()
-        .map(|leg| {
-            let target = leg.target_trait.as_deref().unwrap_or_default();
-            owners.owning_orbital(target).map(|o| RoutedLeg {
-                orbital: o.to_string(),
-                leg,
-            })
-        })
-        .collect::<Result<Vec<_>, String>>()?;
-    Ok(DispatchWire {
-        orbital: orbital.to_string(),
-        seed: SeedWire {
-            trait_name: dispatch.seed.0,
-            event: dispatch.seed.1,
-        },
-        response: dispatch.response,
-        server_legs,
-        mode: dispatch.mode,
-        snapshot: dispatch.snapshot,
-        already_delivered,
-        awaiting: dispatch.awaiting,
-    })
-}
-
 /// Dispatch one event through the kernel's cross-trait cascade and report the
 /// client-facing response, the server leg to post (if any), the resolved
 /// `DispatchMode`, the pre-dispatch snapshot (`RuntimeOptimistic` only), and
@@ -252,7 +156,7 @@ fn dispatch_wire(
 ///
 /// JSON shape: `{"orbital": "<owning orbital of trait_name>", "seed": {"trait","event"}, "response": EventResponse, "serverLegs": [{"orbital": "<owner of the leg's target trait>", "leg": EventRequest}],
 /// "mode": "persistedAwaited"|"hybridClientOnly"|"runtimeOptimistic",
-/// "snapshot": TraitSnapshot|null, "alreadyDelivered": [[trait,event],...], "awaiting": [{"trait","event","from"}]}`.
+/// "snapshot": TraitSnapshot|null, "alreadyDelivered": [[trait,event],...] (sorted), "awaiting": [{"trait","event","from"}]}`.
 ///
 /// # Safety
 /// `handle` must be a valid pointer from `orbital_kernel_init`.
@@ -271,11 +175,11 @@ pub unsafe extern "C" fn orbital_kernel_dispatch(
     }
     let handle_ref = &*handle;
     let _call = handle_ref.call_lock.write();
-    let result = catch_unwind(AssertUnwindSafe(|| -> Result<DispatchWire, String> {
+    let result = catch_unwind(AssertUnwindSafe(|| {
         let trait_name = read_str(trait_name).ok_or("trait_name is null/invalid utf-8")?;
         let event = read_str(event).ok_or("event is null/invalid utf-8")?;
         let entity_id = read_str(entity_id);
-        handle_ref.trait_owners.owning_orbital(trait_name)?;
+        handle_ref.embedded.owning_orbital(trait_name)?;
         let payload: Value = match read_str(payload_json) {
             Some(s) if !s.is_empty() => {
                 serde_json::from_str(s).map_err(|e| format!("parse payload_json: {e}"))?
@@ -285,7 +189,9 @@ pub unsafe extern "C" fn orbital_kernel_dispatch(
 
         #[cfg(feature = "verify-bridge")]
         handle_ref.verify.recorder.note_dispatch_call();
-        run_dispatch(handle_ref, trait_name, entity_id, event, payload)
+        handle_ref
+            .embedded
+            .dispatch(trait_name, entity_id, event, payload)
     }));
 
     match result {
@@ -293,49 +199,6 @@ pub unsafe extern "C" fn orbital_kernel_dispatch(
         Ok(Err(e)) => json_error(handle_ref, e),
         Err(_) => json_error(handle_ref, "panic during dispatch"),
     }
-}
-
-/// The dispatch body behind `orbital_kernel_dispatch`. Caller holds `call_lock`.
-fn run_dispatch(
-    handle_ref: &OrbitalKernelHandle,
-    trait_name: &str,
-    entity_id: Option<&str>,
-    event: &str,
-    payload: Value,
-) -> Result<DispatchWire, String> {
-    let orbital = handle_ref.trait_owners.owning_orbital(trait_name)?;
-    #[cfg(feature = "verify-bridge")]
-    let logged_payload = payload.clone();
-
-    let dispatch = handle_ref
-        .kernel
-        .dispatch_with_server_leg(
-            orbital,
-            trait_name,
-            entity_id,
-            event,
-            payload,
-            Some(&handle_ref.client_id),
-        )
-        .map_err(|e| e.to_string())?;
-    #[cfg(feature = "verify-bridge")]
-    handle_ref.verify.recorder.record_dispatch_from(
-        trait_name,
-        event,
-        &logged_payload,
-        &dispatch.response,
-        &dispatch.outcomes,
-        dispatch.server_legs.len(),
-        None,
-    );
-    dispatch_wire(&handle_ref.trait_owners, orbital, dispatch)
-}
-
-#[derive(Serialize)]
-#[serde(rename_all = "camelCase")]
-struct AppliedWire {
-    applied: Vec<(String, String)>,
-    response: EventResponse,
 }
 
 /// Fold a server `EventResponse` into the kernel — the counterpart to the
@@ -364,7 +227,7 @@ pub unsafe extern "C" fn orbital_kernel_apply_server_response(
     }
     let handle_ref = &*handle;
     let _call = handle_ref.call_lock.write();
-    let result = catch_unwind(AssertUnwindSafe(|| -> Result<AppliedWire, String> {
+    let result = catch_unwind(AssertUnwindSafe(|| {
         let response_json = read_str(response_json).ok_or("response_json is null/invalid utf-8")?;
         let response: EventResponse =
             serde_json::from_str(response_json).map_err(|e| format!("parse response_json: {e}"))?;
@@ -377,28 +240,9 @@ pub unsafe extern "C" fn orbital_kernel_apply_server_response(
             }
             _ => HashSet::new(),
         };
-
-        let outcomes = handle_ref
-            .kernel
+        handle_ref
+            .embedded
             .apply_server_response(&response, &already_delivered)
-            .map_err(|e| e.to_string())?;
-        #[cfg(feature = "verify-bridge")]
-        handle_ref.verify.recorder.record_applied(
-            &|trait_name: &str| handle_ref.trait_owners.label(trait_name),
-            &response,
-            &outcomes,
-        );
-        let mut merged = EventResponse::from_process_results(&outcomes, "", "")
-            .with_server_effect_results(&response);
-        merged.fold_rerenders(&handle_ref.kernel.rerender_stale());
-        let applied = outcomes
-            .into_iter()
-            .map(|(trait_name, result)| (trait_name, result.new_state))
-            .collect();
-        Ok(AppliedWire {
-            applied,
-            response: merged,
-        })
     }));
 
     match result {
@@ -436,14 +280,7 @@ pub unsafe extern "C" fn orbital_kernel_restore(
         let snapshot_json = read_str(snapshot_json).ok_or("snapshot_json is null/invalid utf-8")?;
         let snapshot: TraitSnapshot =
             serde_json::from_str(snapshot_json).map_err(|e| format!("parse snapshot_json: {e}"))?;
-        handle_ref
-            .kernel
-            .restore_trait(trait_name, entity_id, snapshot);
-        #[cfg(feature = "verify-bridge")]
-        handle_ref.verify.recorder.note_restore();
-        let mut repaint = EventResponse::from_process_results(&[], "", "");
-        repaint.fold_rerenders(&handle_ref.kernel.rerender_stale());
-        Ok(repaint)
+        Ok(handle_ref.embedded.restore(trait_name, entity_id, snapshot))
     }));
 
     match result {
@@ -485,7 +322,7 @@ pub unsafe extern "C" fn orbital_kernel_abandon_server_leg(
             set_error(handle_ref, "trait_name is null/invalid utf-8");
             return;
         };
-        let orbital = match handle_ref.trait_owners.owning_orbital(trait_name) {
+        let orbital = match handle_ref.embedded.owning_orbital(trait_name) {
             Ok(orbital) => orbital.to_string(),
             Err(e) => {
                 handle_ref
@@ -531,17 +368,11 @@ pub unsafe extern "C" fn orbital_kernel_tick(
     }
     let handle_ref = &*handle;
     let _call = handle_ref.call_lock.write();
-    let result = catch_unwind(AssertUnwindSafe(|| -> Result<EventResponse, String> {
+    let result = catch_unwind(AssertUnwindSafe(|| {
         let trait_name = read_str(trait_name).ok_or("trait_name is null/invalid utf-8")?;
         let tick_name = read_str(tick_name).ok_or("tick_name is null/invalid utf-8")?;
         let entity_id = read_str(entity_id);
-        let outcome = handle_ref
-            .kernel
-            .process_tick(trait_name, entity_id, tick_name)
-            .map_err(|e| e.to_string())?;
-        let mut response = EventResponse::from_process_result(trait_name, &outcome);
-        response.fold_rerenders(&handle_ref.kernel.rerender_stale());
-        Ok(response)
+        handle_ref.embedded.tick(trait_name, tick_name, entity_id)
     }));
 
     match result {
@@ -549,133 +380,6 @@ pub unsafe extern "C" fn orbital_kernel_tick(
         Ok(Err(e)) => json_error(handle_ref, e),
         Err(_) => json_error(handle_ref, "panic during tick"),
     }
-}
-
-#[derive(Serialize)]
-struct FiredTick {
-    #[serde(rename = "trait")]
-    trait_name: String,
-    tick: String,
-}
-
-#[derive(Serialize)]
-struct FrameDispatch {
-    #[serde(rename = "trait")]
-    trait_name: String,
-    #[serde(flatten)]
-    dispatch: DispatchWire,
-}
-
-#[derive(Serialize)]
-#[serde(rename_all = "camelCase")]
-struct FrameWire {
-    fired: Vec<FiredTick>,
-    response: EventResponse,
-    dispatches: Vec<FrameDispatch>,
-    dropped_server_effects: usize,
-    errors: Vec<String>,
-}
-
-fn frame(handle_ref: &OrbitalKernelHandle, now_ms: u64) -> Result<Option<FrameWire>, String> {
-    let due = handle_ref.ticks.lock().due(now_ms, Calendar::local_now);
-    if due.is_empty() {
-        return Ok(None);
-    }
-    let mut outcomes: Vec<(String, ProcessEventResult)> = Vec::new();
-    let mut rerenders = Vec::new();
-    let mut last_repaint: HashMap<(String, String), usize> = HashMap::new();
-    let mut dispatch_tick_at: Vec<usize> = Vec::new();
-    let mut fired = Vec::new();
-    let mut dispatches = Vec::new();
-    let mut errors = Vec::new();
-    let mut dropped_server_effects = 0;
-    for (trait_name, tick) in due {
-        let orbital = handle_ref.trait_owners.owning_orbital(&trait_name)?;
-        match handle_ref.kernel.dispatch_tick(
-            orbital,
-            &trait_name,
-            None,
-            &tick,
-            Some(&handle_ref.client_id),
-        ) {
-            Ok(dispatched) => {
-                dropped_server_effects += dispatched.discarded_server_effects;
-                if !dispatched.outcome.executed {
-                    continue;
-                }
-                #[cfg(feature = "verify-bridge")]
-                handle_ref
-                    .verify
-                    .recorder
-                    .note_tick_fired(&trait_name, &tick);
-                for emit in dispatched.emits {
-                    #[cfg(feature = "verify-bridge")]
-                    handle_ref.verify.recorder.record_dispatch_from(
-                        &trait_name,
-                        &emit.event,
-                        &emit.payload,
-                        &emit.dispatch.response,
-                        &emit.dispatch.outcomes,
-                        emit.dispatch.server_legs.len(),
-                        Some(&tick),
-                    );
-                    match dispatch_wire(&handle_ref.trait_owners, orbital, emit.dispatch) {
-                        Ok(dispatch) => {
-                            dispatch_tick_at.push(fired.len());
-                            dispatches.push(FrameDispatch {
-                                trait_name: trait_name.clone(),
-                                dispatch,
-                            });
-                        }
-                        Err(e) => errors.push(format!("tick {trait_name}.{tick}: {e}")),
-                    }
-                }
-                fired.push(FiredTick {
-                    trait_name: trait_name.clone(),
-                    tick,
-                });
-                outcomes.push((trait_name, dispatched.outcome));
-                for rerender in &dispatched.rerenders {
-                    for effect in &rerender.effects {
-                        if let Effect::RenderUi { slot, .. } = effect {
-                            last_repaint.insert(
-                                (rerender.trait_name.clone(), slot.clone()),
-                                fired.len() - 1,
-                            );
-                        }
-                    }
-                }
-                rerenders.extend(dispatched.rerenders);
-            }
-            Err(e) => errors.push(format!("tick {trait_name}.{tick}: {e}")),
-        }
-    }
-    if fired.is_empty() && errors.is_empty() {
-        return Ok(None);
-    }
-    if let Some(first) = errors.first() {
-        set_error(handle_ref, first.clone());
-    }
-    // The host folds `response` before the dispatches, so a dispatch render of a slot that the
-    // same or a later tick repainted would land last with older content: the repaint is the
-    // slot's newest paint, and the dispatch's stale copy is dropped from the envelope.
-    for (dispatch, tick_at) in dispatches.iter_mut().zip(&dispatch_tick_at) {
-        let superseded: HashSet<(String, String)> = last_repaint
-            .iter()
-            .filter(|(_, repainted_at)| *repainted_at >= tick_at)
-            .map(|(key, _)| key.clone())
-            .collect();
-        dispatch.dispatch.response.drop_renders_of(&superseded);
-    }
-    let mut response = EventResponse::from_process_results(&outcomes, "", "");
-    response.fold_rerenders(&rerenders);
-    Ok(Some(FrameWire {
-        fired,
-        response,
-        dispatches,
-        dropped_server_effects,
-        errors,
-    }))
 }
 
 /// Run one host frame of the native tick clock: every declared tick (across all orbitals) whose
@@ -687,7 +391,7 @@ fn frame(handle_ref: &OrbitalKernelHandle, now_ms: u64) -> Result<Option<FrameWi
 /// "dispatches": [{"trait", ...dispatch envelope}] (one per tick `emit`: its listener cascade
 /// through `RuntimeKernel::dispatch_tick`, the emitter not re-run as a seed, server leg stamped
 /// with the tick), "droppedServerEffects": n, "errors": [...]}`. NULL when no tick fired
-/// (nothing to fold); `{"error": ...}` on failure.
+/// (nothing to fold); `{"error": ...}` on failure. The first of `errors` is also `last_error`.
 ///
 /// A tick's OWN server effects have no event to replay under (web parity: `useClientTicks`
 /// delegates them to a no-op): they are discarded, counted in `droppedServerEffects`, and never
@@ -705,8 +409,13 @@ pub unsafe extern "C" fn orbital_kernel_frame(
     }
     let handle_ref = &*handle;
     let _call = handle_ref.call_lock.write();
-    match catch_unwind(AssertUnwindSafe(|| frame(handle_ref, now_ms))) {
-        Ok(Ok(Some(wire))) => to_json(handle_ref, &wire),
+    match catch_unwind(AssertUnwindSafe(|| handle_ref.embedded.frame(now_ms))) {
+        Ok(Ok(Some(wire))) => {
+            if let Some(first) = wire.errors.first() {
+                set_error(handle_ref, first.clone());
+            }
+            to_json(handle_ref, &wire)
+        }
         Ok(Ok(None)) => ptr::null_mut(),
         Ok(Err(e)) => json_error(handle_ref, e),
         Err(_) => json_error(handle_ref, "panic during frame"),
@@ -724,7 +433,7 @@ pub unsafe extern "C" fn orbital_kernel_frame_pause(handle: *mut OrbitalKernelHa
     }
     let handle_ref = &*handle;
     let _call = handle_ref.call_lock.write();
-    handle_ref.ticks.lock().pause();
+    handle_ref.embedded.frame_pause();
 }
 
 /// Restart the native tick clock after `orbital_kernel_frame_pause`: the paused span is never
@@ -739,7 +448,7 @@ pub unsafe extern "C" fn orbital_kernel_frame_resume(handle: *mut OrbitalKernelH
     }
     let handle_ref = &*handle;
     let _call = handle_ref.call_lock.write();
-    handle_ref.ticks.lock().resume();
+    handle_ref.embedded.frame_resume();
 }
 
 /// How many `(trait, tick)` pairs the schema declares; a host with `0` never starts a frame loop.
@@ -751,7 +460,7 @@ pub unsafe extern "C" fn orbital_kernel_tick_count(handle: *mut OrbitalKernelHan
     if handle.is_null() {
         return 0;
     }
-    i32::try_from((*handle).ticks.lock().len()).unwrap_or(i32::MAX)
+    i32::try_from((*handle).embedded.tick_count()).unwrap_or(i32::MAX)
 }
 
 /// Current state name for a trait instance, or `""` when unset. Plain string,
@@ -774,11 +483,7 @@ pub unsafe extern "C" fn orbital_kernel_get_state(
     let result = catch_unwind(AssertUnwindSafe(|| -> Result<String, String> {
         let trait_name = read_str(trait_name).ok_or("trait_name is null/invalid utf-8")?;
         let entity_id = read_str(entity_id);
-        Ok(handle_ref
-            .kernel
-            .get_state(trait_name, entity_id)
-            .map(|s| s.current_state)
-            .unwrap_or_default())
+        Ok(handle_ref.embedded.get_state(trait_name, entity_id))
     }));
 
     match result {
@@ -798,7 +503,7 @@ pub unsafe extern "C" fn orbital_kernel_get_state(
 /// one orbital is listed under `ambiguousTraits` as `{trait, orbitals}`, never
 /// in `states`) plus the resolved
 /// `@currentTheme`: `{"states": {"<trait>": "<state>", ...}, "theme":
-/// ResolvedTheme {key, base, mode, tokens}}` (`entity_id = "singleton"` per
+/// ResolvedTheme {key, base, mode, tokens}, "canvasTheme", "motion"}` (`entity_id = "singleton"` per
 /// trait).
 ///
 /// # Safety
@@ -810,32 +515,8 @@ pub unsafe extern "C" fn orbital_kernel_snapshot(handle: *mut OrbitalKernelHandl
     }
     let handle_ref = &*handle;
     let _call = handle_ref.call_lock.read();
-    let result = catch_unwind(AssertUnwindSafe(|| -> serde_json::Value {
-        let mut states = serde_json::Map::new();
-        let mut ambiguous: Vec<serde_json::Value> = Vec::new();
-        for (trait_name, orbitals) in handle_ref.trait_owners.iter() {
-            if orbitals.len() > 1 {
-                ambiguous.push(serde_json::json!({
-                    "trait": trait_name,
-                    "orbitals": orbitals,
-                }));
-                continue;
-            }
-            let state = handle_ref
-                .kernel
-                .get_state(trait_name, None)
-                .map(|s| s.current_state)
-                .unwrap_or_default();
-            states.insert(trait_name.clone(), serde_json::Value::String(state));
-        }
-        let theme = handle_ref.kernel.resolved_theme();
-        let canvas_theme = orbital_core::runtime::canvas_theme::canvas_theme(&theme.tokens);
-        let motion = orbital_core::runtime::motion::resolve_motion(&theme.tokens);
-        serde_json::json!({ "states": states, "ambiguousTraits": ambiguous, "theme": theme, "canvasTheme": canvas_theme, "motion": motion })
-    }));
-
-    match result {
-        Ok(value) => to_json(handle_ref, &value),
+    match catch_unwind(AssertUnwindSafe(|| handle_ref.embedded.snapshot())) {
+        Ok(snapshot) => to_json(handle_ref, &snapshot),
         Err(_) => json_error(handle_ref, "panic during snapshot"),
     }
 }
@@ -857,17 +538,12 @@ pub unsafe extern "C" fn orbital_kernel_set_theme_mode(
     }
     let handle_ref = &*handle;
     let _call = handle_ref.call_lock.write();
-    let result = catch_unwind(AssertUnwindSafe(|| -> Result<ThemeMode, String> {
-        match read_str(mode) {
-            Some("light") => Ok(ThemeMode::Light),
-            Some("dark") => Ok(ThemeMode::Dark),
-            Some(other) => Err(format!("unknown theme mode: {other}")),
-            None => Err("mode is null/invalid utf-8".to_string()),
-        }
+    let result = catch_unwind(AssertUnwindSafe(|| {
+        parse_theme_mode(read_str(mode).ok_or("mode is null/invalid utf-8")?)
     }));
 
     match result {
-        Ok(Ok(mode)) => handle_ref.kernel.set_theme_mode(mode),
+        Ok(Ok(mode)) => handle_ref.embedded.set_theme_mode(mode),
         Ok(Err(e)) => set_error(handle_ref, e),
         Err(_) => set_error(handle_ref, "panic during set_theme_mode"),
     }
@@ -894,7 +570,7 @@ pub unsafe extern "C" fn orbital_kernel_set_current_user(
     }));
 
     match result {
-        Ok(Ok(user)) => handle_ref.kernel.set_current_user(user),
+        Ok(Ok(user)) => handle_ref.embedded.set_current_user(user),
         Ok(Err(e)) => set_error(handle_ref, e),
         Err(_) => set_error(handle_ref, "panic during set_current_user"),
     }
@@ -922,13 +598,7 @@ pub unsafe extern "C" fn orbital_kernel_seed(
         let rows_json = read_str(rows_json).ok_or("rows_json is null/invalid utf-8")?;
         let rows: Vec<Value> =
             serde_json::from_str(rows_json).map_err(|e| format!("parse rows_json: {e}"))?;
-        for row in rows {
-            handle_ref
-                .entities
-                .create(entity_type, &row)
-                .map_err(|e| format!("seed create: {e}"))?;
-        }
-        Ok(())
+        handle_ref.embedded.seed(entity_type, rows)
     }));
 
     match result {
@@ -936,6 +606,12 @@ pub unsafe extern "C" fn orbital_kernel_seed(
         Ok(Err(e)) => set_error(handle_ref, e),
         Err(_) => set_error(handle_ref, "panic during seed"),
     }
+}
+
+/// Parse a JSON array of trait names for `remount`/`mount`.
+unsafe fn read_traits(traits_json: *const c_char) -> Result<Vec<String>, String> {
+    let traits_json = read_str(traits_json).ok_or("traits_json is null/invalid utf-8")?;
+    serde_json::from_str(traits_json).map_err(|e| format!("parse traits_json: {e}"))
 }
 
 /// Declare a new mount (`RuntimeKernel::remount_traits`) before its lifecycle
@@ -957,13 +633,8 @@ pub unsafe extern "C" fn orbital_kernel_remount(
     }
     let handle_ref = &*handle;
     let _call = handle_ref.call_lock.write();
-    let result = catch_unwind(AssertUnwindSafe(|| -> Result<Vec<String>, String> {
-        let traits_json = read_str(traits_json).ok_or("traits_json is null/invalid utf-8")?;
-        serde_json::from_str(traits_json).map_err(|e| format!("parse traits_json: {e}"))
-    }));
-
-    match result {
-        Ok(Ok(traits)) => handle_ref.kernel.remount_traits(traits),
+    match catch_unwind(AssertUnwindSafe(|| read_traits(traits_json))) {
+        Ok(Ok(traits)) => handle_ref.embedded.remount(traits),
         Ok(Err(e)) => set_error(handle_ref, e),
         Err(_) => set_error(handle_ref, "panic during remount"),
     }
@@ -986,13 +657,8 @@ pub unsafe extern "C" fn orbital_kernel_mount(
     }
     let handle_ref = &*handle;
     let _call = handle_ref.call_lock.write();
-    let result = catch_unwind(AssertUnwindSafe(|| -> Result<Vec<String>, String> {
-        let traits_json = read_str(traits_json).ok_or("traits_json is null/invalid utf-8")?;
-        serde_json::from_str(traits_json).map_err(|e| format!("parse traits_json: {e}"))
-    }));
-
-    match result {
-        Ok(Ok(traits)) => handle_ref.kernel.mount_traits(traits),
+    match catch_unwind(AssertUnwindSafe(|| read_traits(traits_json))) {
+        Ok(Ok(traits)) => handle_ref.embedded.mount(traits),
         Ok(Err(e)) => set_error(handle_ref, e),
         Err(_) => set_error(handle_ref, "panic during mount"),
     }
@@ -1040,8 +706,8 @@ pub unsafe extern "C" fn orbital_verify_bridge_start(
                 return Ok(existing.port());
             }
             let started = crate::verify_bridge::BridgeServer::start(
-                &handle_ref.kernel as *const RuntimeKernel,
-                Arc::clone(&handle_ref.entities),
+                handle_ref.embedded.kernel() as *const RuntimeKernel,
+                Arc::clone(handle_ref.embedded.entities()),
                 Arc::clone(&handle_ref.verify.recorder),
                 Arc::clone(&handle_ref.verify.callback),
                 Arc::clone(&handle_ref.call_lock),
@@ -1274,6 +940,7 @@ pub const KERNEL_C_SYMBOLS: &[&str] = &[
     "orbital_kernel_set_current_user",
     "orbital_kernel_seed",
     "orbital_kernel_remount",
+    "orbital_kernel_mount",
     "orbital_kernel_last_error",
     "orbital_kernel_free_string",
 ];
@@ -1606,7 +1273,7 @@ pub(crate) mod tests {
             );
             dispatch_json(handle, "Driver", "INIT");
             dispatch_json(handle, "Hud", "INIT");
-            let before = (*handle).kernel.snapshot_trait("Driver", None);
+            let before = (*handle).embedded.kernel().snapshot_trait("Driver", None);
             let bumped = dispatch_json(handle, "Driver", "BUMP");
             assert_eq!(painted(&bumped["response"], "Hud"), vec![1.0], "{bumped}");
             let t = cstr("Driver");
@@ -1928,7 +1595,7 @@ pub(crate) mod tests {
                     "entity": { "name": "Archive", "fields": [{ "name": "id", "type": "string" }] },
                     "traits": [{
                         "name": "Archiver", "linkedEntity": "Archive",
-                        "listens": [{ "event": "PING", "triggers": "STORE", "source": { "kind": "trait", "trait": "Browse" } }],
+                        "listens": [{ "event": "PING", "triggers": "STORE", "source": { "kind": "orbital", "orbital": "Browsing", "trait": "Browse" } }],
                         "stateMachine": {
                             "states": [{ "name": "ready", "isInitial": true }],
                             "transitions": [{ "from": "ready", "to": "ready", "event": "STORE",

@@ -1,0 +1,9 @@
+{
+  "schema": "two-orbital-chore",
+  "clientId": "golden-client",
+  "steps": [
+    { "op": "dispatch", "trait": "ChoreCRUD", "event": "INIT" },
+    { "op": "dispatch", "trait": "TaskCRUD", "event": "INIT" },
+    { "op": "snapshot" }
+  ]
+}
