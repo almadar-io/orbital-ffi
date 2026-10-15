@@ -21,7 +21,11 @@ use std::collections::HashSet;
 use std::ffi::{c_char, c_void, CStr, CString};
 use std::panic::{catch_unwind, AssertUnwindSafe};
 use std::ptr;
+use std::sync::atomic::{AtomicI64, Ordering};
 use std::sync::Arc;
+
+/// Strings `to_c_string` handed to a host and `orbital_kernel_free_string` has not yet taken back.
+static OUTSTANDING_STRINGS: AtomicI64 = AtomicI64::new(0);
 
 /// Opaque handle wrapping the embedded kernel. `last_error` is per-handle so two threads sharing
 /// this pointer (the UI thread + a background reconcile thread) never race on a thread-local.
@@ -64,7 +68,10 @@ unsafe fn read_str<'a>(s: *const c_char) -> Option<&'a str> {
 
 fn to_c_string(s: String) -> *mut c_char {
     match CString::new(s) {
-        Ok(cs) => cs.into_raw(),
+        Ok(cs) => {
+            OUTSTANDING_STRINGS.fetch_add(1, Ordering::Relaxed);
+            cs.into_raw()
+        }
         Err(_) => ptr::null_mut(),
     }
 }
@@ -521,6 +528,36 @@ pub unsafe extern "C" fn orbital_kernel_snapshot(handle: *mut OrbitalKernelHandl
     }
 }
 
+/// Resolve a row-set reference (`ref_json` = a `RowSetRef`, the `ref` of a `$rowSet` marker) through the
+/// kernel's one resolver (`RuntimeKernel::resolve_rows`): the rows as they are now, re-checked against the
+/// current viewer's `@read` policy, with the re-counted total, as `{"rows": [...], "total": N}`. A reference
+/// the client cannot resolve answers `{"error": ...}` and sets `last_error`.
+///
+/// # Safety
+/// `handle` must be valid; `ref_json` must be a valid C string.
+#[no_mangle]
+pub unsafe extern "C" fn orbital_kernel_resolve_rows(
+    handle: *mut OrbitalKernelHandle,
+    ref_json: *const c_char,
+) -> *mut c_char {
+    if handle.is_null() {
+        return ptr::null_mut();
+    }
+    let handle_ref = &*handle;
+    let _call = handle_ref.call_lock.read();
+    let result = catch_unwind(AssertUnwindSafe(|| {
+        let ref_json = read_str(ref_json).ok_or("ref_json is null/invalid utf-8")?;
+        let reference: orbital_core::runtime::row_query::RowSetRef =
+            serde_json::from_str(ref_json).map_err(|e| format!("parse ref_json: {e}"))?;
+        handle_ref.embedded.resolve_rows(&reference)
+    }));
+    match result {
+        Ok(Ok(page)) => to_json(handle_ref, &page),
+        Ok(Err(e)) => json_error(handle_ref, e),
+        Err(_) => json_error(handle_ref, "panic during resolve_rows"),
+    }
+}
+
 /// Set the kernel's tracked light/dark toggle (`"light"|"dark"`), overriding
 /// the mode encoded in a declared theme's key suffix on every subsequent
 /// `@currentTheme` resolution (`RuntimeKernel::set_theme_mode`). No return
@@ -916,8 +953,20 @@ pub unsafe extern "C" fn orbital_verify_bridge_painted(
 pub unsafe extern "C" fn orbital_kernel_free_string(s: *mut c_char) {
     if !s.is_null() {
         let _ = CString::from_raw(s);
+        OUTSTANDING_STRINGS.fetch_sub(1, Ordering::Relaxed);
     }
 }
+
+/// Process-wide count of strings an `orbital_kernel_*` function returned that
+/// `orbital_kernel_free_string` has not freed yet. A host that frees every
+/// result reads `0` once its calls are done; the device benchmark gates on it.
+#[no_mangle]
+pub extern "C" fn orbital_kernel_outstanding_strings() -> i64 {
+    OUTSTANDING_STRINGS.load(Ordering::Relaxed)
+}
+
+/// Debug C ABI outside `KERNEL_C_SYMBOLS`: read by the device benchmark, never part of a generated bridge.
+pub const DEBUG_C_SYMBOLS: &[&str] = &["orbital_kernel_outstanding_strings"];
 
 /// The `orbital_kernel_*` C ABI this module defines, kept next to the
 /// definitions (mirrors `jni_bridge::JNI_SYMBOLS`) so the iOS/Android bridge
@@ -936,6 +985,7 @@ pub const KERNEL_C_SYMBOLS: &[&str] = &[
     "orbital_kernel_tick_count",
     "orbital_kernel_get_state",
     "orbital_kernel_snapshot",
+    "orbital_kernel_resolve_rows",
     "orbital_kernel_set_theme_mode",
     "orbital_kernel_set_current_user",
     "orbital_kernel_seed",

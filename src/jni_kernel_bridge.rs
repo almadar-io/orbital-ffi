@@ -18,7 +18,8 @@ use crate::kernel_c_api::{
     orbital_kernel_destroy, orbital_kernel_dispatch, orbital_kernel_frame,
     orbital_kernel_frame_pause, orbital_kernel_frame_resume, orbital_kernel_free_string,
     orbital_kernel_get_state, orbital_kernel_init, orbital_kernel_last_error, orbital_kernel_mount,
-    orbital_kernel_remount, orbital_kernel_restore, orbital_kernel_seed,
+    orbital_kernel_outstanding_strings,
+    orbital_kernel_remount, orbital_kernel_resolve_rows, orbital_kernel_restore, orbital_kernel_seed,
     orbital_kernel_set_current_user, orbital_kernel_set_theme_mode, orbital_kernel_snapshot,
     orbital_kernel_tick, orbital_kernel_tick_count, orbital_verify_bridge_folded,
     orbital_verify_bridge_painted, orbital_verify_bridge_set_dispatch_callback,
@@ -54,12 +55,14 @@ pub const KERNEL_JNI_SYMBOLS: &[&str] = &[
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeTickCount",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeGetState",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeSnapshot",
+    "Java_generated_patterns_core_OrbitalKernelBridge_nativeResolveRows",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeSetThemeMode",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeSetCurrentUser",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeSeed",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeRemount",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeMount",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeLastError",
+    "Java_generated_patterns_core_OrbitalKernelBridge_nativeOutstandingStrings",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgeStart",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgeStop",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgeSetDispatchCallback",
@@ -290,6 +293,17 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeFr
     let _ = catch_panic(|| unsafe { orbital_kernel_frame_resume(handle_of(handle)) });
 }
 
+/// JNI entry: `OrbitalKernelBridge.nativeOutstandingStrings()`.
+#[no_mangle]
+pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeOutstandingStrings<
+    'local,
+>(
+    _env: JNIEnv<'local>,
+    _class: JClass<'local>,
+) -> jlong {
+    orbital_kernel_outstanding_strings()
+}
+
 /// JNI entry: `OrbitalKernelBridge.nativeTickCount(handle)`.
 #[no_mangle]
 pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeTickCount<'local>(
@@ -338,6 +352,22 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeSn
         unsafe { take_c_string_as_jstring(&mut env, raw, orbital_kernel_free_string) }
     });
     outcome.unwrap_or(std::ptr::null_mut())
+}
+
+/// JNI entry: `OrbitalKernelBridge.nativeResolveRows(handle, refJson)`.
+#[no_mangle]
+pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeResolveRows<'local>(
+    mut env: JNIEnv<'local>,
+    _class: JClass<'local>,
+    handle: jlong,
+    ref_json: JString<'local>,
+) -> jstring {
+    let outcome = catch_panic(|| {
+        let ref_json = required_cstring(&mut env, &ref_json)?;
+        let raw = unsafe { orbital_kernel_resolve_rows(handle_of(handle), ref_json.as_ptr()) };
+        Some(unsafe { take_c_string_as_jstring(&mut env, raw, orbital_kernel_free_string) })
+    });
+    outcome.ok().flatten().unwrap_or(std::ptr::null_mut())
 }
 
 /// JNI entry: `OrbitalKernelBridge.nativeSetThemeMode(handle, mode)`.

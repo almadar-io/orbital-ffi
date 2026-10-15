@@ -1021,7 +1021,10 @@ fn route(req: &Request, ctx: &ServerCtx) -> (u16, Value) {
         }
         ("GET", "/entities") => match req.query.get("name") {
             Some(name) => match ctx.entities.list(name) {
-                Ok(rows) => (200, serde_json::json!({ "rows": rows })),
+                Ok(rows) => {
+                    let rows: Vec<&Value> = rows.iter().map(|row| &**row).collect();
+                    (200, serde_json::json!({ "rows": rows }))
+                }
                 Err(e) => (400, error_body(&e)),
             },
             None => (400, error_body("missing query parameter: name")),
