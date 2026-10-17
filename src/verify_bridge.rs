@@ -2369,6 +2369,8 @@ mod tests {
                 denied: Some(true),
                 error: Some("access denied".into()),
                 code: None,
+                target: None,
+                routed: None,
             }]),
             ..Default::default()
         };
