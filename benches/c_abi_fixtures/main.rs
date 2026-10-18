@@ -1,5 +1,5 @@
 //! R1: criterion over the parity fixtures through the `orbital_kernel_*` C ABI, plus the JSON row
-//! `@almadar-io/parity`'s `bench-report` merges. R1 minus R0 is the cost of the C-string and JSON boundary
+//! `@almadar-io/kernel-bench-tool`'s `bench-report` merges. R1 minus R0 is the cost of the C-string and JSON boundary
 //! (and of the client role: a server leg is returned in the wire, not run).
 //!
 //! `ALMADAR_PARITY_FIXTURES` names the fixtures folder (required). With `ALMADAR_BENCH_OUT` set the

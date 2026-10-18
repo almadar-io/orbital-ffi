@@ -1,5 +1,5 @@
 //! The embedded-kernel benchmark's row-independent half: the parity fixtures (`tools/parity-cascade/fixtures`,
-//! read from the folder `ALMADAR_PARITY_FIXTURES` names) and a mirror of `@almadar-io/parity`'s
+//! read from the folder `ALMADAR_PARITY_FIXTURES` names) and a mirror of `@almadar-io/kernel-bench-tool`'s
 //! `scenario/bench.ts`, so the JSON a row writes merges into the same report: same trace shape per step
 //! (`trait`, `event`, `states`, `effects`, `emits`), same statistics, same workload keys
 //! (`<fixture>#<index>`). A row supplies a [`Driver`]. This file is the same in `orbital-core/benches`
@@ -230,7 +230,7 @@ pub fn compare_traces(
     })
 }
 
-/// The traces a `@almadar-io/parity` bench result file recorded, by workload key.
+/// The traces a `@almadar-io/kernel-bench-tool` bench result file recorded, by workload key.
 pub fn reference_traces(path: &Path) -> Result<HashMap<String, Json>, String> {
     let result: Json = serde_json::from_str(
         &std::fs::read_to_string(path).map_err(|e| format!("read {}: {e}", path.display()))?,
@@ -479,7 +479,7 @@ fn bench_workload<D: Driver>(
     run().unwrap_or_else(|failed| failed)
 }
 
-/// The whole bench result in `@almadar-io/parity`'s `BenchResult` shape.
+/// The whole bench result in `@almadar-io/kernel-bench-tool`'s `BenchResult` shape.
 pub fn run_bench<D: Driver>(o: &BenchOptions<D>, fixtures: &[Fixture]) -> Json {
     let workloads: Vec<Json> = fixtures
         .iter()
