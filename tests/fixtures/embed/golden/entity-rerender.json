@@ -97,9 +97,9 @@
           "render-ui",
           "hud",
           {
-            "value": 0.0,
+            "label": "Score",
             "type": "stat-display",
-            "label": "Score"
+            "value": 0.0
           }
         ]
       ],
@@ -110,9 +110,9 @@
             "render-ui",
             "hud",
             {
-              "value": 0.0,
+              "label": "Score",
               "type": "stat-display",
-              "label": "Score"
+              "value": 0.0
             }
           ],
           "event": "INIT",
@@ -132,8 +132,8 @@
                 "hud",
                 {
                   "label": "Score",
-                  "value": "@entity.score",
-                  "type": "stat-display"
+                  "type": "stat-display",
+                  "value": "@entity.score"
                 }
               ],
               "status": "skipped"
@@ -175,8 +175,8 @@
           "render-ui",
           "sidebar",
           {
-            "type": "typography",
-            "content": "Static caption"
+            "content": "Static caption",
+            "type": "typography"
           }
         ]
       ],
@@ -187,8 +187,8 @@
             "render-ui",
             "sidebar",
             {
-              "type": "typography",
-              "content": "Static caption"
+              "content": "Static caption",
+              "type": "typography"
             }
           ],
           "event": "INIT",
@@ -244,8 +244,8 @@
         "render-ui",
         "hud",
         {
-          "type": "stat-display",
           "label": "Score",
+          "type": "stat-display",
           "value": 1.0
         }
       ]
@@ -257,8 +257,8 @@
           "render-ui",
           "hud",
           {
-            "type": "stat-display",
             "label": "Score",
+            "type": "stat-display",
             "value": 1.0
           }
         ]
@@ -297,9 +297,9 @@
           "render-ui",
           "hud",
           {
-            "value": 2.0,
             "label": "Score",
-            "type": "stat-display"
+            "type": "stat-display",
+            "value": 2.0
           }
         ]
       ],
@@ -310,9 +310,9 @@
             "render-ui",
             "hud",
             {
-              "value": 2.0,
               "label": "Score",
-              "type": "stat-display"
+              "type": "stat-display",
+              "value": 2.0
             }
           ]
         }

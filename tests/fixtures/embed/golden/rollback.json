@@ -22,8 +22,8 @@
           "render-ui",
           "main",
           {
-            "type": "typography",
-            "content": "driver"
+            "content": "driver",
+            "type": "typography"
           }
         ]
       ],
@@ -34,8 +34,8 @@
             "render-ui",
             "main",
             {
-              "type": "typography",
-              "content": "driver"
+              "content": "driver",
+              "type": "typography"
             }
           ],
           "event": "INIT",
@@ -97,8 +97,8 @@
           "render-ui",
           "sidebar",
           {
-            "type": "typography",
-            "content": 0.0
+            "content": 0.0,
+            "type": "typography"
           }
         ]
       ],
@@ -109,8 +109,8 @@
             "render-ui",
             "sidebar",
             {
-              "type": "typography",
-              "content": 0.0
+              "content": 0.0,
+              "type": "typography"
             }
           ],
           "event": "INIT",
@@ -172,8 +172,8 @@
           "render-ui",
           "sidebar",
           {
-            "type": "typography",
-            "content": 1.0
+            "content": 1.0,
+            "type": "typography"
           }
         ]
       ],
@@ -184,8 +184,8 @@
             "render-ui",
             "sidebar",
             {
-              "type": "typography",
-              "content": 1.0
+              "content": 1.0,
+              "type": "typography"
             }
           ]
         }
@@ -289,8 +289,8 @@
           "render-ui",
           "sidebar",
           {
-            "type": "typography",
-            "content": 1.0
+            "content": 1.0,
+            "type": "typography"
           }
         ]
       ],
@@ -301,8 +301,8 @@
             "render-ui",
             "sidebar",
             {
-              "type": "typography",
-              "content": 1.0
+              "content": 1.0,
+              "type": "typography"
             }
           ]
         }

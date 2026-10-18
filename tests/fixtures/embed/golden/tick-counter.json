@@ -25,9 +25,9 @@
           "render-ui",
           "main",
           {
-            "value": 0.0,
             "label": "Beats",
-            "type": "stat-display"
+            "type": "stat-display",
+            "value": 0.0
           }
         ]
       ],
@@ -38,9 +38,9 @@
             "render-ui",
             "main",
             {
-              "value": 0.0,
               "label": "Beats",
-              "type": "stat-display"
+              "type": "stat-display",
+              "value": 0.0
             }
           ],
           "event": "INIT",
@@ -59,9 +59,9 @@
               "args": [
                 "main",
                 {
-                  "value": "@entity.beats",
                   "label": "Beats",
-                  "type": "stat-display"
+                  "type": "stat-display",
+                  "value": "@entity.beats"
                 }
               ],
               "status": "skipped"
@@ -168,8 +168,8 @@
       "emittedEvents": [],
       "entityByTrait": {
         "Ticker": {
-          "frames": 2.0,
           "beats": 0.0,
+          "frames": 2.0,
           "guarded": 0.0
         }
       },
@@ -220,8 +220,8 @@
       ],
       "entityByTrait": {
         "Ticker": {
-          "frames": 3.0,
           "beats": 1.0,
+          "frames": 3.0,
           "guarded": 1.0
         }
       },
@@ -230,9 +230,9 @@
           "render-ui",
           "main",
           {
-            "value": 1.0,
             "label": "Beats",
-            "type": "stat-display"
+            "type": "stat-display",
+            "value": 1.0
           }
         ]
       ],
@@ -243,9 +243,9 @@
             "render-ui",
             "main",
             {
-              "value": 1.0,
               "label": "Beats",
-              "type": "stat-display"
+              "type": "stat-display",
+              "value": 1.0
             }
           ]
         }
@@ -255,6 +255,11 @@
           "effect": "set",
           "action": "@entity.beats",
           "success": true
+        },
+        {
+          "effect": "emit",
+          "success": true,
+          "target": "BEAT"
         },
         {
           "effect": "set",
@@ -350,8 +355,8 @@
       "entityByTrait": {
         "Ticker": {
           "beats": 1.0,
-          "guarded": 1.0,
-          "frames": 4.0
+          "frames": 4.0,
+          "guarded": 1.0
         }
       },
       "effectResults": [
@@ -386,9 +391,9 @@
       "emittedEvents": [],
       "entityByTrait": {
         "Ticker": {
-          "guarded": 1.0,
+          "beats": 1.0,
           "frames": 5.0,
-          "beats": 1.0
+          "guarded": 1.0
         }
       },
       "effectResults": [
@@ -438,9 +443,9 @@
       ],
       "entityByTrait": {
         "Ticker": {
-          "guarded": 2.0,
+          "beats": 2.0,
           "frames": 6.0,
-          "beats": 2.0
+          "guarded": 2.0
         }
       },
       "clientEffects": [
@@ -473,6 +478,11 @@
           "effect": "set",
           "action": "@entity.beats",
           "success": true
+        },
+        {
+          "effect": "emit",
+          "success": true,
+          "target": "BEAT"
         },
         {
           "effect": "set",
@@ -580,9 +590,9 @@
         "render-ui",
         "main",
         {
-          "value": 3.0,
+          "label": "Beats",
           "type": "stat-display",
-          "label": "Beats"
+          "value": 3.0
         }
       ]
     ],
@@ -593,9 +603,9 @@
           "render-ui",
           "main",
           {
-            "value": 3.0,
+            "label": "Beats",
             "type": "stat-display",
-            "label": "Beats"
+            "value": 3.0
           }
         ]
       }
@@ -605,6 +615,11 @@
         "effect": "set",
         "action": "@entity.beats",
         "success": true
+      },
+      {
+        "effect": "emit",
+        "success": true,
+        "target": "BEAT"
       }
     ]
   },
@@ -627,8 +642,8 @@
       "emittedEvents": [],
       "entityByTrait": {
         "Ticker": {
-          "frames": 6.0,
           "beats": 3.0,
+          "frames": 6.0,
           "guarded": 2.0
         }
       },
@@ -637,8 +652,8 @@
           "render-ui",
           "main",
           {
-            "type": "card",
-            "title": "Stopped"
+            "title": "Stopped",
+            "type": "card"
           }
         ]
       ],
@@ -649,8 +664,8 @@
             "render-ui",
             "main",
             {
-              "type": "card",
-              "title": "Stopped"
+              "title": "Stopped",
+              "type": "card"
             }
           ],
           "event": "STOP",
@@ -669,8 +684,8 @@
               "args": [
                 "main",
                 {
-                  "type": "card",
-                  "title": "Stopped"
+                  "title": "Stopped",
+                  "type": "card"
                 }
               ],
               "status": "skipped"
@@ -719,9 +734,9 @@
       ],
       "entityByTrait": {
         "Ticker": {
-          "guarded": 2.0,
+          "beats": 4.0,
           "frames": 7.0,
-          "beats": 4.0
+          "guarded": 2.0
         }
       },
       "clientEffects": [
@@ -729,9 +744,9 @@
           "render-ui",
           "main",
           {
-            "value": 4.0,
             "label": "Beats",
-            "type": "stat-display"
+            "type": "stat-display",
+            "value": 4.0
           }
         ]
       ],
@@ -742,9 +757,9 @@
             "render-ui",
             "main",
             {
-              "value": 4.0,
               "label": "Beats",
-              "type": "stat-display"
+              "type": "stat-display",
+              "value": 4.0
             }
           ]
         }
@@ -754,6 +769,11 @@
           "effect": "set",
           "action": "@entity.beats",
           "success": true
+        },
+        {
+          "effect": "emit",
+          "success": true,
+          "target": "BEAT"
         },
         {
           "effect": "set",
@@ -842,8 +862,8 @@
       "emittedEvents": [],
       "entityByTrait": {
         "Ticker": {
-          "frames": 7.0,
           "beats": 4.0,
+          "frames": 7.0,
           "guarded": 2.0
         }
       },
@@ -853,8 +873,8 @@
           "main",
           {
             "label": "Beats",
-            "value": 4.0,
-            "type": "stat-display"
+            "type": "stat-display",
+            "value": 4.0
           }
         ]
       ],
@@ -866,8 +886,8 @@
             "main",
             {
               "label": "Beats",
-              "value": 4.0,
-              "type": "stat-display"
+              "type": "stat-display",
+              "value": 4.0
             }
           ],
           "event": "RESUME",
@@ -951,9 +971,9 @@
           "render-ui",
           "main",
           {
-            "value": 5.0,
             "label": "Beats",
-            "type": "stat-display"
+            "type": "stat-display",
+            "value": 5.0
           }
         ]
       ],
@@ -964,9 +984,9 @@
             "render-ui",
             "main",
             {
-              "value": 5.0,
               "label": "Beats",
-              "type": "stat-display"
+              "type": "stat-display",
+              "value": 5.0
             }
           ]
         }
@@ -976,6 +996,11 @@
           "effect": "set",
           "action": "@entity.beats",
           "success": true
+        },
+        {
+          "effect": "emit",
+          "success": true,
+          "target": "BEAT"
         },
         {
           "effect": "set",

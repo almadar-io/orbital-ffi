@@ -27,37 +27,37 @@
           "render-ui",
           "main",
           {
-            "type": "page-header",
-            "title": "Tasks",
             "actions": [
               {
-                "label": "New Task",
-                "event": "CREATE"
+                "event": "CREATE",
+                "label": "New Task"
               }
-            ]
+            ],
+            "title": "Tasks",
+            "type": "page-header"
           }
         ],
         [
           "render-ui",
           "main",
           {
-            "type": "entity-table",
+            "entity": "Task",
+            "fields": [
+              "title",
+              "completed",
+              "createdAt"
+            ],
             "itemActions": [
               {
-                "label": "Edit",
-                "event": "EDIT"
+                "event": "EDIT",
+                "label": "Edit"
               },
               {
                 "event": "DELETE",
                 "label": "Delete"
               }
             ],
-            "entity": "Task",
-            "fields": [
-              "title",
-              "completed",
-              "createdAt"
-            ]
+            "type": "entity-table"
           }
         ]
       ],
@@ -68,14 +68,14 @@
             "render-ui",
             "main",
             {
-              "type": "page-header",
-              "title": "Tasks",
               "actions": [
                 {
-                  "label": "New Task",
-                  "event": "CREATE"
+                  "event": "CREATE",
+                  "label": "New Task"
                 }
-              ]
+              ],
+              "title": "Tasks",
+              "type": "page-header"
             }
           ],
           "event": "INIT",
@@ -87,23 +87,23 @@
             "render-ui",
             "main",
             {
-              "type": "entity-table",
+              "entity": "Task",
+              "fields": [
+                "title",
+                "completed",
+                "createdAt"
+              ],
               "itemActions": [
                 {
-                  "label": "Edit",
-                  "event": "EDIT"
+                  "event": "EDIT",
+                  "label": "Edit"
                 },
                 {
                   "event": "DELETE",
                   "label": "Delete"
                 }
               ],
-              "entity": "Task",
-              "fields": [
-                "title",
-                "completed",
-                "createdAt"
-              ]
+              "type": "entity-table"
             }
           ],
           "event": "INIT",
@@ -136,14 +136,14 @@
               "args": [
                 "main",
                 {
-                  "type": "page-header",
                   "actions": [
                     {
-                      "label": "New Task",
-                      "event": "CREATE"
+                      "event": "CREATE",
+                      "label": "New Task"
                     }
                   ],
-                  "title": "Tasks"
+                  "title": "Tasks",
+                  "type": "page-header"
                 }
               ],
               "status": "skipped"
@@ -153,23 +153,23 @@
               "args": [
                 "main",
                 {
+                  "entity": "Task",
+                  "fields": [
+                    "title",
+                    "completed",
+                    "createdAt"
+                  ],
                   "itemActions": [
                     {
                       "event": "EDIT",
                       "label": "Edit"
                     },
                     {
-                      "label": "Delete",
-                      "event": "DELETE"
+                      "event": "DELETE",
+                      "label": "Delete"
                     }
                   ],
-                  "entity": "Task",
-                  "type": "entity-table",
-                  "fields": [
-                    "title",
-                    "completed",
-                    "createdAt"
-                  ]
+                  "type": "entity-table"
                 }
               ],
               "status": "skipped"
@@ -233,8 +233,8 @@
       "emittedEvents": [],
       "entityByTrait": {
         "TaskCRUD": {
-          "createdAt": "@now",
-          "completed": false
+          "completed": false,
+          "createdAt": "@now"
         }
       },
       "clientEffects": [
@@ -242,23 +242,23 @@
           "render-ui",
           "main",
           {
-            "title": "New Task",
+            "backEvent": "CANCEL",
             "showBack": true,
-            "type": "page-header",
-            "backEvent": "CANCEL"
+            "title": "New Task",
+            "type": "page-header"
           }
         ],
         [
           "render-ui",
           "main",
           {
+            "entity": "Task",
             "fields": [
               "title",
               "description"
             ],
-            "entity": "Task",
-            "onSubmit": "SAVE",
             "onCancel": "CANCEL",
+            "onSubmit": "SAVE",
             "type": "form-section"
           }
         ]
@@ -270,10 +270,10 @@
             "render-ui",
             "main",
             {
-              "title": "New Task",
+              "backEvent": "CANCEL",
               "showBack": true,
-              "type": "page-header",
-              "backEvent": "CANCEL"
+              "title": "New Task",
+              "type": "page-header"
             }
           ],
           "event": "CREATE",
@@ -285,13 +285,13 @@
             "render-ui",
             "main",
             {
+              "entity": "Task",
               "fields": [
                 "title",
                 "description"
               ],
-              "entity": "Task",
-              "onSubmit": "SAVE",
               "onCancel": "CANCEL",
+              "onSubmit": "SAVE",
               "type": "form-section"
             }
           ],
@@ -311,10 +311,10 @@
               "args": [
                 "main",
                 {
-                  "title": "New Task",
-                  "type": "page-header",
                   "backEvent": "CANCEL",
-                  "showBack": true
+                  "showBack": true,
+                  "title": "New Task",
+                  "type": "page-header"
                 }
               ],
               "status": "skipped"
@@ -324,14 +324,14 @@
               "args": [
                 "main",
                 {
-                  "type": "form-section",
-                  "onSubmit": "SAVE",
                   "entity": "Task",
-                  "onCancel": "CANCEL",
                   "fields": [
                     "title",
                     "description"
-                  ]
+                  ],
+                  "onCancel": "CANCEL",
+                  "onSubmit": "SAVE",
+                  "type": "form-section"
                 }
               ],
               "status": "skipped"
@@ -399,13 +399,13 @@
           "render-ui",
           "main",
           {
-            "title": "Tasks",
             "actions": [
               {
-                "label": "New Task",
-                "event": "CREATE"
+                "event": "CREATE",
+                "label": "New Task"
               }
             ],
+            "title": "Tasks",
             "type": "page-header"
           }
         ],
@@ -413,23 +413,23 @@
           "render-ui",
           "main",
           {
+            "entity": "Task",
+            "fields": [
+              "title",
+              "completed",
+              "createdAt"
+            ],
             "itemActions": [
               {
-                "label": "Edit",
-                "event": "EDIT"
+                "event": "EDIT",
+                "label": "Edit"
               },
               {
                 "event": "DELETE",
                 "label": "Delete"
               }
             ],
-            "fields": [
-              "title",
-              "completed",
-              "createdAt"
-            ],
-            "type": "entity-table",
-            "entity": "Task"
+            "type": "entity-table"
           }
         ]
       ],
@@ -440,13 +440,13 @@
             "render-ui",
             "main",
             {
-              "title": "Tasks",
               "actions": [
                 {
-                  "label": "New Task",
-                  "event": "CREATE"
+                  "event": "CREATE",
+                  "label": "New Task"
                 }
               ],
+              "title": "Tasks",
               "type": "page-header"
             }
           ],
@@ -459,23 +459,23 @@
             "render-ui",
             "main",
             {
+              "entity": "Task",
+              "fields": [
+                "title",
+                "completed",
+                "createdAt"
+              ],
               "itemActions": [
                 {
-                  "label": "Edit",
-                  "event": "EDIT"
+                  "event": "EDIT",
+                  "label": "Edit"
                 },
                 {
                   "event": "DELETE",
                   "label": "Delete"
                 }
               ],
-              "fields": [
-                "title",
-                "completed",
-                "createdAt"
-              ],
-              "type": "entity-table",
-              "entity": "Task"
+              "type": "entity-table"
             }
           ],
           "event": "INIT",
@@ -488,6 +488,11 @@
           "action": "create",
           "entityType": "Task",
           "success": false
+        },
+        {
+          "effect": "emit",
+          "success": true,
+          "target": "INIT"
         },
         {
           "effect": "fetch",
@@ -540,8 +545,8 @@
                 {
                   "actions": [
                     {
-                      "label": "New Task",
-                      "event": "CREATE"
+                      "event": "CREATE",
+                      "label": "New Task"
                     }
                   ],
                   "title": "Tasks",
@@ -556,6 +561,11 @@
                 "main",
                 {
                   "entity": "Task",
+                  "fields": [
+                    "title",
+                    "completed",
+                    "createdAt"
+                  ],
                   "itemActions": [
                     {
                       "event": "EDIT",
@@ -566,12 +576,7 @@
                       "label": "Delete"
                     }
                   ],
-                  "type": "entity-table",
-                  "fields": [
-                    "title",
-                    "completed",
-                    "createdAt"
-                  ]
+                  "type": "entity-table"
                 }
               ],
               "status": "skipped"
@@ -647,9 +652,9 @@
       "entityByTrait": {
         "TaskCRUD": {
           "completed": false,
+          "createdAt": "@now",
           "id": "t1",
-          "title": "first",
-          "createdAt": "@now"
+          "title": "first"
         }
       },
       "clientEffects": [
@@ -657,26 +662,26 @@
           "render-ui",
           "main",
           {
-            "type": "page-header",
-            "showBack": true,
             "backEvent": "CANCEL",
-            "title": "Edit Task"
+            "showBack": true,
+            "title": "Edit Task",
+            "type": "page-header"
           }
         ],
         [
           "render-ui",
           "main",
           {
-            "onCancel": "CANCEL",
-            "onSubmit": "SAVE",
-            "type": "form-section",
             "entity": "Task",
+            "entityId": "@payload.row.id",
             "fields": [
               "title",
               "description",
               "completed"
             ],
-            "entityId": "@payload.row.id"
+            "onCancel": "CANCEL",
+            "onSubmit": "SAVE",
+            "type": "form-section"
           }
         ]
       ],
@@ -687,10 +692,10 @@
             "render-ui",
             "main",
             {
-              "type": "page-header",
-              "showBack": true,
               "backEvent": "CANCEL",
-              "title": "Edit Task"
+              "showBack": true,
+              "title": "Edit Task",
+              "type": "page-header"
             }
           ],
           "event": "EDIT",
@@ -702,16 +707,16 @@
             "render-ui",
             "main",
             {
-              "onCancel": "CANCEL",
-              "onSubmit": "SAVE",
-              "type": "form-section",
               "entity": "Task",
+              "entityId": "@payload.row.id",
               "fields": [
                 "title",
                 "description",
                 "completed"
               ],
-              "entityId": "@payload.row.id"
+              "onCancel": "CANCEL",
+              "onSubmit": "SAVE",
+              "type": "form-section"
             }
           ],
           "event": "EDIT",
@@ -747,10 +752,10 @@
               "args": [
                 "main",
                 {
+                  "backEvent": "CANCEL",
                   "showBack": true,
-                  "type": "page-header",
                   "title": "Edit Task",
-                  "backEvent": "CANCEL"
+                  "type": "page-header"
                 }
               ],
               "status": "skipped"
@@ -760,15 +765,15 @@
               "args": [
                 "main",
                 {
-                  "entityId": "@payload.row.id",
                   "entity": "Task",
-                  "onSubmit": "SAVE",
+                  "entityId": "@payload.row.id",
                   "fields": [
                     "title",
                     "description",
                     "completed"
                   ],
                   "onCancel": "CANCEL",
+                  "onSubmit": "SAVE",
                   "type": "form-section"
                 }
               ],
@@ -843,37 +848,23 @@
           "render-ui",
           "main",
           {
-            "actions": [
-              {
-                "event": "CREATE",
-                "label": "New Task"
-              }
-            ],
-            "title": "Tasks",
-            "type": "page-header"
-          }
-        ],
-        [
-          "render-ui",
-          "main",
-          {
+            "entity": "Task",
             "fields": [
               "title",
               "completed",
               "createdAt"
             ],
-            "type": "entity-table",
             "itemActions": [
               {
                 "event": "EDIT",
                 "label": "Edit"
               },
               {
-                "label": "Delete",
-                "event": "DELETE"
+                "event": "DELETE",
+                "label": "Delete"
               }
             ],
-            "entity": "Task"
+            "type": "entity-table"
           }
         ]
       ],
@@ -884,40 +875,23 @@
             "render-ui",
             "main",
             {
-              "actions": [
-                {
-                  "event": "CREATE",
-                  "label": "New Task"
-                }
-              ],
-              "title": "Tasks",
-              "type": "page-header"
-            }
-          ]
-        },
-        {
-          "traitName": "TaskCRUD",
-          "effect": [
-            "render-ui",
-            "main",
-            {
+              "entity": "Task",
               "fields": [
                 "title",
                 "completed",
                 "createdAt"
               ],
-              "type": "entity-table",
               "itemActions": [
                 {
                   "event": "EDIT",
                   "label": "Edit"
                 },
                 {
-                  "label": "Delete",
-                  "event": "DELETE"
+                  "event": "DELETE",
+                  "label": "Delete"
                 }
               ],
-              "entity": "Task"
+              "type": "entity-table"
             }
           ]
         }
@@ -973,8 +947,8 @@
       "emittedEvents": [],
       "entityByTrait": {
         "TaskCRUD": {
-          "createdAt": "@now",
-          "completed": false
+          "completed": false,
+          "createdAt": "@now"
         }
       },
       "guardFailed": "TaskCRUD.NOT_AN_EVENT"

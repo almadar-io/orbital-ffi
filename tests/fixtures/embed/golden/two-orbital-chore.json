@@ -14,8 +14,8 @@
       "emittedEvents": [],
       "entityByTrait": {
         "ChoreCRUD": {
-          "createdAt": "@now",
-          "completed": false
+          "completed": false,
+          "createdAt": "@now"
         }
       },
       "clientEffects": [
@@ -25,8 +25,8 @@
           {
             "actions": [
               {
-                "label": "New Chore",
-                "event": "CREATE"
+                "event": "CREATE",
+                "label": "New Chore"
               }
             ],
             "title": "Chores",
@@ -37,6 +37,7 @@
           "render-ui",
           "main",
           {
+            "entity": "Chore",
             "fields": [
               "title",
               "completed",
@@ -44,15 +45,14 @@
             ],
             "itemActions": [
               {
-                "label": "Edit",
-                "event": "EDIT"
+                "event": "EDIT",
+                "label": "Edit"
               },
               {
-                "label": "Delete",
-                "event": "DELETE"
+                "event": "DELETE",
+                "label": "Delete"
               }
             ],
-            "entity": "Chore",
             "type": "entity-table"
           }
         ]
@@ -66,8 +66,8 @@
             {
               "actions": [
                 {
-                  "label": "New Chore",
-                  "event": "CREATE"
+                  "event": "CREATE",
+                  "label": "New Chore"
                 }
               ],
               "title": "Chores",
@@ -83,6 +83,7 @@
             "render-ui",
             "main",
             {
+              "entity": "Chore",
               "fields": [
                 "title",
                 "completed",
@@ -90,15 +91,14 @@
               ],
               "itemActions": [
                 {
-                  "label": "Edit",
-                  "event": "EDIT"
+                  "event": "EDIT",
+                  "label": "Edit"
                 },
                 {
-                  "label": "Delete",
-                  "event": "DELETE"
+                  "event": "DELETE",
+                  "label": "Delete"
                 }
               ],
-              "entity": "Chore",
               "type": "entity-table"
             }
           ],
@@ -134,8 +134,8 @@
                 {
                   "actions": [
                     {
-                      "label": "New Chore",
-                      "event": "CREATE"
+                      "event": "CREATE",
+                      "label": "New Chore"
                     }
                   ],
                   "title": "Chores",
@@ -149,23 +149,23 @@
               "args": [
                 "main",
                 {
+                  "entity": "Chore",
+                  "fields": [
+                    "title",
+                    "completed",
+                    "createdAt"
+                  ],
                   "itemActions": [
                     {
-                      "label": "Edit",
-                      "event": "EDIT"
+                      "event": "EDIT",
+                      "label": "Edit"
                     },
                     {
                       "event": "DELETE",
                       "label": "Delete"
                     }
                   ],
-                  "type": "entity-table",
-                  "entity": "Chore",
-                  "fields": [
-                    "title",
-                    "completed",
-                    "createdAt"
-                  ]
+                  "type": "entity-table"
                 }
               ],
               "status": "skipped"
@@ -239,18 +239,24 @@
           {
             "actions": [
               {
-                "label": "New Task",
-                "event": "CREATE"
+                "event": "CREATE",
+                "label": "New Task"
               }
             ],
-            "type": "page-header",
-            "title": "Tasks"
+            "title": "Tasks",
+            "type": "page-header"
           }
         ],
         [
           "render-ui",
           "main",
           {
+            "entity": "Task",
+            "fields": [
+              "title",
+              "completed",
+              "createdAt"
+            ],
             "itemActions": [
               {
                 "event": "EDIT",
@@ -261,13 +267,7 @@
                 "label": "Delete"
               }
             ],
-            "type": "entity-table",
-            "entity": "Task",
-            "fields": [
-              "title",
-              "completed",
-              "createdAt"
-            ]
+            "type": "entity-table"
           }
         ]
       ],
@@ -280,12 +280,12 @@
             {
               "actions": [
                 {
-                  "label": "New Task",
-                  "event": "CREATE"
+                  "event": "CREATE",
+                  "label": "New Task"
                 }
               ],
-              "type": "page-header",
-              "title": "Tasks"
+              "title": "Tasks",
+              "type": "page-header"
             }
           ],
           "event": "INIT",
@@ -297,6 +297,12 @@
             "render-ui",
             "main",
             {
+              "entity": "Task",
+              "fields": [
+                "title",
+                "completed",
+                "createdAt"
+              ],
               "itemActions": [
                 {
                   "event": "EDIT",
@@ -307,13 +313,7 @@
                   "label": "Delete"
                 }
               ],
-              "type": "entity-table",
-              "entity": "Task",
-              "fields": [
-                "title",
-                "completed",
-                "createdAt"
-              ]
+              "type": "entity-table"
             }
           ],
           "event": "INIT",
@@ -346,14 +346,14 @@
               "args": [
                 "main",
                 {
-                  "title": "Tasks",
-                  "type": "page-header",
                   "actions": [
                     {
                       "event": "CREATE",
                       "label": "New Task"
                     }
-                  ]
+                  ],
+                  "title": "Tasks",
+                  "type": "page-header"
                 }
               ],
               "status": "skipped"
@@ -363,23 +363,23 @@
               "args": [
                 "main",
                 {
+                  "entity": "Task",
+                  "fields": [
+                    "title",
+                    "completed",
+                    "createdAt"
+                  ],
                   "itemActions": [
                     {
                       "event": "EDIT",
                       "label": "Edit"
                     },
                     {
-                      "label": "Delete",
-                      "event": "DELETE"
+                      "event": "DELETE",
+                      "label": "Delete"
                     }
                   ],
-                  "entity": "Task",
-                  "type": "entity-table",
-                  "fields": [
-                    "title",
-                    "completed",
-                    "createdAt"
-                  ]
+                  "type": "entity-table"
                 }
               ],
               "status": "skipped"
