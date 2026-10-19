@@ -106,13 +106,6 @@
           "fromState": "listing"
         }
       ],
-      "effectResults": [
-        {
-          "effect": "fetch",
-          "entityType": "Chore",
-          "success": false
-        }
-      ],
       "transitions": [
         {
           "trait": "ChoreCRUD",
@@ -318,13 +311,6 @@
           ],
           "event": "INIT",
           "fromState": "listing"
-        }
-      ],
-      "effectResults": [
-        {
-          "effect": "fetch",
-          "entityType": "Task",
-          "success": false
         }
       ],
       "transitions": [

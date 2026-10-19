@@ -110,13 +110,6 @@
           "fromState": "listing"
         }
       ],
-      "effectResults": [
-        {
-          "effect": "fetch",
-          "entityType": "Task",
-          "success": false
-        }
-      ],
       "transitions": [
         {
           "trait": "TaskCRUD",
@@ -484,20 +477,9 @@
       ],
       "effectResults": [
         {
-          "effect": "persist",
-          "action": "create",
-          "entityType": "Task",
-          "success": false
-        },
-        {
           "effect": "emit",
           "success": true,
           "target": "INIT"
-        },
-        {
-          "effect": "fetch",
-          "entityType": "Task",
-          "success": false
         }
       ],
       "transitions": [
@@ -721,13 +703,6 @@
           ],
           "event": "EDIT",
           "fromState": "listing"
-        }
-      ],
-      "effectResults": [
-        {
-          "effect": "fetch",
-          "entityType": "Task",
-          "success": false
         }
       ],
       "transitions": [
