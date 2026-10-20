@@ -48,6 +48,7 @@
           "from": "idle",
           "to": "idle",
           "event": "INIT",
+          "firedArm": 0,
           "effects": [
             {
               "type": "render-ui",
@@ -123,6 +124,7 @@
           "from": "idle",
           "to": "idle",
           "event": "INIT",
+          "firedArm": 0,
           "effects": [
             {
               "type": "render-ui",
@@ -203,6 +205,7 @@
           "from": "idle",
           "to": "idle",
           "event": "BUMP",
+          "firedArm": 0,
           "effects": [
             {
               "type": "set",
@@ -320,6 +323,7 @@
           "from": "idle",
           "to": "idle",
           "event": "BUMP",
+          "firedArm": 0,
           "effects": [
             {
               "type": "set",

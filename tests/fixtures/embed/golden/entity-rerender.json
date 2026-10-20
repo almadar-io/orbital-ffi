@@ -48,6 +48,7 @@
           "from": "running",
           "to": "running",
           "event": "INIT",
+          "firedArm": 0,
           "effects": [
             {
               "type": "render-ui",
@@ -125,6 +126,7 @@
           "from": "showing",
           "to": "showing",
           "event": "INIT",
+          "firedArm": 0,
           "effects": [
             {
               "type": "render-ui",
@@ -201,6 +203,7 @@
           "from": "showing",
           "to": "showing",
           "event": "INIT",
+          "firedArm": 0,
           "effects": [
             {
               "type": "render-ui",

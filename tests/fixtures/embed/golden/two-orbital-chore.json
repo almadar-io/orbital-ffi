@@ -112,6 +112,7 @@
           "from": "listing",
           "to": "listing",
           "event": "INIT",
+          "firedArm": 0,
           "effects": [
             {
               "type": "fetch",
@@ -319,6 +320,7 @@
           "from": "listing",
           "to": "listing",
           "event": "INIT",
+          "firedArm": 0,
           "effects": [
             {
               "type": "fetch",
