@@ -1907,6 +1907,7 @@ mod tests {
             guards: Vec::new(),
             effect_runs: Vec::new(),
             cascade_dropped: Vec::new(),
+            cascade_cut: None,
         };
         recorder.record_applied(
             &|t: &str| {
@@ -2323,6 +2324,7 @@ mod tests {
             guards: Vec::new(),
             effect_runs: Vec::new(),
             cascade_dropped: Vec::new(),
+            cascade_cut: None,
         };
         let blocked = ProcessEventResult {
             executed: false,
@@ -2462,6 +2464,7 @@ mod tests {
             guards: Vec::new(),
             effect_runs: Vec::new(),
             cascade_dropped: Vec::new(),
+            cascade_cut: None,
         };
         recorder.record_applied(
             &|_: &str| "Orb".to_string(),

@@ -1,4 +1,4 @@
-//! The embedded-kernel benchmark's row-independent half: the parity fixtures (`tools/parity-cascade/fixtures`,
+//! The embedded-kernel benchmark's row-independent half: the parity fixtures (`orbital-core/crates/runtime/tests/fixtures/parity`,
 //! read from the folder `ALMADAR_PARITY_FIXTURES` names) and a mirror of `@almadar-io/kernel-bench-tool`'s
 //! `scenario/bench.ts`, so the JSON a row writes merges into the same report: same trace shape per step
 //! (`trait`, `event`, `states`, `effects`, `emits`), same statistics, same workload keys
