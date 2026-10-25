@@ -488,7 +488,7 @@ impl Recorder {
                 journal.push_event(EventLogEntry {
                     event_type: fired.clone(),
                     payload: (!result.payload.is_null())
-                        .then(|| serde_json::to_value(&result.payload).ok())
+                        .then(|| serde_json::to_value(&*result.payload).ok())
                         .flatten(),
                     source: Some(match tick {
                         Some(tick) => serde_json::json!({ "trait": trait_name, "tick": tick }),
@@ -588,7 +588,7 @@ impl Recorder {
                 journal.push_event(EventLogEntry {
                     event_type: event.clone(),
                     payload: (!result.payload.is_null())
-                        .then(|| serde_json::to_value(&result.payload).ok())
+                        .then(|| serde_json::to_value(&*result.payload).ok())
                         .flatten(),
                     source: Some(serde_json::json!({ "trait": trait_name, "fromServer": true })),
                     timestamp: now,
@@ -1901,7 +1901,7 @@ mod tests {
             entity_data: orbital_core::runtime::shared_entity::SharedEntity::null(),
             linked_entity: "Task".into(),
             event: Some("E".into()),
-            payload: CoreValue::Null,
+            payload: std::sync::Arc::new(CoreValue::Null),
             entry: None,
             fired_arm: None,
             transition_index: None,
@@ -2321,7 +2321,7 @@ mod tests {
             entity_data: orbital_core::runtime::shared_entity::SharedEntity::null(),
             linked_entity: "Task".into(),
             event: Some("SAVE".into()),
-            payload: CoreValue::Null,
+            payload: std::sync::Arc::new(CoreValue::Null),
             entry: None,
             fired_arm: None,
             transition_index: None,
