@@ -85,6 +85,7 @@
       ],
       "traits": [
         {
+          "dispatch": "client",
           "effectRow": [
             {
               "kind": "render-ui",
@@ -145,6 +146,7 @@
           }
         },
         {
+          "dispatch": "client",
           "effectRow": [
             {
               "kind": "render-ui",

@@ -127,6 +127,7 @@
       "traits": [
         {
           "category": "interaction",
+          "dispatch": "client",
           "effectRow": [
             {
               "kind": "render-ui",
@@ -148,7 +149,6 @@
           "id": "trt_01M4GGP69BX1FDAAJ41B8BQWHH",
           "linkedEntity": "Arena",
           "linkedEntityId": "ent_01M4GGP69BRBY1WXS1XDC6PV08",
-          "local": true,
           "name": "Mover",
           "scope": "instance",
           "stateMachine": {
@@ -204,6 +204,7 @@
         },
         {
           "category": "interaction",
+          "dispatch": "client",
           "effectRow": [
             {
               "kind": "render-ui",
@@ -216,7 +217,6 @@
           "id": "trt_01M4GGP69BX11XR7CAEBQ7S453",
           "linkedEntity": "Arena",
           "linkedEntityId": "ent_01M4GGP69BRBY1WXS1XDC6PV08",
-          "local": true,
           "name": "ScoreBoard",
           "scope": "instance",
           "stateMachine": {
@@ -256,6 +256,7 @@
         },
         {
           "category": "interaction",
+          "dispatch": "client",
           "effectRow": [
             {
               "kind": "render-ui",
@@ -268,7 +269,6 @@
           "id": "trt_01M4GGP69B8R9VK2Q9Q6FR7M3F",
           "linkedEntity": "Arena",
           "linkedEntityId": "ent_01M4GGP69BRBY1WXS1XDC6PV08",
-          "local": true,
           "name": "Caption",
           "scope": "instance",
           "stateMachine": {

@@ -178,6 +178,7 @@
       "traits": [
         {
           "category": "interaction",
+          "dispatch": "client",
           "effectRow": [
             {
               "kind": "emit",
@@ -233,7 +234,6 @@
           "id": "trt_01M4FRNC8V2N1A7W8BHTZAP1BJ",
           "linkedEntity": "Counter",
           "linkedEntityId": "ent_01M4FRNC8VB6MADPSHWD0XNXCJ",
-          "local": true,
           "name": "Ticker",
           "scope": "instance",
           "stateMachine": {
@@ -399,6 +399,7 @@
         },
         {
           "category": "lifecycle",
+          "dispatch": "client",
           "effectRow": [
             {
               "kind": "set",
@@ -424,7 +425,6 @@
               "triggersId": "evt_01M4FRNC8V5H6EHS87WRWW7C90"
             }
           ],
-          "local": true,
           "name": "Listener",
           "scope": "instance",
           "stateMachine": {

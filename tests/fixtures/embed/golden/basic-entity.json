@@ -189,7 +189,8 @@
               "from": "listing",
               "event": "INIT"
             }
-          ]
+          ],
+          "residence": "server"
         }
       }
     ],
@@ -596,7 +597,8 @@
               "from": "listing",
               "event": "INIT"
             }
-          ]
+          ],
+          "residence": "server"
         }
       }
     ],
@@ -659,7 +661,7 @@
           "main",
           {
             "entity": "Task",
-            "entityId": "@payload.row.id",
+            "entityId": null,
             "fields": [
               "title",
               "description",
@@ -694,7 +696,7 @@
             "main",
             {
               "entity": "Task",
-              "entityId": "@payload.row.id",
+              "entityId": null,
               "fields": [
                 "title",
                 "description",
@@ -782,7 +784,8 @@
               "from": "listing",
               "event": "EDIT"
             }
-          ]
+          ],
+          "residence": "server"
         }
       }
     ],

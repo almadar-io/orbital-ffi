@@ -185,7 +185,8 @@
               "from": "listing",
               "event": "INIT"
             }
-          ]
+          ],
+          "residence": "server"
         }
       }
     ],
@@ -393,7 +394,8 @@
               "from": "listing",
               "event": "INIT"
             }
-          ]
+          ],
+          "residence": "server"
         }
       }
     ],
