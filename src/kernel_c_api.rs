@@ -1632,7 +1632,7 @@ pub(crate) mod tests {
                     "name": "Browsing",
                     "entity": { "name": "Note", "fields": [{ "name": "id", "type": "string" }] },
                     "traits": [{
-                        "name": "Browse", "linkedEntity": "Note", "local": true,
+                        "name": "Browse", "linkedEntity": "Note", "dispatch": "client",
                         "stateMachine": {
                             "states": [{ "name": "ready", "isInitial": true }],
                             "transitions": [{ "from": "ready", "to": "ready", "event": "GO",

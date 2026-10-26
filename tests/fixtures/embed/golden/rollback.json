@@ -13,9 +13,7 @@
       },
       "emittedEvents": [],
       "entityByTrait": {
-        "Driver": {
-          "score": 0.0
-        }
+        "Driver": {}
       },
       "clientEffects": [
         [
@@ -89,9 +87,7 @@
       },
       "emittedEvents": [],
       "entityByTrait": {
-        "Hud": {
-          "score": 0.0
-        }
+        "Hud": {}
       },
       "clientEffects": [
         [

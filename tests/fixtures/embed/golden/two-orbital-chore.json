@@ -13,10 +13,7 @@
       },
       "emittedEvents": [],
       "entityByTrait": {
-        "ChoreCRUD": {
-          "completed": false,
-          "createdAt": "@now"
-        }
+        "ChoreCRUD": {}
       },
       "clientEffects": [
         [
@@ -222,10 +219,7 @@
       },
       "emittedEvents": [],
       "entityByTrait": {
-        "TaskCRUD": {
-          "completed": false,
-          "createdAt": "@now"
-        }
+        "TaskCRUD": {}
       },
       "clientEffects": [
         [

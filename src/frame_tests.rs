@@ -131,6 +131,24 @@ fn a_long_gap_fires_the_interval_tick_once_not_once_per_missed_beat() {
 }
 
 #[test]
+fn a_frame_row_carries_only_the_fields_the_passs_ticks_wrote() {
+    let kernel = booted();
+    kernel.frame(0);
+    let frame = kernel.frame(16);
+    let ticker = &frame["response"]["entityByTrait"]["Ticker"];
+    assert!(ticker["frames"].is_number(), "{frame}");
+    assert!(ticker.get("beats").is_none(), "beats was written by no tick in this pass: {frame}");
+}
+
+#[test]
+fn control_a_pass_that_fires_the_interval_tick_carries_beats_too() {
+    let kernel = booted();
+    kernel.frame(0);
+    let frame = kernel.frame(1000);
+    assert!(frame["response"]["entityByTrait"]["Ticker"]["beats"].is_number(), "{frame}");
+}
+
+#[test]
 fn a_frame_tick_fires_on_every_pass_including_the_first() {
     let kernel = booted();
     for (pass, now) in [0u64, 16, 33].into_iter().enumerate() {

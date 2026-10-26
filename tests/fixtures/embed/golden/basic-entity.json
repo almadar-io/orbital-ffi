@@ -17,10 +17,7 @@
       },
       "emittedEvents": [],
       "entityByTrait": {
-        "TaskCRUD": {
-          "completed": false,
-          "createdAt": "@now"
-        }
+        "TaskCRUD": {}
       },
       "clientEffects": [
         [
@@ -227,10 +224,7 @@
       },
       "emittedEvents": [],
       "entityByTrait": {
-        "TaskCRUD": {
-          "completed": false,
-          "createdAt": "@now"
-        }
+        "TaskCRUD": {}
       },
       "clientEffects": [
         [
@@ -385,10 +379,7 @@
         }
       ],
       "entityByTrait": {
-        "TaskCRUD": {
-          "completed": false,
-          "createdAt": "@now"
-        }
+        "TaskCRUD": {}
       },
       "clientEffects": [
         [
@@ -639,10 +630,7 @@
       "emittedEvents": [],
       "entityByTrait": {
         "TaskCRUD": {
-          "completed": false,
-          "createdAt": "@now",
-          "id": "t1",
-          "title": "first"
+          "id": "t1"
         }
       },
       "clientEffects": [
@@ -820,12 +808,6 @@
         "TaskCRUD": "listing"
       },
       "emittedEvents": [],
-      "entityByTrait": {
-        "TaskCRUD": {
-          "completed": false,
-          "createdAt": "@now"
-        }
-      },
       "clientEffects": [
         [
           "render-ui",
@@ -928,12 +910,6 @@
         "TaskCRUD": "browsing"
       },
       "emittedEvents": [],
-      "entityByTrait": {
-        "TaskCRUD": {
-          "completed": false,
-          "createdAt": "@now"
-        }
-      },
       "guardFailed": "TaskCRUD.NOT_AN_EVENT"
     },
     "serverLegs": [],
@@ -1863,12 +1839,6 @@
         "TaskCRUD": "browsing"
       },
       "emittedEvents": [],
-      "entityByTrait": {
-        "TaskCRUD": {
-          "completed": false,
-          "createdAt": "@now"
-        }
-      },
       "guardFailed": "TaskCRUD.INIT"
     },
     "serverLegs": [],

@@ -14,11 +14,7 @@
       },
       "emittedEvents": [],
       "entityByTrait": {
-        "Ticker": {
-          "beats": 0.0,
-          "frames": 0.0,
-          "guarded": 0.0
-        }
+        "Ticker": {}
       },
       "clientEffects": [
         [
@@ -95,9 +91,7 @@
       },
       "emittedEvents": [],
       "entityByTrait": {
-        "Listener": {
-          "heard": 0.0
-        }
+        "Listener": {}
       },
       "transitions": [
         {
@@ -136,9 +130,7 @@
       "emittedEvents": [],
       "entityByTrait": {
         "Ticker": {
-          "beats": 0.0,
-          "frames": 1.0,
-          "guarded": 0.0
+          "frames": 1.0
         }
       },
       "effectResults": [
@@ -170,9 +162,7 @@
       "emittedEvents": [],
       "entityByTrait": {
         "Ticker": {
-          "beats": 0.0,
-          "frames": 2.0,
-          "guarded": 0.0
+          "frames": 2.0
         }
       },
       "effectResults": [
@@ -357,9 +347,7 @@
       "emittedEvents": [],
       "entityByTrait": {
         "Ticker": {
-          "beats": 1.0,
-          "frames": 4.0,
-          "guarded": 1.0
+          "frames": 4.0
         }
       },
       "effectResults": [
@@ -394,9 +382,7 @@
       "emittedEvents": [],
       "entityByTrait": {
         "Ticker": {
-          "beats": 1.0,
-          "frames": 5.0,
-          "guarded": 1.0
+          "frames": 5.0
         }
       },
       "effectResults": [
@@ -584,9 +570,7 @@
     ],
     "entityByTrait": {
       "Ticker": {
-        "beats": 3.0,
-        "frames": 6.0,
-        "guarded": 2.0
+        "beats": 3.0
       }
     },
     "clientEffects": [
@@ -645,11 +629,7 @@
       },
       "emittedEvents": [],
       "entityByTrait": {
-        "Ticker": {
-          "beats": 3.0,
-          "frames": 6.0,
-          "guarded": 2.0
-        }
+        "Ticker": {}
       },
       "clientEffects": [
         [
@@ -740,8 +720,7 @@
       "entityByTrait": {
         "Ticker": {
           "beats": 4.0,
-          "frames": 7.0,
-          "guarded": 2.0
+          "frames": 7.0
         }
       },
       "clientEffects": [
@@ -867,11 +846,7 @@
       },
       "emittedEvents": [],
       "entityByTrait": {
-        "Ticker": {
-          "beats": 4.0,
-          "frames": 7.0,
-          "guarded": 2.0
-        }
+        "Ticker": {}
       },
       "clientEffects": [
         [

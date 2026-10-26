@@ -13,9 +13,7 @@
       },
       "emittedEvents": [],
       "entityByTrait": {
-        "Mover": {
-          "score": 0.0
-        }
+        "Mover": {}
       },
       "clientEffects": [
         [
@@ -89,9 +87,7 @@
       },
       "emittedEvents": [],
       "entityByTrait": {
-        "ScoreBoard": {
-          "score": 0.0
-        }
+        "ScoreBoard": {}
       },
       "clientEffects": [
         [
@@ -168,9 +164,7 @@
       },
       "emittedEvents": [],
       "entityByTrait": {
-        "Caption": {
-          "score": 0.0
-        }
+        "Caption": {}
       },
       "clientEffects": [
         [
