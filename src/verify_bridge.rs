@@ -692,20 +692,17 @@ impl orbital_core::embed::EmbedObserver for RecorderObserver {
     }
 }
 
-/// The `entity_id` `dispatch_with_server_leg` defaults to, so state reads address the same instance.
-const SINGLETON: &str = "singleton";
-
 /// A trait's current state — its declared initial one while untouched; `None` for an unknown trait.
 fn current_state(kernel: &RuntimeKernel, trait_name: &str) -> Option<String> {
     kernel
-        .trait_snapshot(Some(SINGLETON))
+        .trait_snapshot(None)
         .remove(trait_name)
         .map(|(state, _)| state)
         .filter(|s| !s.is_empty())
 }
 
 fn trait_states(kernel: &RuntimeKernel, traits: &[TraitMeta]) -> HashMap<String, String> {
-    let mut all = kernel.trait_snapshot(Some(SINGLETON));
+    let mut all = kernel.trait_snapshot(None);
     traits
         .iter()
         .map(|t| {
