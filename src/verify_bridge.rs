@@ -541,7 +541,7 @@ impl Recorder {
             orbital_name: orbital_of(trait_name),
             success: response.success,
             transitioned: response.transitioned,
-            client_effects: response.client_effects.as_ref().map_or(0, Vec::len),
+            client_effects: response.client_effects_by_trait.as_ref().map_or(0, Vec::len),
             data_entities: response
                 .data
                 .iter()
