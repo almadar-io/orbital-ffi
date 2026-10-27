@@ -16,17 +16,6 @@
       "entityByTrait": {
         "Ticker": {}
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "main",
-          {
-            "label": "Beats",
-            "type": "stat-display",
-            "value": 0.0
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "Ticker",
@@ -124,22 +113,13 @@
     "response": {
       "success": true,
       "transitioned": true,
-      "states": {
-        "Ticker": "running"
-      },
+      "states": {},
       "emittedEvents": [],
       "entityByTrait": {
         "Ticker": {
           "frames": 1.0
         }
-      },
-      "effectResults": [
-        {
-          "effect": "set",
-          "action": "@entity.frames",
-          "success": true
-        }
-      ]
+      }
     },
     "dispatches": [],
     "browserLegs": [],
@@ -156,22 +136,13 @@
     "response": {
       "success": true,
       "transitioned": true,
-      "states": {
-        "Ticker": "running"
-      },
+      "states": {},
       "emittedEvents": [],
       "entityByTrait": {
         "Ticker": {
           "frames": 2.0
         }
-      },
-      "effectResults": [
-        {
-          "effect": "set",
-          "action": "@entity.frames",
-          "success": true
-        }
-      ]
+      }
     },
     "dispatches": [],
     "browserLegs": [],
@@ -196,9 +167,7 @@
     "response": {
       "success": true,
       "transitioned": true,
-      "states": {
-        "Ticker": "running"
-      },
+      "states": {},
       "emittedEvents": [
         {
           "event": "BEAT",
@@ -217,17 +186,6 @@
           "guarded": 1.0
         }
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "main",
-          {
-            "label": "Beats",
-            "type": "stat-display",
-            "value": 1.0
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "Ticker",
@@ -240,28 +198,6 @@
               "value": 1.0
             }
           ]
-        }
-      ],
-      "effectResults": [
-        {
-          "effect": "set",
-          "action": "@entity.beats",
-          "success": true
-        },
-        {
-          "effect": "emit",
-          "success": true,
-          "target": "BEAT"
-        },
-        {
-          "effect": "set",
-          "action": "@entity.frames",
-          "success": true
-        },
-        {
-          "effect": "set",
-          "action": "@entity.guarded",
-          "success": true
         }
       ]
     },
@@ -341,22 +277,13 @@
     "response": {
       "success": true,
       "transitioned": true,
-      "states": {
-        "Ticker": "running"
-      },
+      "states": {},
       "emittedEvents": [],
       "entityByTrait": {
         "Ticker": {
           "frames": 4.0
         }
-      },
-      "effectResults": [
-        {
-          "effect": "set",
-          "action": "@entity.frames",
-          "success": true
-        }
-      ]
+      }
     },
     "dispatches": [],
     "browserLegs": [],
@@ -376,22 +303,13 @@
     "response": {
       "success": true,
       "transitioned": true,
-      "states": {
-        "Ticker": "running"
-      },
+      "states": {},
       "emittedEvents": [],
       "entityByTrait": {
         "Ticker": {
           "frames": 5.0
         }
-      },
-      "effectResults": [
-        {
-          "effect": "set",
-          "action": "@entity.frames",
-          "success": true
-        }
-      ]
+      }
     },
     "dispatches": [],
     "browserLegs": [],
@@ -416,9 +334,7 @@
     "response": {
       "success": true,
       "transitioned": true,
-      "states": {
-        "Ticker": "running"
-      },
+      "states": {},
       "emittedEvents": [
         {
           "event": "BEAT",
@@ -437,17 +353,6 @@
           "guarded": 2.0
         }
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "main",
-          {
-            "label": "Beats",
-            "type": "stat-display",
-            "value": 2.0
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "Ticker",
@@ -460,28 +365,6 @@
               "value": 2.0
             }
           ]
-        }
-      ],
-      "effectResults": [
-        {
-          "effect": "set",
-          "action": "@entity.beats",
-          "success": true
-        },
-        {
-          "effect": "emit",
-          "success": true,
-          "target": "BEAT"
-        },
-        {
-          "effect": "set",
-          "action": "@entity.frames",
-          "success": true
-        },
-        {
-          "effect": "set",
-          "action": "@entity.guarded",
-          "success": true
         }
       ]
     },
@@ -573,17 +456,6 @@
         "beats": 3.0
       }
     },
-    "clientEffects": [
-      [
-        "render-ui",
-        "main",
-        {
-          "label": "Beats",
-          "type": "stat-display",
-          "value": 3.0
-        }
-      ]
-    ],
     "clientEffectsByTrait": [
       {
         "traitName": "Ticker",
@@ -631,16 +503,6 @@
       "entityByTrait": {
         "Ticker": {}
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "main",
-          {
-            "title": "Stopped",
-            "type": "card"
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "Ticker",
@@ -703,9 +565,7 @@
     "response": {
       "success": true,
       "transitioned": true,
-      "states": {
-        "Ticker": "stopped"
-      },
+      "states": {},
       "emittedEvents": [
         {
           "event": "BEAT",
@@ -723,17 +583,6 @@
           "frames": 7.0
         }
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "main",
-          {
-            "label": "Beats",
-            "type": "stat-display",
-            "value": 4.0
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "Ticker",
@@ -746,23 +595,6 @@
               "value": 4.0
             }
           ]
-        }
-      ],
-      "effectResults": [
-        {
-          "effect": "set",
-          "action": "@entity.beats",
-          "success": true
-        },
-        {
-          "effect": "emit",
-          "success": true,
-          "target": "BEAT"
-        },
-        {
-          "effect": "set",
-          "action": "@entity.frames",
-          "success": true
         }
       ]
     },
@@ -848,17 +680,6 @@
       "entityByTrait": {
         "Ticker": {}
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "main",
-          {
-            "label": "Beats",
-            "type": "stat-display",
-            "value": 4.0
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "Ticker",
@@ -927,9 +748,7 @@
     "response": {
       "success": true,
       "transitioned": true,
-      "states": {
-        "Ticker": "running"
-      },
+      "states": {},
       "emittedEvents": [
         {
           "event": "BEAT",
@@ -948,17 +767,6 @@
           "guarded": 3.0
         }
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "main",
-          {
-            "label": "Beats",
-            "type": "stat-display",
-            "value": 5.0
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "Ticker",
@@ -971,28 +779,6 @@
               "value": 5.0
             }
           ]
-        }
-      ],
-      "effectResults": [
-        {
-          "effect": "set",
-          "action": "@entity.beats",
-          "success": true
-        },
-        {
-          "effect": "emit",
-          "success": true,
-          "target": "BEAT"
-        },
-        {
-          "effect": "set",
-          "action": "@entity.frames",
-          "success": true
-        },
-        {
-          "effect": "set",
-          "action": "@entity.guarded",
-          "success": true
         }
       ]
     },

@@ -15,45 +15,6 @@
       "entityByTrait": {
         "ChoreCRUD": {}
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "main",
-          {
-            "actions": [
-              {
-                "event": "CREATE",
-                "label": "New Chore"
-              }
-            ],
-            "title": "Chores",
-            "type": "page-header"
-          }
-        ],
-        [
-          "render-ui",
-          "main",
-          {
-            "entity": "Chore",
-            "fields": [
-              "title",
-              "completed",
-              "createdAt"
-            ],
-            "itemActions": [
-              {
-                "event": "EDIT",
-                "label": "Edit"
-              },
-              {
-                "event": "DELETE",
-                "label": "Delete"
-              }
-            ],
-            "type": "entity-table"
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "ChoreCRUD",
@@ -221,45 +182,6 @@
       "entityByTrait": {
         "TaskCRUD": {}
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "main",
-          {
-            "actions": [
-              {
-                "event": "CREATE",
-                "label": "New Task"
-              }
-            ],
-            "title": "Tasks",
-            "type": "page-header"
-          }
-        ],
-        [
-          "render-ui",
-          "main",
-          {
-            "entity": "Task",
-            "fields": [
-              "title",
-              "completed",
-              "createdAt"
-            ],
-            "itemActions": [
-              {
-                "event": "EDIT",
-                "label": "Edit"
-              },
-              {
-                "event": "DELETE",
-                "label": "Delete"
-              }
-            ],
-            "type": "entity-table"
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "TaskCRUD",

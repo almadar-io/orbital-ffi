@@ -15,16 +15,6 @@
       "entityByTrait": {
         "Mover": {}
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "main",
-          {
-            "content": "Mover",
-            "type": "typography"
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "Mover",
@@ -89,17 +79,6 @@
       "entityByTrait": {
         "ScoreBoard": {}
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "hud",
-          {
-            "label": "Score",
-            "type": "stat-display",
-            "value": 0.0
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "ScoreBoard",
@@ -166,16 +145,6 @@
       "entityByTrait": {
         "Caption": {}
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "sidebar",
-          {
-            "content": "Static caption",
-            "type": "typography"
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "Caption",
@@ -236,17 +205,6 @@
         "score": 1.0
       }
     },
-    "clientEffects": [
-      [
-        "render-ui",
-        "hud",
-        {
-          "label": "Score",
-          "type": "stat-display",
-          "value": 1.0
-        }
-      ]
-    ],
     "clientEffectsByTrait": [
       {
         "traitName": "ScoreBoard",
@@ -280,26 +238,13 @@
     "response": {
       "success": true,
       "transitioned": true,
-      "states": {
-        "Mover": "running"
-      },
+      "states": {},
       "emittedEvents": [],
       "entityByTrait": {
         "Mover": {
           "score": 2.0
         }
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "hud",
-          {
-            "label": "Score",
-            "type": "stat-display",
-            "value": 2.0
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "ScoreBoard",
@@ -312,13 +257,6 @@
               "value": 2.0
             }
           ]
-        }
-      ],
-      "effectResults": [
-        {
-          "effect": "set",
-          "action": "@entity.score",
-          "success": true
         }
       ]
     },

@@ -234,11 +234,11 @@ fn one_frame_merges_every_due_tick_into_a_single_response() {
     assert_eq!(field(&frame, "Ticker", "beats"), 1.0);
     assert_eq!(field(&frame, "Ticker", "frames"), 2.0);
     assert_eq!(field(&frame, "Ticker", "guarded"), 1.0);
-    let renders = frame["response"]["clientEffects"]
+    let renders = frame["response"]["clientEffectsByTrait"]
         .as_array()
         .expect("beat's render-ui is a client effect");
     assert_eq!(renders.len(), 1, "{frame}");
-    assert_eq!(renders[0][0], "render-ui", "{frame}");
+    assert_eq!(renders[0]["effect"][0], "render-ui", "{frame}");
 }
 
 #[test]
@@ -268,7 +268,7 @@ fn a_tick_emit_cascades_to_its_listener_through_the_dispatch_path() {
         "the emitter is not an outcome of its own emit: {frame}"
     );
     assert!(
-        dispatches[0]["response"]["clientEffects"].is_null(),
+        dispatches[0]["response"]["clientEffectsByTrait"].is_null(),
         "no repaint of the emitter's last render: {frame}"
     );
 

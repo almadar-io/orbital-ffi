@@ -143,10 +143,10 @@ impl Session for HandleSession {
                     .collect()
             })
             .unwrap_or_default();
-        let effects = response
-            .get("clientEffects")
+        let effects: Vec<Json> = response
+            .get("clientEffectsByTrait")
             .and_then(Json::as_array)
-            .cloned()
+            .map(|entries| entries.iter().map(|e| e["effect"].clone()).collect())
             .unwrap_or_default();
         Ok(json!({
             "trait": step.trait_name, "event": step.event,

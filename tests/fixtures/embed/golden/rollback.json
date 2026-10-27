@@ -15,16 +15,6 @@
       "entityByTrait": {
         "Driver": {}
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "main",
-          {
-            "content": "driver",
-            "type": "typography"
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "Driver",
@@ -89,16 +79,6 @@
       "entityByTrait": {
         "Hud": {}
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "sidebar",
-          {
-            "content": 0.0,
-            "type": "typography"
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "Hud",
@@ -165,16 +145,6 @@
           "score": 1.0
         }
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "sidebar",
-          {
-            "content": 1.0,
-            "type": "typography"
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "Hud",
@@ -234,16 +204,6 @@
     "transitioned": false,
     "states": {},
     "emittedEvents": [],
-    "clientEffects": [
-      [
-        "render-ui",
-        "sidebar",
-        {
-          "content": 0.0,
-          "type": "typography"
-        }
-      ]
-    ],
     "clientEffectsByTrait": [
       {
         "traitName": "Hud",
@@ -283,16 +243,6 @@
           "score": 1.0
         }
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "sidebar",
-          {
-            "content": 1.0,
-            "type": "typography"
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "Hud",

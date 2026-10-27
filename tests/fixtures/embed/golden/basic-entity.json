@@ -19,45 +19,6 @@
       "entityByTrait": {
         "TaskCRUD": {}
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "main",
-          {
-            "actions": [
-              {
-                "event": "CREATE",
-                "label": "New Task"
-              }
-            ],
-            "title": "Tasks",
-            "type": "page-header"
-          }
-        ],
-        [
-          "render-ui",
-          "main",
-          {
-            "entity": "Task",
-            "fields": [
-              "title",
-              "completed",
-              "createdAt"
-            ],
-            "itemActions": [
-              {
-                "event": "EDIT",
-                "label": "Edit"
-              },
-              {
-                "event": "DELETE",
-                "label": "Delete"
-              }
-            ],
-            "type": "entity-table"
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "TaskCRUD",
@@ -226,32 +187,6 @@
       "entityByTrait": {
         "TaskCRUD": {}
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "main",
-          {
-            "backEvent": "CANCEL",
-            "showBack": true,
-            "title": "New Task",
-            "type": "page-header"
-          }
-        ],
-        [
-          "render-ui",
-          "main",
-          {
-            "entity": "Task",
-            "fields": [
-              "title",
-              "description"
-            ],
-            "onCancel": "CANCEL",
-            "onSubmit": "SAVE",
-            "type": "form-section"
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "TaskCRUD",
@@ -381,45 +316,6 @@
       "entityByTrait": {
         "TaskCRUD": {}
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "main",
-          {
-            "actions": [
-              {
-                "event": "CREATE",
-                "label": "New Task"
-              }
-            ],
-            "title": "Tasks",
-            "type": "page-header"
-          }
-        ],
-        [
-          "render-ui",
-          "main",
-          {
-            "entity": "Task",
-            "fields": [
-              "title",
-              "completed",
-              "createdAt"
-            ],
-            "itemActions": [
-              {
-                "event": "EDIT",
-                "label": "Edit"
-              },
-              {
-                "event": "DELETE",
-                "label": "Delete"
-              }
-            ],
-            "type": "entity-table"
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "TaskCRUD",
@@ -633,34 +529,6 @@
           "id": "t1"
         }
       },
-      "clientEffects": [
-        [
-          "render-ui",
-          "main",
-          {
-            "backEvent": "CANCEL",
-            "showBack": true,
-            "title": "Edit Task",
-            "type": "page-header"
-          }
-        ],
-        [
-          "render-ui",
-          "main",
-          {
-            "entity": "Task",
-            "entityId": null,
-            "fields": [
-              "title",
-              "description",
-              "completed"
-            ],
-            "onCancel": "CANCEL",
-            "onSubmit": "SAVE",
-            "type": "form-section"
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "TaskCRUD",
@@ -808,31 +676,6 @@
         "TaskCRUD": "listing"
       },
       "emittedEvents": [],
-      "clientEffects": [
-        [
-          "render-ui",
-          "main",
-          {
-            "entity": "Task",
-            "fields": [
-              "title",
-              "completed",
-              "createdAt"
-            ],
-            "itemActions": [
-              {
-                "event": "EDIT",
-                "label": "Edit"
-              },
-              {
-                "event": "DELETE",
-                "label": "Delete"
-              }
-            ],
-            "type": "entity-table"
-          }
-        ]
-      ],
       "clientEffectsByTrait": [
         {
           "traitName": "TaskCRUD",

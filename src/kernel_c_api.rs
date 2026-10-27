@@ -1584,12 +1584,12 @@ pub(crate) mod tests {
     fn apply_wire_carries_the_outcomes_render_ui_effect() {
         let wire = unsafe { apply_loaded(true) };
         assert_eq!(wire["applied"], serde_json::json!([["Browse", "browsing"]]));
-        let effects = wire["response"]["clientEffects"]
+        let effects = wire["response"]["clientEffectsByTrait"]
             .as_array()
-            .unwrap_or_else(|| panic!("clientEffects missing: {wire}"));
+            .unwrap_or_else(|| panic!("clientEffectsByTrait missing: {wire}"));
         assert_eq!(effects.len(), 1, "{wire}");
-        assert_eq!(effects[0][0], "render-ui");
-        assert_eq!(effects[0][1], "main");
+        assert_eq!(effects[0]["effect"][0], "render-ui");
+        assert_eq!(effects[0]["effect"][1], "main");
         assert_eq!(
             wire["response"]["clientEffectsByTrait"][0]["traitName"],
             "Browse"
@@ -1601,7 +1601,7 @@ pub(crate) mod tests {
     fn apply_wire_of_an_effectless_outcome_carries_no_client_effects() {
         let wire = unsafe { apply_loaded(false) };
         assert_eq!(wire["applied"], serde_json::json!([["Browse", "browsing"]]));
-        let effects = wire["response"].get("clientEffects");
+        let effects = wire["response"].get("clientEffectsByTrait");
         assert!(
             effects.map_or(true, |e| e.is_null()
                 || e.as_array().is_some_and(Vec::is_empty)),
