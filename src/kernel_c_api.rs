@@ -89,6 +89,28 @@ fn to_json<T: Serialize>(handle: &OrbitalKernelHandle, value: &T) -> *mut c_char
     }
 }
 
+/// Why `orbital_kernel_init` returns no handle; the C boundary reports every kind as null.
+#[derive(Debug)]
+enum InitError {
+    Argument(String),
+    Entry(orbital_core::runtime::kernel::EntryError),
+}
+
+impl std::fmt::Display for InitError {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Argument(message) => f.write_str(message),
+            Self::Entry(error) => error.fmt(f),
+        }
+    }
+}
+
+impl From<orbital_core::runtime::kernel::EntryError> for InitError {
+    fn from(error: orbital_core::runtime::kernel::EntryError) -> Self {
+        Self::Entry(error)
+    }
+}
+
 /// Create a kernel handle from an ALREADY-RESOLVED schema JSON (`orb compile`'s
 /// `resolved_schema.json`) and a client id. Every trait is indexed to its
 /// owning orbital (see `TraitOwners`). Returns null (nothing to report through — no handle yet)
@@ -103,12 +125,15 @@ pub unsafe extern "C" fn orbital_kernel_init(
     client_id: *const c_char,
 ) -> *mut OrbitalKernelHandle {
     let result = catch_unwind(AssertUnwindSafe(
-        || -> Result<OrbitalKernelHandle, String> {
-            let schema_json = read_str(resolved_schema_json)
-                .ok_or("resolved_schema_json is null/invalid utf-8")?;
-            let client_id = read_str(client_id).ok_or("client_id is null/invalid utf-8")?;
+        || -> Result<OrbitalKernelHandle, InitError> {
+            let schema_json = read_str(resolved_schema_json).ok_or(InitError::Argument(
+                "resolved_schema_json is null/invalid utf-8".to_string(),
+            ))?;
+            let client_id = read_str(client_id).ok_or(InitError::Argument(
+                "client_id is null/invalid utf-8".to_string(),
+            ))?;
             let schema: OrbitalSchema = serde_json::from_str(schema_json)
-                .map_err(|e| format!("parse resolved schema: {e}"))?;
+                .map_err(|e| InitError::Argument(format!("parse resolved schema: {e}")))?;
 
             #[cfg(feature = "verify-bridge")]
             let verify =
@@ -132,7 +157,11 @@ pub unsafe extern "C" fn orbital_kernel_init(
 
     match result {
         Ok(Ok(handle)) => Box::into_raw(Box::new(handle)),
-        Ok(Err(_)) | Err(_) => ptr::null_mut(),
+        Ok(Err(error)) => {
+            eprintln!("orbital_kernel_init: {error}");
+            ptr::null_mut()
+        }
+        Err(_) => ptr::null_mut(),
     }
 }
 
