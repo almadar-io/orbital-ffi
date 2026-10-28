@@ -1,4 +1,5 @@
 {
+  "typeContractVersion": 1,
   "description": "Native tick conformance row: an interval tick, a frame tick, a state-guarded tick and a tick whose emit a peer trait hears must all advance state on a client kernel.",
   "ledger": {
     "entries": {

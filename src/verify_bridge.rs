@@ -1992,6 +1992,7 @@ mod tests {
     fn local_seed_downstream_persist_schema_json() -> String {
         serde_json::json!({
             "name": "App",
+            "typeContractVersion": 1,
             "orbitals": [{
                 "name": "Main",
                 "entity": { "name": "Message", "fields": [
@@ -2126,6 +2127,7 @@ mod tests {
         }
         serde_json::json!({
             "name": "App",
+            "typeContractVersion": 1,
             "orbitals": [{
                 "name": "Main",
                 "entity": { "name": "Note", "fields": [{ "name": "id", "type": "string" }, { "name": "title", "type": "string" }] },
@@ -2203,6 +2205,7 @@ mod tests {
     fn an_emit_its_own_trait_consumes_is_journaled_once_like_the_web_bus() {
         let schema = serde_json::json!({
             "name": "App",
+            "typeContractVersion": 1,
             "orbitals": [{
                 "name": "Main",
                 "entity": { "name": "Note", "fields": [{ "name": "id", "type": "string" }] },

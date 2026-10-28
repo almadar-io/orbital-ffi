@@ -1541,6 +1541,7 @@ pub(crate) mod tests {
         };
         serde_json::json!({
             "name": "App",
+            "typeContractVersion": 1,
             "orbitals": [{
                 "name": "Main",
                 "entity": { "name": "Item", "fields": [{ "name": "id", "type": "string" }] },
@@ -1627,6 +1628,7 @@ pub(crate) mod tests {
     fn two_orbital_listener_schema_json() -> String {
         serde_json::json!({
             "name": "App",
+            "typeContractVersion": 1,
             "orbitals": [
                 {
                     "name": "Browsing",

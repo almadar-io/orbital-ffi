@@ -12,7 +12,7 @@ fn c(s: &str) -> CString {
 
 fn schema() -> CString {
     c(&json!({
-        "name": "rows", "orbitals": [{
+        "name": "rows", "typeContractVersion": 1, "orbitals": [{
             "name": "Main",
             "entity": {
                 "name": "Ticket", "persistence": "runtime",

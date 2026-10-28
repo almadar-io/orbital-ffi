@@ -315,6 +315,7 @@ fn control_a_frame_does_not_wait_when_no_call_is_in_flight() {
 fn persisting_listener_schema() -> String {
     serde_json::json!({
         "name": "App",
+        "typeContractVersion": 1,
         "orbitals": [{
             "name": "Main",
             "entity": { "name": "Note", "fields": [
@@ -435,6 +436,7 @@ fn two_tick_schema(writer_first: bool) -> String {
     let traits = if writer_first { vec![writer, emitter, hud] } else { vec![emitter, writer, hud] };
     serde_json::json!({
         "name": "order",
+        "typeContractVersion": 1,
         "orbitals": [{
             "name": "Main",
             "entity": { "name": "Board", "shared": true, "persistence": "runtime",

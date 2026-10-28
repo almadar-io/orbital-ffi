@@ -1,4 +1,5 @@
 {
+  "typeContractVersion": 1,
   "description": "Native repaint conformance row: a tick that writes a shared entity repaints a sibling trait whose render-ui reads it, and leaves a sibling that reads nothing alone.",
   "ledger": {
     "entries": {

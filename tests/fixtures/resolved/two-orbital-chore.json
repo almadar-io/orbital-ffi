@@ -1,4 +1,5 @@
 {
+  "typeContractVersion": 1,
   "description": "Simple CRUD operations test schema",
   "ledger": {
     "entries": {
