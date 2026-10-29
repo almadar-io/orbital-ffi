@@ -11,8 +11,6 @@
 //! thread and a background reconcile thread share one handle.
 
 use orbital_core::embed::{parse_theme_mode, EmbeddedKernel};
-#[cfg(feature = "verify-bridge")]
-use orbital_core::runtime::RuntimeKernel;
 use orbital_core::runtime::TraitSnapshot;
 use orbital_core::{EventResponse, OrbitalSchema, Value};
 use parking_lot::{Mutex, RwLock};
@@ -37,18 +35,7 @@ pub struct OrbitalKernelHandle {
     /// so overlapping calls would steal each other's delegated effects.
     /// Writers (dispatch and every mutator) are exclusive; reads share.
     pub(crate) call_lock: Arc<RwLock<()>>,
-    #[cfg(feature = "verify-bridge")]
-    verify: crate::verify_bridge::HandleBridge,
 }
-
-/// Host dispatch callback for the verify bridge's `/send` (`trait_scope` and
-/// `payload_json` are null when absent). Invoked on the bridge thread.
-pub type VerifyDispatchCallback = extern "C" fn(
-    ctx: *mut c_void,
-    trait_scope: *const c_char,
-    event: *const c_char,
-    payload_json: *const c_char,
-);
 
 fn set_error(handle: &OrbitalKernelHandle, msg: impl Into<String>) {
     *handle.last_error.lock() = msg.into();
@@ -135,22 +122,12 @@ pub unsafe extern "C" fn orbital_kernel_init(
             let schema: OrbitalSchema = serde_json::from_str(schema_json)
                 .map_err(|e| InitError::Argument(format!("parse resolved schema: {e}")))?;
 
-            #[cfg(feature = "verify-bridge")]
-            let verify =
-                crate::verify_bridge::HandleBridge::new(crate::verify_bridge::trait_metas(&schema));
-            #[cfg_attr(not(feature = "verify-bridge"), allow(unused_mut))]
-            let mut embedded = EmbeddedKernel::new(schema, client_id)?;
-            #[cfg(feature = "verify-bridge")]
-            embedded.set_observer(Arc::new(crate::verify_bridge::RecorderObserver(
-                Arc::clone(&verify.recorder),
-            )));
+            let embedded = EmbeddedKernel::new(schema, client_id)?;
 
             Ok(OrbitalKernelHandle {
                 embedded,
                 last_error: Mutex::new(String::new()),
                 call_lock: Arc::new(RwLock::new(())),
-                #[cfg(feature = "verify-bridge")]
-                verify,
             })
         },
     ));
@@ -174,10 +151,6 @@ pub unsafe extern "C" fn orbital_kernel_init(
 pub unsafe extern "C" fn orbital_kernel_destroy(handle: *mut OrbitalKernelHandle) {
     if !handle.is_null() {
         let _ = catch_unwind(AssertUnwindSafe(|| {
-            #[cfg(feature = "verify-bridge")]
-            if let Some(mut server) = (*handle).verify.server.lock().take() {
-                server.stop();
-            }
             let _ = Box::from_raw(handle);
         }));
     }
@@ -223,8 +196,6 @@ pub unsafe extern "C" fn orbital_kernel_dispatch(
             _ => Value::Null,
         };
 
-        #[cfg(feature = "verify-bridge")]
-        handle_ref.verify.recorder.note_dispatch_call();
         handle_ref
             .embedded
             .dispatch(trait_name, entity_id, event, payload)
@@ -326,13 +297,8 @@ pub unsafe extern "C" fn orbital_kernel_restore(
     }
 }
 
-/// A server leg failed at transport level and the host has no snapshot to
-/// restore (`PersistedAwaited`): lower the verify bridge's `pending` count
-/// (saturating at 0) and journal `server-leg-failed` as
-/// `{orbital, event, error}` (`event`/`error` nullable, `error` verbatim);
-/// `orbital` is the owner of `trait_name`. An unknown/ambiguous trait sets
-/// `last_error` (the pending count is still lowered). A no-op without the
-/// `verify-bridge` feature.
+/// A server leg failed at transport level and the host has no snapshot to restore (`PersistedAwaited`). The kernel
+/// keeps no record of an abandoned leg, so this does nothing; it stays in the C ABI for the generated bridges that call it.
 ///
 /// # Safety
 /// `handle` must be valid or null; `event`/`error` must be valid C strings or null.
@@ -343,47 +309,7 @@ pub unsafe extern "C" fn orbital_kernel_abandon_server_leg(
     event: *const c_char,
     error: *const c_char,
 ) {
-    if handle.is_null() {
-        return;
-    }
-    #[cfg(feature = "verify-bridge")]
-    {
-        let handle_ref = &*handle;
-        let _call = handle_ref.call_lock.write();
-        let Some(trait_name) = read_str(trait_name) else {
-            handle_ref
-                .verify
-                .recorder
-                .note_server_leg_abandoned_unattributed();
-            set_error(handle_ref, "trait_name is null/invalid utf-8");
-            return;
-        };
-        let orbital = match handle_ref.embedded.owning_orbital(trait_name) {
-            Ok(orbital) => orbital.to_string(),
-            Err(e) => {
-                handle_ref
-                    .verify
-                    .recorder
-                    .note_server_leg_abandoned_unattributed();
-                set_error(handle_ref, e);
-                return;
-            }
-        };
-        let event = read_str(event).map(str::to_string);
-        let error = read_str(error).map(str::to_string);
-        let result = catch_unwind(AssertUnwindSafe(|| {
-            handle_ref.verify.recorder.note_server_leg_abandoned(
-                &orbital,
-                event.as_deref(),
-                error.as_deref(),
-            );
-        }));
-        if result.is_err() {
-            set_error(handle_ref, "panic during abandon_server_leg");
-        }
-    }
-    #[cfg(not(feature = "verify-bridge"))]
-    let _ = (trait_name, event, error);
+    let _ = (handle, trait_name, event, error);
 }
 
 /// Run one scheduled tick and return the resulting `EventResponse` JSON (the
@@ -795,231 +721,6 @@ pub unsafe extern "C" fn orbital_kernel_last_error(
     to_c_string(handle_ref.last_error.lock().clone())
 }
 
-/// Start the verify bridge's HTTP server on 127.0.0.1:`port` (0 = ephemeral)
-/// and begin recording dispatches. Returns the bound port, or 0 on failure
-/// (`last_error` says why). Already running → the existing port. Without the
-/// `verify-bridge` feature this always returns 0.
-///
-/// # Safety
-/// `handle` must be valid; must be called at most from DEBUG hosts.
-#[no_mangle]
-pub unsafe extern "C" fn orbital_verify_bridge_start(
-    handle: *mut OrbitalKernelHandle,
-    port: u16,
-) -> i32 {
-    if handle.is_null() {
-        return 0;
-    }
-    let handle_ref = &*handle;
-    #[cfg(feature = "verify-bridge")]
-    {
-        let result = catch_unwind(AssertUnwindSafe(|| -> Result<u16, String> {
-            let mut server = handle_ref.verify.server.lock();
-            if let Some(existing) = server.as_ref() {
-                return Ok(existing.port());
-            }
-            let started = crate::verify_bridge::BridgeServer::start(
-                handle_ref.embedded.kernel() as *const RuntimeKernel,
-                Arc::clone(handle_ref.embedded.entities()),
-                Arc::clone(&handle_ref.verify.recorder),
-                Arc::clone(&handle_ref.verify.callback),
-                Arc::clone(&handle_ref.call_lock),
-                port,
-            )
-            .map_err(|e| format!("verify bridge bind 127.0.0.1:{port}: {e}"))?;
-            handle_ref.verify.recorder.set_enabled(true);
-            let bound = started.port();
-            *server = Some(started);
-            Ok(bound)
-        }));
-        match result {
-            Ok(Ok(bound)) => i32::from(bound),
-            Ok(Err(e)) => {
-                set_error(handle_ref, e);
-                0
-            }
-            Err(_) => {
-                set_error(handle_ref, "panic during verify bridge start");
-                0
-            }
-        }
-    }
-    #[cfg(not(feature = "verify-bridge"))]
-    {
-        let _ = port;
-        set_error(
-            handle_ref,
-            "orbital-ffi was built without the verify-bridge feature",
-        );
-        0
-    }
-}
-
-/// Stop the verify bridge server (joins its thread) and stop recording.
-/// A no-op when it is not running or the feature is off.
-///
-/// # Safety
-/// `handle` must be valid.
-#[no_mangle]
-pub unsafe extern "C" fn orbital_verify_bridge_stop(handle: *mut OrbitalKernelHandle) {
-    #[cfg(not(feature = "verify-bridge"))]
-    let _ = handle;
-    #[cfg(feature = "verify-bridge")]
-    if !handle.is_null() {
-        let handle_ref = &*handle;
-        let _ = catch_unwind(AssertUnwindSafe(|| {
-            if let Some(mut server) = handle_ref.verify.server.lock().take() {
-                server.stop();
-            }
-            handle_ref.verify.recorder.set_enabled(false);
-        }));
-    }
-}
-
-/// Register (or, with a null `callback`, clear) the host function `/send`
-/// invokes so a bridge-sent event takes the same path as a tap. `ctx` is
-/// handed back verbatim. Returns 1 when stored, 0 when not (null handle, or
-/// the `verify-bridge` feature is off) — the caller then owns `ctx` still.
-///
-/// # Safety
-/// `handle` must be valid; `callback` must stay callable until cleared or the
-/// handle is destroyed.
-#[no_mangle]
-pub unsafe extern "C" fn orbital_verify_bridge_set_dispatch_callback(
-    handle: *mut OrbitalKernelHandle,
-    callback: Option<VerifyDispatchCallback>,
-    ctx: *mut c_void,
-) -> i32 {
-    if handle.is_null() {
-        return 0;
-    }
-    #[cfg(feature = "verify-bridge")]
-    {
-        let handle_ref = &*handle;
-        *handle_ref.verify.callback.lock() =
-            callback.map(|callback| crate::verify_bridge::CallbackSlot {
-                callback,
-                ctx: ctx as usize,
-            });
-        1
-    }
-    #[cfg(not(feature = "verify-bridge"))]
-    {
-        let _ = (callback, ctx);
-        0
-    }
-}
-
-/// Publish the host's current route so the bridge serves it in `/snapshot`
-/// and `/route`; a null `route` clears it. Returns 1 when stored, 0 when not
-/// (null handle, or the `verify-bridge` feature is off).
-///
-/// # Safety
-/// `handle` must be valid; `route` must be a valid C string or null.
-#[no_mangle]
-pub unsafe extern "C" fn orbital_verify_bridge_set_route(
-    handle: *mut OrbitalKernelHandle,
-    route: *const c_char,
-) -> i32 {
-    if handle.is_null() {
-        return 0;
-    }
-    #[cfg(feature = "verify-bridge")]
-    {
-        let handle_ref = &*handle;
-        handle_ref
-            .verify
-            .recorder
-            .set_route(read_str(route).map(str::to_string));
-        1
-    }
-    #[cfg(not(feature = "verify-bridge"))]
-    {
-        let _ = route;
-        0
-    }
-}
-
-/// Tell the verify bridge whether the host has finished mounting: `/idle`
-/// reports idle only while `ready != 0`. The host clears it at the start of the
-/// mount and sets it once the page's `INIT` dispatches are all issued (their
-/// legs are then counted in `pending`). Returns 1 when stored, 0 when not
-/// (null handle, or the `verify-bridge` feature is off).
-///
-/// # Safety
-/// `handle` must be valid.
-#[no_mangle]
-pub unsafe extern "C" fn orbital_verify_bridge_set_ready(
-    handle: *mut OrbitalKernelHandle,
-    ready: i32,
-) -> i32 {
-    if handle.is_null() {
-        return 0;
-    }
-    #[cfg(feature = "verify-bridge")]
-    {
-        let handle_ref = &*handle;
-        handle_ref.verify.recorder.set_ready(ready != 0);
-        1
-    }
-    #[cfg(not(feature = "verify-bridge"))]
-    {
-        let _ = ready;
-        0
-    }
-}
-
-/// The host folded render generation `generation` into its view state: `/idle` stays false until
-/// the host reports that generation drawn (`orbital_verify_bridge_painted`). Returns 1 when
-/// stored, 0 when not (null handle, or the `verify-bridge` feature is off).
-///
-/// # Safety
-/// `handle` must be valid.
-#[no_mangle]
-pub unsafe extern "C" fn orbital_verify_bridge_folded(
-    handle: *mut OrbitalKernelHandle,
-    generation: u64,
-) -> i32 {
-    if handle.is_null() {
-        return 0;
-    }
-    #[cfg(feature = "verify-bridge")]
-    {
-        (*handle).verify.recorder.set_folded(generation);
-        1
-    }
-    #[cfg(not(feature = "verify-bridge"))]
-    {
-        let _ = generation;
-        0
-    }
-}
-
-/// The host drew render generation `generation` (its view committed it). Returns 1 when stored,
-/// 0 when not (null handle, or the `verify-bridge` feature is off).
-///
-/// # Safety
-/// `handle` must be valid.
-#[no_mangle]
-pub unsafe extern "C" fn orbital_verify_bridge_painted(
-    handle: *mut OrbitalKernelHandle,
-    generation: u64,
-) -> i32 {
-    if handle.is_null() {
-        return 0;
-    }
-    #[cfg(feature = "verify-bridge")]
-    {
-        (*handle).verify.recorder.set_painted(generation);
-        1
-    }
-    #[cfg(not(feature = "verify-bridge"))]
-    {
-        let _ = generation;
-        0
-    }
-}
-
 /// Free a string returned by any `orbital_kernel_*` function.
 ///
 /// # Safety
@@ -1070,18 +771,6 @@ pub const KERNEL_C_SYMBOLS: &[&str] = &[
     "orbital_kernel_mount",
     "orbital_kernel_last_error",
     "orbital_kernel_free_string",
-];
-
-/// The verify-bridge C ABI. Exported by every build (inert stubs without the
-/// `verify-bridge` feature) so a DEBUG host links against any `orbital-ffi`.
-pub const VERIFY_BRIDGE_C_SYMBOLS: &[&str] = &[
-    "orbital_verify_bridge_start",
-    "orbital_verify_bridge_stop",
-    "orbital_verify_bridge_set_dispatch_callback",
-    "orbital_verify_bridge_set_route",
-    "orbital_verify_bridge_set_ready",
-    "orbital_verify_bridge_folded",
-    "orbital_verify_bridge_painted",
 ];
 
 #[cfg(test)]
@@ -1846,32 +1535,6 @@ pub(crate) mod tests {
                 wrong_init.len(),
                 wrong_delete.len()
             );
-            orbital_kernel_destroy(handle);
-        }
-    }
-
-    #[cfg(not(feature = "verify-bridge"))]
-    #[test]
-    fn verify_bridge_is_inert_without_the_feature() {
-        extern "C" fn never(_: *mut c_void, _: *const c_char, _: *const c_char, _: *const c_char) {}
-        unsafe {
-            let handle = init_handle();
-            assert_eq!(orbital_verify_bridge_start(handle, 0), 0);
-            let err = orbital_kernel_last_error(handle);
-            assert!(CStr::from_ptr(err)
-                .to_str()
-                .unwrap()
-                .contains("verify-bridge"));
-            orbital_kernel_free_string(err);
-            assert_eq!(
-                orbital_verify_bridge_set_dispatch_callback(handle, Some(never), ptr::null_mut()),
-                0
-            );
-            let route = cstr("/tasks");
-            assert_eq!(orbital_verify_bridge_set_route(handle, route.as_ptr()), 0);
-            assert_eq!(orbital_verify_bridge_set_ready(handle, 1), 0);
-            orbital_kernel_abandon_server_leg(handle, ptr::null(), ptr::null(), ptr::null());
-            orbital_verify_bridge_stop(handle);
             orbital_kernel_destroy(handle);
         }
     }

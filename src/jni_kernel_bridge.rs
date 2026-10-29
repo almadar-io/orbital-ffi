@@ -22,10 +22,7 @@ use crate::kernel_c_api::{
     orbital_kernel_remount, orbital_kernel_resolve_rows, orbital_kernel_restore,
     orbital_kernel_seed, orbital_kernel_set_current_user, orbital_kernel_set_theme_mode,
     orbital_kernel_set_trait_on_screen, orbital_kernel_snapshot, orbital_kernel_tick,
-    orbital_kernel_tick_count, orbital_verify_bridge_folded, orbital_verify_bridge_painted,
-    orbital_verify_bridge_set_dispatch_callback, orbital_verify_bridge_set_ready,
-    orbital_verify_bridge_set_route, orbital_verify_bridge_start, orbital_verify_bridge_stop,
-    OrbitalKernelHandle,
+    orbital_kernel_tick_count, OrbitalKernelHandle,
 };
 use jni::objects::{GlobalRef, JClass, JObject, JString, JValue};
 use jni::sys::{jboolean, jint, jlong, jstring};
@@ -66,13 +63,6 @@ pub const KERNEL_JNI_SYMBOLS: &[&str] = &[
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeMount",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeLastError",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeOutstandingStrings",
-    "Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgeStart",
-    "Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgeStop",
-    "Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgeSetDispatchCallback",
-    "Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgeSetRoute",
-    "Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgeSetReady",
-    "Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgeFolded",
-    "Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgePainted",
 ];
 
 fn handle_of(handle: jlong) -> *mut OrbitalKernelHandle {
@@ -512,203 +502,6 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeLa
     outcome.unwrap_or(std::ptr::null_mut())
 }
 
-/// What the C callback's `ctx` points at for a JNI-registered listener: the
-/// VM to attach the bridge thread to and a global ref to the Kotlin
-/// `OrbitalVerifyDispatchListener`. One is allocated per registration and
-/// lives until process exit (a debug-only, once-per-launch registration).
-struct JniDispatchListener {
-    vm: JavaVM,
-    target: GlobalRef,
-}
-
-fn optional_str(p: *const c_char) -> Option<String> {
-    if p.is_null() {
-        None
-    } else {
-        unsafe { CStr::from_ptr(p) }
-            .to_str()
-            .ok()
-            .map(str::to_string)
-    }
-}
-
-/// Bridge-thread trampoline: calls `OrbitalVerifyDispatchListener.onVerifyDispatch(traitScope, event, payloadJson)`.
-extern "C" fn jni_verify_dispatch_trampoline(
-    ctx: *mut c_void,
-    trait_scope: *const c_char,
-    event: *const c_char,
-    payload_json: *const c_char,
-) {
-    let _ = catch_panic(|| {
-        let listener = unsafe { &*(ctx as *const JniDispatchListener) };
-        let mut env = listener.vm.attach_current_thread().ok()?;
-        let scope = optional_str(trait_scope)
-            .map(|s| env.new_string(s))
-            .transpose()
-            .ok()?;
-        let event = env.new_string(optional_str(event)?).ok()?;
-        let payload = optional_str(payload_json)
-            .map(|s| env.new_string(s))
-            .transpose()
-            .ok()?;
-        let scope = scope.map(JObject::from).unwrap_or_else(JObject::null);
-        let payload = payload.map(JObject::from).unwrap_or_else(JObject::null);
-        let call = env.call_method(
-            &listener.target,
-            "onVerifyDispatch",
-            "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
-            &[
-                JValue::Object(&scope),
-                JValue::Object(&event),
-                JValue::Object(&payload),
-            ],
-        );
-        if call.is_err() {
-            let _ = env.exception_clear();
-        }
-        Some(())
-    });
-}
-
-/// JNI entry: `OrbitalKernelBridge.nativeVerifyBridgeStart(handle, port)`. Returns the bound port, `0` on failure.
-#[no_mangle]
-pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgeStart<
-    'local,
->(
-    _env: JNIEnv<'local>,
-    _class: JClass<'local>,
-    handle: jlong,
-    port: jint,
-) -> jint {
-    let Ok(port) = u16::try_from(port) else {
-        return 0;
-    };
-    catch_panic(|| unsafe { orbital_verify_bridge_start(handle_of(handle), port) }).unwrap_or(0)
-}
-
-/// JNI entry: `OrbitalKernelBridge.nativeVerifyBridgeStop(handle)`.
-#[no_mangle]
-pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgeStop<
-    'local,
->(
-    _env: JNIEnv<'local>,
-    _class: JClass<'local>,
-    handle: jlong,
-) {
-    let _ = catch_panic(|| unsafe { orbital_verify_bridge_stop(handle_of(handle)) });
-}
-
-/// JNI entry: `OrbitalKernelBridge.nativeVerifyBridgeSetDispatchCallback(handle, listener)`.
-/// A null `listener` clears the callback. Returns whether the native side stored it.
-#[no_mangle]
-pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgeSetDispatchCallback<
-    'local,
->(
-    env: JNIEnv<'local>,
-    _class: JClass<'local>,
-    handle: jlong,
-    listener: JObject<'local>,
-) -> bool {
-    let stored = catch_panic(|| {
-        if listener.is_null() {
-            return Some(unsafe {
-                orbital_verify_bridge_set_dispatch_callback(
-                    handle_of(handle),
-                    None,
-                    std::ptr::null_mut(),
-                )
-            });
-        }
-        let vm = env.get_java_vm().ok()?;
-        let target = env.new_global_ref(&listener).ok()?;
-        let ctx = Box::into_raw(Box::new(JniDispatchListener { vm, target }));
-        let stored = unsafe {
-            orbital_verify_bridge_set_dispatch_callback(
-                handle_of(handle),
-                Some(jni_verify_dispatch_trampoline),
-                ctx as *mut c_void,
-            )
-        };
-        if stored == 0 {
-            drop(unsafe { Box::from_raw(ctx) });
-        }
-        Some(stored)
-    });
-    matches!(stored, Ok(Some(1)))
-}
-
-/// JNI entry: `OrbitalKernelBridge.nativeVerifyBridgeSetRoute(handle, route)`.
-/// A null `route` clears it. Returns whether the native side stored it.
-#[no_mangle]
-pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgeSetRoute<
-    'local,
->(
-    mut env: JNIEnv<'local>,
-    _class: JClass<'local>,
-    handle: jlong,
-    route: JString<'local>,
-) -> bool {
-    let stored = catch_panic(|| {
-        let route = optional_cstring(&mut env, &route);
-        Some(unsafe {
-            orbital_verify_bridge_set_route(
-                handle_of(handle),
-                route.as_deref().map_or(std::ptr::null(), |c| c.as_ptr()),
-            )
-        })
-    });
-    matches!(stored, Ok(Some(1)))
-}
-
-/// JNI entry: `OrbitalKernelBridge.nativeVerifyBridgeSetReady(handle, ready)`.
-/// Returns whether the native side stored it.
-#[no_mangle]
-pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgeSetReady<
-    'local,
->(
-    _env: JNIEnv<'local>,
-    _class: JClass<'local>,
-    handle: jlong,
-    ready: jboolean,
-) -> bool {
-    let stored = catch_panic(|| unsafe {
-        orbital_verify_bridge_set_ready(handle_of(handle), i32::from(ready != 0))
-    });
-    matches!(stored, Ok(1))
-}
-
-/// JNI entry: `OrbitalKernelBridge.nativeVerifyBridgeFolded(handle, generation)`.
-#[no_mangle]
-pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgeFolded<
-    'local,
->(
-    _env: JNIEnv<'local>,
-    _class: JClass<'local>,
-    handle: jlong,
-    generation: jlong,
-) -> bool {
-    let stored = catch_panic(|| unsafe {
-        orbital_verify_bridge_folded(handle_of(handle), generation.max(0) as u64)
-    });
-    matches!(stored, Ok(1))
-}
-
-/// JNI entry: `OrbitalKernelBridge.nativeVerifyBridgePainted(handle, generation)`.
-#[no_mangle]
-pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeVerifyBridgePainted<
-    'local,
->(
-    _env: JNIEnv<'local>,
-    _class: JClass<'local>,
-    handle: jlong,
-    generation: jlong,
-) -> bool {
-    let stored = catch_panic(|| unsafe {
-        orbital_verify_bridge_painted(handle_of(handle), generation.max(0) as u64)
-    });
-    matches!(stored, Ok(1))
-}
-
 #[cfg(test)]
 mod tests {
     use super::KERNEL_JNI_SYMBOLS;
@@ -762,32 +555,6 @@ mod tests {
             assert!(
                 KERNEL_JNI_SYMBOLS.contains(&expected.as_str()),
                 "no JNI forwarder for C ABI symbol {c_symbol:?} (expected {expected:?})"
-            );
-        }
-    }
-
-    /// Every verify-bridge C ABI symbol has a JNI forwarder (`orbital_verify_bridge_start` ->
-    /// `nativeVerifyBridgeStart`).
-    #[test]
-    fn every_verify_bridge_c_symbol_has_a_jni_forwarder() {
-        for c_symbol in crate::kernel_c_api::VERIFY_BRIDGE_C_SYMBOLS {
-            let camel: String = c_symbol
-                .strip_prefix("orbital_")
-                .unwrap()
-                .split('_')
-                .map(|part| {
-                    let mut chars = part.chars();
-                    chars
-                        .next()
-                        .map(|f| f.to_ascii_uppercase().to_string() + chars.as_str())
-                        .unwrap_or_default()
-                })
-                .collect();
-            let expected =
-                format!("Java_generated_patterns_core_OrbitalKernelBridge_native{camel}");
-            assert!(
-                KERNEL_JNI_SYMBOLS.contains(&expected.as_str()),
-                "no JNI forwarder {expected}"
             );
         }
     }

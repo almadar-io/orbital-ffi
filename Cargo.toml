@@ -12,8 +12,6 @@ crate-type = ["staticlib", "cdylib", "rlib"]
 
 [features]
 default = []
-# In-app observation + dispatch channel for `orb verify` (debug shells only).
-verify-bridge = []
 
 [dependencies]
 orbital-canvas = { git = "https://github.com/almadar-io/orbital-canvas", branch = "main", features = ["http"] }
