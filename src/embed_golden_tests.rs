@@ -77,13 +77,6 @@ unsafe fn run_step(handle: *mut OrbitalKernelHandle, step: &Value) -> Value {
                 snapshot.as_ptr(),
             ))
         }
-        "abandon" => {
-            let t = s("trait");
-            let e = opt_cstr(step.get("event"));
-            let err = opt_cstr(step.get("error"));
-            orbital_kernel_abandon_server_leg(handle, t.as_ptr(), opt_ptr(&e), opt_ptr(&err));
-            Value::Null
-        }
         "tick" => {
             let t = s("trait");
             let k = s("tick");

@@ -24,7 +24,6 @@
     { "op": "lastError" },
     { "op": "mount", "traits": ["TaskCRUD"] },
     { "op": "dispatch", "trait": "TaskCRUD", "event": "INIT" },
-    { "op": "abandon", "trait": "TaskCRUD", "event": "SAVE", "error": "boom" },
     { "op": "getState", "trait": "NoSuchTrait" }
   ]
 }

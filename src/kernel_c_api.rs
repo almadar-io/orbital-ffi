@@ -297,21 +297,6 @@ pub unsafe extern "C" fn orbital_kernel_restore(
     }
 }
 
-/// A server leg failed at transport level and the host has no snapshot to restore (`PersistedAwaited`). The kernel
-/// keeps no record of an abandoned leg, so this does nothing; it stays in the C ABI for the generated bridges that call it.
-///
-/// # Safety
-/// `handle` must be valid or null; `event`/`error` must be valid C strings or null.
-#[no_mangle]
-pub unsafe extern "C" fn orbital_kernel_abandon_server_leg(
-    handle: *mut OrbitalKernelHandle,
-    trait_name: *const c_char,
-    event: *const c_char,
-    error: *const c_char,
-) {
-    let _ = (handle, trait_name, event, error);
-}
-
 /// Run one scheduled tick and return the resulting `EventResponse` JSON (the
 /// same client-effect fold shape `dispatch`'s `response` field carries).
 ///
@@ -754,7 +739,6 @@ pub const KERNEL_C_SYMBOLS: &[&str] = &[
     "orbital_kernel_dispatch",
     "orbital_kernel_apply_server_response",
     "orbital_kernel_restore",
-    "orbital_kernel_abandon_server_leg",
     "orbital_kernel_tick",
     "orbital_kernel_frame",
     "orbital_kernel_frame_pause",

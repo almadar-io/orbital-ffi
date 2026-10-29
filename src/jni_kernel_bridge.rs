@@ -14,7 +14,7 @@
 
 use crate::jni_util::{catch_panic, optional_cstring, required_cstring, take_c_string_as_jstring};
 use crate::kernel_c_api::{
-    orbital_kernel_abandon_server_leg, orbital_kernel_apply_server_response,
+    orbital_kernel_apply_server_response,
     orbital_kernel_destroy, orbital_kernel_dispatch, orbital_kernel_frame,
     orbital_kernel_frame_pause, orbital_kernel_frame_resume, orbital_kernel_frames_since,
     orbital_kernel_free_string, orbital_kernel_get_state, orbital_kernel_init,
@@ -45,7 +45,6 @@ pub const KERNEL_JNI_SYMBOLS: &[&str] = &[
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeDispatch",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeApplyServerResponse",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeRestore",
-    "Java_generated_patterns_core_OrbitalKernelBridge_nativeAbandonServerLeg",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeFramesSince",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeTick",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeFrame",
@@ -188,36 +187,6 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeRe
         Some(unsafe { take_c_string_as_jstring(&mut env, raw, orbital_kernel_free_string) })
     });
     outcome.ok().flatten().unwrap_or(std::ptr::null_mut())
-}
-
-/// JNI entry: `OrbitalKernelBridge.nativeAbandonServerLeg(handle, trait, event, error)`.
-#[no_mangle]
-pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeAbandonServerLeg<
-    'local,
->(
-    mut env: JNIEnv<'local>,
-    _class: JClass<'local>,
-    handle: jlong,
-    trait_name: JString<'local>,
-    event: JString<'local>,
-    error: JString<'local>,
-) {
-    let _ = catch_panic(|| {
-        let trait_name = optional_cstring(&mut env, &trait_name);
-        let event = optional_cstring(&mut env, &event);
-        let error = optional_cstring(&mut env, &error);
-        unsafe {
-            orbital_kernel_abandon_server_leg(
-                handle_of(handle),
-                trait_name
-                    .as_deref()
-                    .map_or(std::ptr::null(), |c| c.as_ptr()),
-                event.as_deref().map_or(std::ptr::null(), |c| c.as_ptr()),
-                error.as_deref().map_or(std::ptr::null(), |c| c.as_ptr()),
-            );
-        }
-        Some(())
-    });
 }
 
 /// JNI entry: `OrbitalKernelBridge.nativeFramesSince(handle, since)`: the `FrameDelta` JSON a painter at `since` needs.
