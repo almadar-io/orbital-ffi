@@ -5,6 +5,7 @@
   null,
   {
     "orbital": "Task Management",
+    "flight": 0,
     "seed": {
       "trait": "TaskCRUD",
       "event": "INIT"
@@ -16,8 +17,20 @@
         "TaskCRUD": "listing"
       },
       "emittedEvents": [],
-      "entityByTrait": {
-        "TaskCRUD": {}
+      "frames": {
+        "session": "$program",
+        "from": 0,
+        "to": 1,
+        "ops": [
+          [
+            "clear"
+          ],
+          [
+            "put",
+            "TaskCRUD",
+            {}
+          ]
+        ]
       },
       "clientEffectsByTrait": [
         {
@@ -45,12 +58,24 @@
             "render-ui",
             "main",
             {
-              "entity": "Task",
-              "fields": [
-                "title",
-                "completed",
-                "createdAt"
+              "columns": [
+                {
+                  "key": "title",
+                  "label": "Title"
+                },
+                {
+                  "key": "completed",
+                  "label": "Completed"
+                },
+                {
+                  "key": "createdAt",
+                  "label": "Created"
+                }
               ],
+              "entity": {
+                "completed": false,
+                "createdAt": "@now"
+              },
               "itemActions": [
                 {
                   "event": "EDIT",
@@ -61,7 +86,7 @@
                   "label": "Delete"
                 }
               ],
-              "type": "entity-table"
+              "type": "table-view"
             }
           ],
           "event": "INIT",
@@ -105,12 +130,21 @@
               "args": [
                 "main",
                 {
-                  "entity": "Task",
-                  "fields": [
-                    "title",
-                    "completed",
-                    "createdAt"
+                  "columns": [
+                    {
+                      "key": "title",
+                      "label": "Title"
+                    },
+                    {
+                      "key": "completed",
+                      "label": "Completed"
+                    },
+                    {
+                      "key": "createdAt",
+                      "label": "Created"
+                    }
                   ],
+                  "entity": "@entity",
                   "itemActions": [
                     {
                       "event": "EDIT",
@@ -121,7 +155,7 @@
                       "label": "Delete"
                     }
                   ],
-                  "type": "entity-table"
+                  "type": "table-view"
                 }
               ],
               "status": "skipped"
@@ -173,6 +207,7 @@
   "listing",
   {
     "orbital": "Task Management",
+    "flight": 1,
     "seed": {
       "trait": "TaskCRUD",
       "event": "CREATE"
@@ -184,9 +219,6 @@
         "TaskCRUD": "creating"
       },
       "emittedEvents": [],
-      "entityByTrait": {
-        "TaskCRUD": {}
-      },
       "clientEffectsByTrait": [
         {
           "traitName": "TaskCRUD",
@@ -209,7 +241,10 @@
             "render-ui",
             "main",
             {
-              "entity": "Task",
+              "entity": {
+                "completed": false,
+                "createdAt": "@now"
+              },
               "fields": [
                 "title",
                 "description"
@@ -249,7 +284,7 @@
               "args": [
                 "main",
                 {
-                  "entity": "Task",
+                  "entity": "@entity",
                   "fields": [
                     "title",
                     "description"
@@ -293,226 +328,11 @@
   },
   "creating",
   {
-    "orbital": "Task Management",
-    "seed": {
-      "trait": "TaskCRUD",
-      "event": "SAVE"
-    },
-    "response": {
-      "success": true,
-      "transitioned": true,
-      "states": {
-        "TaskCRUD": "listing"
-      },
-      "emittedEvents": [
-        {
-          "event": "INIT",
-          "source": {
-            "trait": "TaskCRUD",
-            "dispatched": true
-          }
-        }
-      ],
-      "entityByTrait": {
-        "TaskCRUD": {}
-      },
-      "clientEffectsByTrait": [
-        {
-          "traitName": "TaskCRUD",
-          "effect": [
-            "render-ui",
-            "main",
-            {
-              "actions": [
-                {
-                  "event": "CREATE",
-                  "label": "New Task"
-                }
-              ],
-              "title": "Tasks",
-              "type": "page-header"
-            }
-          ],
-          "event": "INIT",
-          "fromState": "listing"
-        },
-        {
-          "traitName": "TaskCRUD",
-          "effect": [
-            "render-ui",
-            "main",
-            {
-              "entity": "Task",
-              "fields": [
-                "title",
-                "completed",
-                "createdAt"
-              ],
-              "itemActions": [
-                {
-                  "event": "EDIT",
-                  "label": "Edit"
-                },
-                {
-                  "event": "DELETE",
-                  "label": "Delete"
-                }
-              ],
-              "type": "entity-table"
-            }
-          ],
-          "event": "INIT",
-          "fromState": "listing"
-        }
-      ],
-      "effectResults": [
-        {
-          "effect": "emit",
-          "success": true,
-          "target": "INIT"
-        }
-      ],
-      "transitions": [
-        {
-          "trait": "TaskCRUD",
-          "from": "creating",
-          "to": "listing",
-          "event": "SAVE",
-          "firedArm": 0,
-          "effects": [
-            {
-              "type": "persist",
-              "args": [
-                "create",
-                "Task",
-                "@payload.data"
-              ],
-              "status": "executed"
-            },
-            {
-              "type": "emit",
-              "args": [
-                "INIT"
-              ],
-              "status": "skipped"
-            }
-          ]
-        },
-        {
-          "trait": "TaskCRUD",
-          "from": "listing",
-          "to": "listing",
-          "event": "INIT",
-          "firedArm": 0,
-          "effects": [
-            {
-              "type": "fetch",
-              "args": [
-                "Task"
-              ],
-              "status": "executed"
-            },
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "actions": [
-                    {
-                      "event": "CREATE",
-                      "label": "New Task"
-                    }
-                  ],
-                  "title": "Tasks",
-                  "type": "page-header"
-                }
-              ],
-              "status": "skipped"
-            },
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "entity": "Task",
-                  "fields": [
-                    "title",
-                    "completed",
-                    "createdAt"
-                  ],
-                  "itemActions": [
-                    {
-                      "event": "EDIT",
-                      "label": "Edit"
-                    },
-                    {
-                      "event": "DELETE",
-                      "label": "Delete"
-                    }
-                  ],
-                  "type": "entity-table"
-                }
-              ],
-              "status": "skipped"
-            }
-          ]
-        }
-      ]
-    },
-    "serverLegs": [
-      {
-        "orbital": "Task Management",
-        "leg": {
-          "event": "SAVE",
-          "payload": {
-            "data": {
-              "title": "third"
-            },
-            "_awaitingInit": []
-          },
-          "targetTrait": "TaskCRUD",
-          "clientId": "golden-client",
-          "sourceTrait": "TaskCRUD",
-          "traits": [
-            {
-              "trait": "TaskCRUD",
-              "from": "creating",
-              "event": "SAVE"
-            },
-            {
-              "trait": "TaskCRUD",
-              "from": "listing",
-              "event": "INIT"
-            }
-          ],
-          "residence": "server"
-        }
-      }
-    ],
-    "mode": "persistedAwaited",
-    "snapshot": null,
-    "alreadyDelivered": [
-      [
-        "TaskCRUD",
-        "INIT"
-      ],
-      [
-        "TaskCRUD",
-        "SAVE"
-      ]
-    ],
-    "awaiting": [
-      {
-        "trait": "TaskCRUD",
-        "event": "SAVE",
-        "from": "creating"
-      }
-    ],
-    "statefulLeg": null,
-    "foldSeeded": []
+    "error": "Payload validation failed for event 'SAVE': data.id (missing, expected string)"
   },
   {
     "orbital": "Task Management",
+    "flight": 2,
     "seed": {
       "trait": "TaskCRUD",
       "event": "EDIT"
@@ -524,10 +344,20 @@
         "TaskCRUD": "editing"
       },
       "emittedEvents": [],
-      "entityByTrait": {
-        "TaskCRUD": {
-          "id": "t1"
-        }
+      "frames": {
+        "session": "$program",
+        "from": 1,
+        "to": 2,
+        "ops": [
+          [
+            "set",
+            {
+              "TaskCRUD": {
+                "id": "t1"
+              }
+            }
+          ]
+        ]
       },
       "clientEffectsByTrait": [
         {
@@ -551,13 +381,18 @@
             "render-ui",
             "main",
             {
-              "entity": "Task",
-              "entityId": null,
+              "entity": {
+                "completed": false,
+                "createdAt": "@now",
+                "id": "t1",
+                "title": "first"
+              },
               "fields": [
                 "title",
                 "description",
                 "completed"
               ],
+              "initialData": null,
               "onCancel": "CANCEL",
               "onSubmit": "SAVE",
               "type": "form-section"
@@ -603,13 +438,13 @@
               "args": [
                 "main",
                 {
-                  "entity": "Task",
-                  "entityId": "@payload.row.id",
+                  "entity": "@entity",
                   "fields": [
                     "title",
                     "description",
                     "completed"
                   ],
+                  "initialData": "@payload.row",
                   "onCancel": "CANCEL",
                   "onSubmit": "SAVE",
                   "type": "form-section"
@@ -665,13 +500,14 @@
   },
   {
     "orbital": "Task Management",
+    "flight": 3,
     "seed": {
       "trait": "TaskCRUD",
       "event": "CANCEL"
     },
     "response": {
       "success": true,
-      "transitioned": false,
+      "transitioned": true,
       "states": {
         "TaskCRUD": "listing"
       },
@@ -683,12 +519,43 @@
             "render-ui",
             "main",
             {
-              "entity": "Task",
-              "fields": [
-                "title",
-                "completed",
-                "createdAt"
+              "actions": [
+                {
+                  "event": "CREATE",
+                  "label": "New Task"
+                }
               ],
+              "title": "Tasks",
+              "type": "page-header"
+            }
+          ],
+          "event": "CANCEL",
+          "fromState": "creating"
+        },
+        {
+          "traitName": "TaskCRUD",
+          "effect": [
+            "render-ui",
+            "main",
+            {
+              "columns": [
+                {
+                  "key": "title",
+                  "label": "Title"
+                },
+                {
+                  "key": "completed",
+                  "label": "Completed"
+                },
+                {
+                  "key": "createdAt",
+                  "label": "Created"
+                }
+              ],
+              "entity": {
+                "completed": false,
+                "createdAt": "@now"
+              },
               "itemActions": [
                 {
                   "event": "EDIT",
@@ -699,31 +566,122 @@
                   "label": "Delete"
                 }
               ],
-              "type": "entity-table"
+              "type": "table-view"
+            }
+          ],
+          "event": "CANCEL",
+          "fromState": "creating"
+        }
+      ],
+      "transitions": [
+        {
+          "trait": "TaskCRUD",
+          "from": "creating",
+          "to": "listing",
+          "event": "CANCEL",
+          "firedArm": 0,
+          "effects": [
+            {
+              "type": "fetch",
+              "args": [
+                "Task"
+              ],
+              "status": "executed"
+            },
+            {
+              "type": "render-ui",
+              "args": [
+                "main",
+                {
+                  "actions": [
+                    {
+                      "event": "CREATE",
+                      "label": "New Task"
+                    }
+                  ],
+                  "title": "Tasks",
+                  "type": "page-header"
+                }
+              ],
+              "status": "skipped"
+            },
+            {
+              "type": "render-ui",
+              "args": [
+                "main",
+                {
+                  "columns": [
+                    {
+                      "key": "title",
+                      "label": "Title"
+                    },
+                    {
+                      "key": "completed",
+                      "label": "Completed"
+                    },
+                    {
+                      "key": "createdAt",
+                      "label": "Created"
+                    }
+                  ],
+                  "entity": "@entity",
+                  "itemActions": [
+                    {
+                      "event": "EDIT",
+                      "label": "Edit"
+                    },
+                    {
+                      "event": "DELETE",
+                      "label": "Delete"
+                    }
+                  ],
+                  "type": "table-view"
+                }
+              ],
+              "status": "skipped"
             }
           ]
         }
-      ],
-      "guardFailed": "TaskCRUD.CANCEL"
+      ]
     },
-    "serverLegs": [],
+    "serverLegs": [
+      {
+        "orbital": "Task Management",
+        "leg": {
+          "event": "CANCEL",
+          "payload": {
+            "_awaitingInit": []
+          },
+          "targetTrait": "TaskCRUD",
+          "clientId": "golden-client",
+          "sourceTrait": "TaskCRUD",
+          "traits": [
+            {
+              "trait": "TaskCRUD",
+              "from": "creating",
+              "event": "CANCEL"
+            }
+          ],
+          "residence": "server"
+        }
+      }
+    ],
     "mode": "persistedAwaited",
     "snapshot": null,
-    "alreadyDelivered": [],
-    "awaiting": [],
-    "statefulLeg": {
-      "orbital": "Task Management",
-      "leg": {
+    "alreadyDelivered": [
+      [
+        "TaskCRUD",
+        "CANCEL"
+      ]
+    ],
+    "awaiting": [
+      {
+        "trait": "TaskCRUD",
         "event": "CANCEL",
-        "payload": {
-          "_awaitingInit": []
-        },
-        "targetTrait": "TaskCRUD",
-        "clientId": "golden-client",
-        "sourceTrait": "TaskCRUD"
-      },
-      "awaiting": []
-    },
+        "from": "creating"
+      }
+    ],
+    "statefulLeg": null,
     "foldSeeded": []
   },
   {
@@ -742,6 +700,7 @@
   "unknown trait: NoSuchTrait",
   {
     "orbital": "Task Management",
+    "flight": 4,
     "seed": {
       "trait": "TaskCRUD",
       "event": "NOT_AN_EVENT"
@@ -1671,6 +1630,7 @@
   null,
   {
     "orbital": "Task Management",
+    "flight": 5,
     "seed": {
       "trait": "TaskCRUD",
       "event": "INIT"

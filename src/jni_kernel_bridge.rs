@@ -16,15 +16,16 @@ use crate::jni_util::{catch_panic, optional_cstring, required_cstring, take_c_st
 use crate::kernel_c_api::{
     orbital_kernel_abandon_server_leg, orbital_kernel_apply_server_response,
     orbital_kernel_destroy, orbital_kernel_dispatch, orbital_kernel_frame,
-    orbital_kernel_frame_pause, orbital_kernel_frame_resume, orbital_kernel_free_string,
-    orbital_kernel_get_state, orbital_kernel_init, orbital_kernel_last_error, orbital_kernel_mount,
-    orbital_kernel_outstanding_strings,
-    orbital_kernel_remount, orbital_kernel_resolve_rows, orbital_kernel_restore, orbital_kernel_seed,
-    orbital_kernel_set_current_user, orbital_kernel_set_theme_mode, orbital_kernel_snapshot,
-    orbital_kernel_tick, orbital_kernel_tick_count, orbital_verify_bridge_folded,
-    orbital_verify_bridge_painted, orbital_verify_bridge_set_dispatch_callback,
-    orbital_verify_bridge_set_ready, orbital_verify_bridge_set_route, orbital_verify_bridge_start,
-    orbital_verify_bridge_stop, OrbitalKernelHandle,
+    orbital_kernel_frame_pause, orbital_kernel_frame_resume, orbital_kernel_frames_since,
+    orbital_kernel_free_string, orbital_kernel_get_state, orbital_kernel_init,
+    orbital_kernel_last_error, orbital_kernel_mount, orbital_kernel_outstanding_strings,
+    orbital_kernel_remount, orbital_kernel_resolve_rows, orbital_kernel_restore,
+    orbital_kernel_seed, orbital_kernel_set_current_user, orbital_kernel_set_theme_mode,
+    orbital_kernel_set_trait_on_screen, orbital_kernel_snapshot, orbital_kernel_tick,
+    orbital_kernel_tick_count, orbital_verify_bridge_folded, orbital_verify_bridge_painted,
+    orbital_verify_bridge_set_dispatch_callback, orbital_verify_bridge_set_ready,
+    orbital_verify_bridge_set_route, orbital_verify_bridge_start, orbital_verify_bridge_stop,
+    OrbitalKernelHandle,
 };
 use jni::objects::{GlobalRef, JClass, JObject, JString, JValue};
 use jni::sys::{jboolean, jint, jlong, jstring};
@@ -48,6 +49,7 @@ pub const KERNEL_JNI_SYMBOLS: &[&str] = &[
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeApplyServerResponse",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeRestore",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeAbandonServerLeg",
+    "Java_generated_patterns_core_OrbitalKernelBridge_nativeFramesSince",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeTick",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeFrame",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeFramePause",
@@ -57,6 +59,7 @@ pub const KERNEL_JNI_SYMBOLS: &[&str] = &[
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeSnapshot",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeResolveRows",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeSetThemeMode",
+    "Java_generated_patterns_core_OrbitalKernelBridge_nativeSetTraitOnScreen",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeSetCurrentUser",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeSeed",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeRemount",
@@ -227,6 +230,23 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeAb
     });
 }
 
+/// JNI entry: `OrbitalKernelBridge.nativeFramesSince(handle, since)`: the `FrameDelta` JSON a painter at `since` needs.
+#[no_mangle]
+pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeFramesSince<
+    'local,
+>(
+    mut env: JNIEnv<'local>,
+    _class: JClass<'local>,
+    handle: jlong,
+    since: jlong,
+) -> jstring {
+    let outcome = catch_panic(|| {
+        let raw = unsafe { orbital_kernel_frames_since(handle_of(handle), since.max(0) as u64) };
+        Some(unsafe { take_c_string_as_jstring(&mut env, raw, orbital_kernel_free_string) })
+    });
+    outcome.ok().flatten().unwrap_or(std::ptr::null_mut())
+}
+
 /// JNI entry: `OrbitalKernelBridge.nativeTick(handle, trait, tick, entityId)`.
 #[no_mangle]
 pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeTick<'local>(
@@ -356,7 +376,9 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeSn
 
 /// JNI entry: `OrbitalKernelBridge.nativeResolveRows(handle, refJson)`.
 #[no_mangle]
-pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeResolveRows<'local>(
+pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeResolveRows<
+    'local,
+>(
     mut env: JNIEnv<'local>,
     _class: JClass<'local>,
     handle: jlong,
@@ -383,6 +405,30 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeSe
     let _ = catch_panic(|| {
         let mode = required_cstring(&mut env, &mode)?;
         unsafe { orbital_kernel_set_theme_mode(handle_of(handle), mode.as_ptr()) };
+        Some(())
+    });
+}
+
+/// JNI entry: `OrbitalKernelBridge.nativeSetTraitOnScreen(handle, traitName, onScreen)`.
+#[no_mangle]
+pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeSetTraitOnScreen<
+    'local,
+>(
+    mut env: JNIEnv<'local>,
+    _class: JClass<'local>,
+    handle: jlong,
+    trait_name: JString<'local>,
+    on_screen: jboolean,
+) {
+    let _ = catch_panic(|| {
+        let trait_name = required_cstring(&mut env, &trait_name)?;
+        unsafe {
+            orbital_kernel_set_trait_on_screen(
+                handle_of(handle),
+                trait_name.as_ptr(),
+                on_screen != 0,
+            )
+        };
         Some(())
     });
 }

@@ -1,5 +1,4 @@
 {
-  "typeContractVersion": 1,
   "ledger": {
     "entries": {
       "ent_J0Q8MHVJ81S40Q6X896TY60RBB": {
@@ -104,6 +103,10 @@
           "linkedEntity": "Board",
           "linkedEntityId": "ent_J0Q8MHVJ81S40Q6X896TY60RBB",
           "name": "Driver",
+          "sourceDeclaration": {
+            "fingerprint": "d0b9b890e50cc43bbf5a031e1c70aa1824531781090ada6f954859acb7ffba1e",
+            "traitId": "trt_2A9EQQSZPDZV6XZ8YMB2J76PVP"
+          },
           "stateMachine": {
             "states": [
               {
@@ -161,6 +164,10 @@
           "linkedEntity": "Board",
           "linkedEntityId": "ent_J0Q8MHVJ81S40Q6X896TY60RBB",
           "name": "Hud",
+          "sourceDeclaration": {
+            "fingerprint": "39a96da330fccdbc0bf9a181674867c095936e255f957788e0634607c9518ea9",
+            "traitId": "trt_B17ZVFS7R5KW2TK83H171HST0C"
+          },
           "stateMachine": {
             "states": [
               {
@@ -190,6 +197,10 @@
       ]
     }
   ],
+  "resolved": {
+    "orb": "18.0.5",
+    "typeContractVersion": 1
+  },
   "schemaVersion": 1,
   "themeDefinitions": [
     {

@@ -1,5 +1,4 @@
 {
-  "typeContractVersion": 1,
   "description": "Simple CRUD operations test schema",
   "ledger": {
     "entries": {
@@ -225,12 +224,7 @@
       ],
       "traits": [
         {
-          "category": "interaction",
           "effectRow": [
-            {
-              "kind": "emit",
-              "resource": "INIT"
-            },
             {
               "kind": "fetch",
               "resource": "Task"
@@ -244,13 +238,6 @@
               "resource": "main"
             }
           ],
-          "emits": [
-            {
-              "event": "INIT",
-              "eventId": "evt_DM12TZJ9DZ4PZW7AN34AWTZKCV",
-              "scope": "internal"
-            }
-          ],
           "entityRefIds": {
             "Task": "ent_70DG003H98RMM5P9ZQ8CB23T44"
           },
@@ -258,6 +245,10 @@
           "linkedEntity": "Task",
           "linkedEntityId": "ent_70DG003H98RMM5P9ZQ8CB23T44",
           "name": "TaskCRUD",
+          "sourceDeclaration": {
+            "fingerprint": "edf5bb2558f45440373e3b3ae066a7530fe278f601a5f1d230b92c52e0db2f61",
+            "traitId": "trt_6QFSYRAAD256HE16VT9JJ8A9S5"
+          },
           "stateMachine": {
             "events": [
               {
@@ -276,7 +267,32 @@
                 "name": "Edit Task",
                 "payloadSchema": [
                   {
+                    "entity": "Task",
                     "name": "row",
+                    "properties": [
+                      {
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                      },
+                      {
+                        "name": "title",
+                        "required": true,
+                        "type": "string"
+                      },
+                      {
+                        "name": "description",
+                        "type": "string"
+                      },
+                      {
+                        "name": "completed",
+                        "type": "boolean"
+                      },
+                      {
+                        "name": "createdAt",
+                        "type": "timestamp"
+                      }
+                    ],
                     "type": "object"
                   }
                 ]
@@ -287,7 +303,32 @@
                 "name": "Save",
                 "payloadSchema": [
                   {
+                    "entity": "Task",
                     "name": "data",
+                    "properties": [
+                      {
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                      },
+                      {
+                        "name": "title",
+                        "required": true,
+                        "type": "string"
+                      },
+                      {
+                        "name": "description",
+                        "type": "string"
+                      },
+                      {
+                        "name": "completed",
+                        "type": "boolean"
+                      },
+                      {
+                        "name": "createdAt",
+                        "type": "timestamp"
+                      }
+                    ],
                     "type": "object"
                   },
                   {
@@ -302,7 +343,32 @@
                 "name": "Delete",
                 "payloadSchema": [
                   {
+                    "entity": "Task",
                     "name": "row",
+                    "properties": [
+                      {
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                      },
+                      {
+                        "name": "title",
+                        "required": true,
+                        "type": "string"
+                      },
+                      {
+                        "name": "description",
+                        "type": "string"
+                      },
+                      {
+                        "name": "completed",
+                        "type": "boolean"
+                      },
+                      {
+                        "name": "createdAt",
+                        "type": "timestamp"
+                      }
+                    ],
                     "type": "object"
                   }
                 ]
@@ -350,12 +416,21 @@
                     "render-ui",
                     "main",
                     {
-                      "entity": "Task",
-                      "fields": [
-                        "title",
-                        "completed",
-                        "createdAt"
+                      "columns": [
+                        {
+                          "key": "title",
+                          "label": "Title"
+                        },
+                        {
+                          "key": "completed",
+                          "label": "Completed"
+                        },
+                        {
+                          "key": "createdAt",
+                          "label": "Created"
+                        }
                       ],
+                      "entity": "@entity",
                       "itemActions": [
                         {
                           "event": "EDIT",
@@ -366,7 +441,7 @@
                           "label": "Delete"
                         }
                       ],
-                      "type": "entity-table"
+                      "type": "table-view"
                     }
                   ]
                 ],
@@ -391,7 +466,7 @@
                     "render-ui",
                     "main",
                     {
-                      "entity": "Task",
+                      "entity": "@entity",
                       "fields": [
                         "title",
                         "description"
@@ -416,8 +491,54 @@
                     "@payload.data"
                   ],
                   [
-                    "emit",
-                    "INIT"
+                    "fetch",
+                    "Task"
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "actions": [
+                        {
+                          "event": "CREATE",
+                          "label": "New Task"
+                        }
+                      ],
+                      "title": "Tasks",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "columns": [
+                        {
+                          "key": "title",
+                          "label": "Title"
+                        },
+                        {
+                          "key": "completed",
+                          "label": "Completed"
+                        },
+                        {
+                          "key": "createdAt",
+                          "label": "Created"
+                        }
+                      ],
+                      "entity": "@entity",
+                      "itemActions": [
+                        {
+                          "event": "EDIT",
+                          "label": "Edit"
+                        },
+                        {
+                          "event": "DELETE",
+                          "label": "Delete"
+                        }
+                      ],
+                      "type": "table-view"
+                    }
                   ]
                 ],
                 "event": "SAVE",
@@ -428,8 +549,54 @@
               {
                 "effects": [
                   [
-                    "emit",
-                    "INIT"
+                    "fetch",
+                    "Task"
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "actions": [
+                        {
+                          "event": "CREATE",
+                          "label": "New Task"
+                        }
+                      ],
+                      "title": "Tasks",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "columns": [
+                        {
+                          "key": "title",
+                          "label": "Title"
+                        },
+                        {
+                          "key": "completed",
+                          "label": "Completed"
+                        },
+                        {
+                          "key": "createdAt",
+                          "label": "Created"
+                        }
+                      ],
+                      "entity": "@entity",
+                      "itemActions": [
+                        {
+                          "event": "EDIT",
+                          "label": "Edit"
+                        },
+                        {
+                          "event": "DELETE",
+                          "label": "Delete"
+                        }
+                      ],
+                      "type": "table-view"
+                    }
                   ]
                 ],
                 "event": "CANCEL",
@@ -460,13 +627,13 @@
                     "render-ui",
                     "main",
                     {
-                      "entity": "Task",
-                      "entityId": "@payload.row.id",
+                      "entity": "@entity",
                       "fields": [
                         "title",
                         "description",
                         "completed"
                       ],
+                      "initialData": "@payload.row",
                       "onCancel": "CANCEL",
                       "onSubmit": "SAVE",
                       "type": "form-section"
@@ -487,8 +654,54 @@
                     "@payload.data"
                   ],
                   [
-                    "emit",
-                    "INIT"
+                    "fetch",
+                    "Task"
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "actions": [
+                        {
+                          "event": "CREATE",
+                          "label": "New Task"
+                        }
+                      ],
+                      "title": "Tasks",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "columns": [
+                        {
+                          "key": "title",
+                          "label": "Title"
+                        },
+                        {
+                          "key": "completed",
+                          "label": "Completed"
+                        },
+                        {
+                          "key": "createdAt",
+                          "label": "Created"
+                        }
+                      ],
+                      "entity": "@entity",
+                      "itemActions": [
+                        {
+                          "event": "EDIT",
+                          "label": "Edit"
+                        },
+                        {
+                          "event": "DELETE",
+                          "label": "Delete"
+                        }
+                      ],
+                      "type": "table-view"
+                    }
                   ]
                 ],
                 "event": "SAVE",
@@ -499,8 +712,54 @@
               {
                 "effects": [
                   [
-                    "emit",
-                    "INIT"
+                    "fetch",
+                    "Task"
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "actions": [
+                        {
+                          "event": "CREATE",
+                          "label": "New Task"
+                        }
+                      ],
+                      "title": "Tasks",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "columns": [
+                        {
+                          "key": "title",
+                          "label": "Title"
+                        },
+                        {
+                          "key": "completed",
+                          "label": "Completed"
+                        },
+                        {
+                          "key": "createdAt",
+                          "label": "Created"
+                        }
+                      ],
+                      "entity": "@entity",
+                      "itemActions": [
+                        {
+                          "event": "EDIT",
+                          "label": "Edit"
+                        },
+                        {
+                          "event": "DELETE",
+                          "label": "Delete"
+                        }
+                      ],
+                      "type": "table-view"
+                    }
                   ]
                 ],
                 "event": "CANCEL",
@@ -517,13 +776,175 @@
                     "@payload.row.id"
                   ],
                   [
-                    "emit",
-                    "INIT"
+                    "fetch",
+                    "Task"
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "actions": [
+                        {
+                          "event": "CREATE",
+                          "label": "New Task"
+                        }
+                      ],
+                      "title": "Tasks",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "columns": [
+                        {
+                          "key": "title",
+                          "label": "Title"
+                        },
+                        {
+                          "key": "completed",
+                          "label": "Completed"
+                        },
+                        {
+                          "key": "createdAt",
+                          "label": "Created"
+                        }
+                      ],
+                      "entity": "@entity",
+                      "itemActions": [
+                        {
+                          "event": "EDIT",
+                          "label": "Edit"
+                        },
+                        {
+                          "event": "DELETE",
+                          "label": "Delete"
+                        }
+                      ],
+                      "type": "table-view"
+                    }
                   ]
                 ],
                 "event": "DELETE",
                 "eventId": "evt_GFRGZGBSJQWSBRGN883G5PS4N1",
                 "from": "listing",
+                "to": "listing"
+              },
+              {
+                "effects": [
+                  [
+                    "fetch",
+                    "Task"
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "actions": [
+                        {
+                          "event": "CREATE",
+                          "label": "New Task"
+                        }
+                      ],
+                      "title": "Tasks",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "columns": [
+                        {
+                          "key": "title",
+                          "label": "Title"
+                        },
+                        {
+                          "key": "completed",
+                          "label": "Completed"
+                        },
+                        {
+                          "key": "createdAt",
+                          "label": "Created"
+                        }
+                      ],
+                      "entity": "@entity",
+                      "itemActions": [
+                        {
+                          "event": "EDIT",
+                          "label": "Edit"
+                        },
+                        {
+                          "event": "DELETE",
+                          "label": "Delete"
+                        }
+                      ],
+                      "type": "table-view"
+                    }
+                  ]
+                ],
+                "event": "INIT",
+                "eventId": "evt_DM12TZJ9DZ4PZW7AN34AWTZKCV",
+                "from": "creating",
+                "to": "listing"
+              },
+              {
+                "effects": [
+                  [
+                    "fetch",
+                    "Task"
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "actions": [
+                        {
+                          "event": "CREATE",
+                          "label": "New Task"
+                        }
+                      ],
+                      "title": "Tasks",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "columns": [
+                        {
+                          "key": "title",
+                          "label": "Title"
+                        },
+                        {
+                          "key": "completed",
+                          "label": "Completed"
+                        },
+                        {
+                          "key": "createdAt",
+                          "label": "Created"
+                        }
+                      ],
+                      "entity": "@entity",
+                      "itemActions": [
+                        {
+                          "event": "EDIT",
+                          "label": "Edit"
+                        },
+                        {
+                          "event": "DELETE",
+                          "label": "Delete"
+                        }
+                      ],
+                      "type": "table-view"
+                    }
+                  ]
+                ],
+                "event": "INIT",
+                "eventId": "evt_DM12TZJ9DZ4PZW7AN34AWTZKCV",
+                "from": "editing",
                 "to": "listing"
               }
             ]
@@ -569,12 +990,7 @@
       "pages": [],
       "traits": [
         {
-          "category": "interaction",
           "effectRow": [
-            {
-              "kind": "emit",
-              "resource": "INIT"
-            },
             {
               "kind": "fetch",
               "resource": "Chore"
@@ -588,13 +1004,6 @@
               "resource": "main"
             }
           ],
-          "emits": [
-            {
-              "event": "INIT",
-              "eventId": "evt_9QG1FE5F4PQJB9DZ8X51H0JBZW",
-              "scope": "internal"
-            }
-          ],
           "entityRefIds": {
             "Chore": "ent_PA223BZSQCWVPCXSRC1QMPDN0M"
           },
@@ -602,6 +1011,10 @@
           "linkedEntity": "Chore",
           "linkedEntityId": "ent_PA223BZSQCWVPCXSRC1QMPDN0M",
           "name": "ChoreCRUD",
+          "sourceDeclaration": {
+            "fingerprint": "7a4200f5b60d9be6741646d5faae55bd12ee5951442a072d0b07967c65d5800a",
+            "traitId": "trt_FH1JNAQXYAYZ532YYJ1WATY9PS"
+          },
           "stateMachine": {
             "events": [
               {
@@ -620,7 +1033,32 @@
                 "name": "Edit Chore",
                 "payloadSchema": [
                   {
+                    "entity": "Chore",
                     "name": "row",
+                    "properties": [
+                      {
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                      },
+                      {
+                        "name": "title",
+                        "required": true,
+                        "type": "string"
+                      },
+                      {
+                        "name": "description",
+                        "type": "string"
+                      },
+                      {
+                        "name": "completed",
+                        "type": "boolean"
+                      },
+                      {
+                        "name": "createdAt",
+                        "type": "timestamp"
+                      }
+                    ],
                     "type": "object"
                   }
                 ]
@@ -631,7 +1069,32 @@
                 "name": "Save",
                 "payloadSchema": [
                   {
+                    "entity": "Chore",
                     "name": "data",
+                    "properties": [
+                      {
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                      },
+                      {
+                        "name": "title",
+                        "required": true,
+                        "type": "string"
+                      },
+                      {
+                        "name": "description",
+                        "type": "string"
+                      },
+                      {
+                        "name": "completed",
+                        "type": "boolean"
+                      },
+                      {
+                        "name": "createdAt",
+                        "type": "timestamp"
+                      }
+                    ],
                     "type": "object"
                   },
                   {
@@ -646,7 +1109,32 @@
                 "name": "Delete",
                 "payloadSchema": [
                   {
+                    "entity": "Chore",
                     "name": "row",
+                    "properties": [
+                      {
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                      },
+                      {
+                        "name": "title",
+                        "required": true,
+                        "type": "string"
+                      },
+                      {
+                        "name": "description",
+                        "type": "string"
+                      },
+                      {
+                        "name": "completed",
+                        "type": "boolean"
+                      },
+                      {
+                        "name": "createdAt",
+                        "type": "timestamp"
+                      }
+                    ],
                     "type": "object"
                   }
                 ]
@@ -694,12 +1182,21 @@
                     "render-ui",
                     "main",
                     {
-                      "entity": "Chore",
-                      "fields": [
-                        "title",
-                        "completed",
-                        "createdAt"
+                      "columns": [
+                        {
+                          "key": "title",
+                          "label": "Title"
+                        },
+                        {
+                          "key": "completed",
+                          "label": "Completed"
+                        },
+                        {
+                          "key": "createdAt",
+                          "label": "Created"
+                        }
                       ],
+                      "entity": "@entity",
                       "itemActions": [
                         {
                           "event": "EDIT",
@@ -710,7 +1207,7 @@
                           "label": "Delete"
                         }
                       ],
-                      "type": "entity-table"
+                      "type": "table-view"
                     }
                   ]
                 ],
@@ -735,7 +1232,7 @@
                     "render-ui",
                     "main",
                     {
-                      "entity": "Chore",
+                      "entity": "@entity",
                       "fields": [
                         "title",
                         "description"
@@ -760,8 +1257,54 @@
                     "@payload.data"
                   ],
                   [
-                    "emit",
-                    "INIT"
+                    "fetch",
+                    "Chore"
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "actions": [
+                        {
+                          "event": "CREATE",
+                          "label": "New Chore"
+                        }
+                      ],
+                      "title": "Chores",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "columns": [
+                        {
+                          "key": "title",
+                          "label": "Title"
+                        },
+                        {
+                          "key": "completed",
+                          "label": "Completed"
+                        },
+                        {
+                          "key": "createdAt",
+                          "label": "Created"
+                        }
+                      ],
+                      "entity": "@entity",
+                      "itemActions": [
+                        {
+                          "event": "EDIT",
+                          "label": "Edit"
+                        },
+                        {
+                          "event": "DELETE",
+                          "label": "Delete"
+                        }
+                      ],
+                      "type": "table-view"
+                    }
                   ]
                 ],
                 "event": "SAVE",
@@ -772,8 +1315,54 @@
               {
                 "effects": [
                   [
-                    "emit",
-                    "INIT"
+                    "fetch",
+                    "Chore"
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "actions": [
+                        {
+                          "event": "CREATE",
+                          "label": "New Chore"
+                        }
+                      ],
+                      "title": "Chores",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "columns": [
+                        {
+                          "key": "title",
+                          "label": "Title"
+                        },
+                        {
+                          "key": "completed",
+                          "label": "Completed"
+                        },
+                        {
+                          "key": "createdAt",
+                          "label": "Created"
+                        }
+                      ],
+                      "entity": "@entity",
+                      "itemActions": [
+                        {
+                          "event": "EDIT",
+                          "label": "Edit"
+                        },
+                        {
+                          "event": "DELETE",
+                          "label": "Delete"
+                        }
+                      ],
+                      "type": "table-view"
+                    }
                   ]
                 ],
                 "event": "CANCEL",
@@ -804,13 +1393,13 @@
                     "render-ui",
                     "main",
                     {
-                      "entity": "Chore",
-                      "entityId": "@payload.row.id",
+                      "entity": "@entity",
                       "fields": [
                         "title",
                         "description",
                         "completed"
                       ],
+                      "initialData": "@payload.row",
                       "onCancel": "CANCEL",
                       "onSubmit": "SAVE",
                       "type": "form-section"
@@ -831,8 +1420,54 @@
                     "@payload.data"
                   ],
                   [
-                    "emit",
-                    "INIT"
+                    "fetch",
+                    "Chore"
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "actions": [
+                        {
+                          "event": "CREATE",
+                          "label": "New Chore"
+                        }
+                      ],
+                      "title": "Chores",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "columns": [
+                        {
+                          "key": "title",
+                          "label": "Title"
+                        },
+                        {
+                          "key": "completed",
+                          "label": "Completed"
+                        },
+                        {
+                          "key": "createdAt",
+                          "label": "Created"
+                        }
+                      ],
+                      "entity": "@entity",
+                      "itemActions": [
+                        {
+                          "event": "EDIT",
+                          "label": "Edit"
+                        },
+                        {
+                          "event": "DELETE",
+                          "label": "Delete"
+                        }
+                      ],
+                      "type": "table-view"
+                    }
                   ]
                 ],
                 "event": "SAVE",
@@ -843,8 +1478,54 @@
               {
                 "effects": [
                   [
-                    "emit",
-                    "INIT"
+                    "fetch",
+                    "Chore"
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "actions": [
+                        {
+                          "event": "CREATE",
+                          "label": "New Chore"
+                        }
+                      ],
+                      "title": "Chores",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "columns": [
+                        {
+                          "key": "title",
+                          "label": "Title"
+                        },
+                        {
+                          "key": "completed",
+                          "label": "Completed"
+                        },
+                        {
+                          "key": "createdAt",
+                          "label": "Created"
+                        }
+                      ],
+                      "entity": "@entity",
+                      "itemActions": [
+                        {
+                          "event": "EDIT",
+                          "label": "Edit"
+                        },
+                        {
+                          "event": "DELETE",
+                          "label": "Delete"
+                        }
+                      ],
+                      "type": "table-view"
+                    }
                   ]
                 ],
                 "event": "CANCEL",
@@ -861,13 +1542,175 @@
                     "@payload.row.id"
                   ],
                   [
-                    "emit",
-                    "INIT"
+                    "fetch",
+                    "Chore"
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "actions": [
+                        {
+                          "event": "CREATE",
+                          "label": "New Chore"
+                        }
+                      ],
+                      "title": "Chores",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "columns": [
+                        {
+                          "key": "title",
+                          "label": "Title"
+                        },
+                        {
+                          "key": "completed",
+                          "label": "Completed"
+                        },
+                        {
+                          "key": "createdAt",
+                          "label": "Created"
+                        }
+                      ],
+                      "entity": "@entity",
+                      "itemActions": [
+                        {
+                          "event": "EDIT",
+                          "label": "Edit"
+                        },
+                        {
+                          "event": "DELETE",
+                          "label": "Delete"
+                        }
+                      ],
+                      "type": "table-view"
+                    }
                   ]
                 ],
                 "event": "DELETE",
                 "eventId": "evt_EH1ZS3S9YEMZ77Z33P57SPMNQB",
                 "from": "listing",
+                "to": "listing"
+              },
+              {
+                "effects": [
+                  [
+                    "fetch",
+                    "Chore"
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "actions": [
+                        {
+                          "event": "CREATE",
+                          "label": "New Chore"
+                        }
+                      ],
+                      "title": "Chores",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "columns": [
+                        {
+                          "key": "title",
+                          "label": "Title"
+                        },
+                        {
+                          "key": "completed",
+                          "label": "Completed"
+                        },
+                        {
+                          "key": "createdAt",
+                          "label": "Created"
+                        }
+                      ],
+                      "entity": "@entity",
+                      "itemActions": [
+                        {
+                          "event": "EDIT",
+                          "label": "Edit"
+                        },
+                        {
+                          "event": "DELETE",
+                          "label": "Delete"
+                        }
+                      ],
+                      "type": "table-view"
+                    }
+                  ]
+                ],
+                "event": "INIT",
+                "eventId": "evt_9QG1FE5F4PQJB9DZ8X51H0JBZW",
+                "from": "creating",
+                "to": "listing"
+              },
+              {
+                "effects": [
+                  [
+                    "fetch",
+                    "Chore"
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "actions": [
+                        {
+                          "event": "CREATE",
+                          "label": "New Chore"
+                        }
+                      ],
+                      "title": "Chores",
+                      "type": "page-header"
+                    }
+                  ],
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "columns": [
+                        {
+                          "key": "title",
+                          "label": "Title"
+                        },
+                        {
+                          "key": "completed",
+                          "label": "Completed"
+                        },
+                        {
+                          "key": "createdAt",
+                          "label": "Created"
+                        }
+                      ],
+                      "entity": "@entity",
+                      "itemActions": [
+                        {
+                          "event": "EDIT",
+                          "label": "Edit"
+                        },
+                        {
+                          "event": "DELETE",
+                          "label": "Delete"
+                        }
+                      ],
+                      "type": "table-view"
+                    }
+                  ]
+                ],
+                "event": "INIT",
+                "eventId": "evt_9QG1FE5F4PQJB9DZ8X51H0JBZW",
+                "from": "editing",
                 "to": "listing"
               }
             ]
@@ -876,6 +1719,10 @@
       ]
     }
   ],
+  "resolved": {
+    "orb": "18.0.5",
+    "typeContractVersion": 1
+  },
   "schemaVersion": 1,
   "themeDefinitions": [
     {

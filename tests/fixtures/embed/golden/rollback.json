@@ -12,8 +12,20 @@
         "Driver": "idle"
       },
       "emittedEvents": [],
-      "entityByTrait": {
-        "Driver": {}
+      "frames": {
+        "session": "$program",
+        "from": 0,
+        "to": 1,
+        "ops": [
+          [
+            "clear"
+          ],
+          [
+            "put",
+            "$shared::Board",
+            {}
+          ]
+        ]
       },
       "clientEffectsByTrait": [
         {
@@ -76,9 +88,6 @@
         "Hud": "idle"
       },
       "emittedEvents": [],
-      "entityByTrait": {
-        "Hud": {}
-      },
       "clientEffectsByTrait": [
         {
           "traitName": "Hud",
@@ -140,10 +149,20 @@
         "Driver": "idle"
       },
       "emittedEvents": [],
-      "entityByTrait": {
-        "Driver": {
-          "score": 1.0
-        }
+      "frames": {
+        "session": "$program",
+        "from": 1,
+        "to": 2,
+        "ops": [
+          [
+            "set",
+            {
+              "$shared::Board": {
+                "score": 1.0
+              }
+            }
+          ]
+        ]
       },
       "clientEffectsByTrait": [
         {
@@ -204,6 +223,24 @@
     "transitioned": false,
     "states": {},
     "emittedEvents": [],
+    "frames": {
+      "session": "$program",
+      "from": 2,
+      "to": 3,
+      "ops": [
+        [
+          "del",
+          "$shared::Board"
+        ],
+        [
+          "put",
+          "$shared::Board",
+          {
+            "score": 0.0
+          }
+        ]
+      ]
+    },
     "clientEffectsByTrait": [
       {
         "traitName": "Hud",
@@ -238,10 +275,20 @@
         "Driver": "idle"
       },
       "emittedEvents": [],
-      "entityByTrait": {
-        "Driver": {
-          "score": 1.0
-        }
+      "frames": {
+        "session": "$program",
+        "from": 3,
+        "to": 4,
+        "ops": [
+          [
+            "set",
+            {
+              "$shared::Board": {
+                "score": 1.0
+              }
+            }
+          ]
+        ]
       },
       "clientEffectsByTrait": [
         {

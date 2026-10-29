@@ -1,5 +1,4 @@
 {
-  "typeContractVersion": 1,
   "description": "Native tick conformance row: an interval tick, a frame tick, a state-guarded tick and a tick whose emit a peer trait hears must all advance state on a client kernel.",
   "ledger": {
     "entries": {
@@ -178,7 +177,6 @@
       ],
       "traits": [
         {
-          "category": "interaction",
           "dispatch": "client",
           "effectRow": [
             {
@@ -236,7 +234,10 @@
           "linkedEntity": "Counter",
           "linkedEntityId": "ent_01M4FRNC8VB6MADPSHWD0XNXCJ",
           "name": "Ticker",
-          "scope": "instance",
+          "sourceDeclaration": {
+            "fingerprint": "1b62a04820b6036576ccfeb24df6a035fa2b73e843fa0e7997bd1a4b3468d1f0",
+            "traitId": "trt_01M4FRNC8V2N1A7W8BHTZAP1BJ"
+          },
           "stateMachine": {
             "events": [
               {
@@ -399,7 +400,6 @@
           ]
         },
         {
-          "category": "lifecycle",
           "dispatch": "client",
           "effectRow": [
             {
@@ -427,7 +427,10 @@
             }
           ],
           "name": "Listener",
-          "scope": "instance",
+          "sourceDeclaration": {
+            "fingerprint": "256e32303059e4bc333cdda4c0ebac544b812c5f4a5520640e2f3481e8f20d45",
+            "traitId": "trt_01M4FRNC8V5S3KS8MYFETQJN1M"
+          },
           "stateMachine": {
             "events": [
               {
@@ -477,6 +480,10 @@
       ]
     }
   ],
+  "resolved": {
+    "orb": "18.0.5",
+    "typeContractVersion": 1
+  },
   "schemaVersion": 1,
   "themeDefinitions": [
     {

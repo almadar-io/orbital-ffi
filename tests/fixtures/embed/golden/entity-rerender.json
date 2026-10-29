@@ -12,8 +12,20 @@
         "Mover": "running"
       },
       "emittedEvents": [],
-      "entityByTrait": {
-        "Mover": {}
+      "frames": {
+        "session": "$program",
+        "from": 0,
+        "to": 1,
+        "ops": [
+          [
+            "clear"
+          ],
+          [
+            "put",
+            "$shared::Arena",
+            {}
+          ]
+        ]
       },
       "clientEffectsByTrait": [
         {
@@ -76,9 +88,6 @@
         "ScoreBoard": "showing"
       },
       "emittedEvents": [],
-      "entityByTrait": {
-        "ScoreBoard": {}
-      },
       "clientEffectsByTrait": [
         {
           "traitName": "ScoreBoard",
@@ -142,9 +151,6 @@
         "Caption": "showing"
       },
       "emittedEvents": [],
-      "entityByTrait": {
-        "Caption": {}
-      },
       "clientEffectsByTrait": [
         {
           "traitName": "Caption",
@@ -200,10 +206,20 @@
       "Mover": "running"
     },
     "emittedEvents": [],
-    "entityByTrait": {
-      "Mover": {
-        "score": 1.0
-      }
+    "frames": {
+      "session": "$program",
+      "from": 1,
+      "to": 2,
+      "ops": [
+        [
+          "set",
+          {
+            "$shared::Arena": {
+              "score": 1.0
+            }
+          }
+        ]
+      ]
     },
     "clientEffectsByTrait": [
       {
@@ -240,10 +256,20 @@
       "transitioned": true,
       "states": {},
       "emittedEvents": [],
-      "entityByTrait": {
-        "Mover": {
-          "score": 2.0
-        }
+      "frames": {
+        "session": "$program",
+        "from": 2,
+        "to": 3,
+        "ops": [
+          [
+            "set",
+            {
+              "$shared::Arena": {
+                "score": 2.0
+              }
+            }
+          ]
+        ]
       },
       "clientEffectsByTrait": [
         {

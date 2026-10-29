@@ -1,5 +1,4 @@
 {
-  "typeContractVersion": 1,
   "description": "Native repaint conformance row: a tick that writes a shared entity repaints a sibling trait whose render-ui reads it, and leaves a sibling that reads nothing alone.",
   "ledger": {
     "entries": {
@@ -127,7 +126,6 @@
       ],
       "traits": [
         {
-          "category": "interaction",
           "dispatch": "client",
           "effectRow": [
             {
@@ -151,7 +149,10 @@
           "linkedEntity": "Arena",
           "linkedEntityId": "ent_01M4GGP69BRBY1WXS1XDC6PV08",
           "name": "Mover",
-          "scope": "instance",
+          "sourceDeclaration": {
+            "fingerprint": "ea9cb0e89021b872012695457f7e679ab3560ccad77c49eb60953371c41a86aa",
+            "traitId": "trt_01M4GGP69BX1FDAAJ41B8BQWHH"
+          },
           "stateMachine": {
             "events": [
               {
@@ -204,7 +205,6 @@
           ]
         },
         {
-          "category": "interaction",
           "dispatch": "client",
           "effectRow": [
             {
@@ -219,7 +219,10 @@
           "linkedEntity": "Arena",
           "linkedEntityId": "ent_01M4GGP69BRBY1WXS1XDC6PV08",
           "name": "ScoreBoard",
-          "scope": "instance",
+          "sourceDeclaration": {
+            "fingerprint": "cdc9e7ad7f2634fe92f86e0e538b1343c8b92ebec0b1d8c8eda2c06bc1497715",
+            "traitId": "trt_01M4GGP69BX11XR7CAEBQ7S453"
+          },
           "stateMachine": {
             "events": [
               {
@@ -256,7 +259,6 @@
           }
         },
         {
-          "category": "interaction",
           "dispatch": "client",
           "effectRow": [
             {
@@ -271,7 +273,10 @@
           "linkedEntity": "Arena",
           "linkedEntityId": "ent_01M4GGP69BRBY1WXS1XDC6PV08",
           "name": "Caption",
-          "scope": "instance",
+          "sourceDeclaration": {
+            "fingerprint": "4b4d47bf9dd7b986cc06b583e5f91840f2bd4ee8ebdc46455a82461344e944cb",
+            "traitId": "trt_01M4GGP69B8R9VK2Q9Q6FR7M3F"
+          },
           "stateMachine": {
             "events": [
               {
@@ -309,6 +314,10 @@
       ]
     }
   ],
+  "resolved": {
+    "orb": "18.0.5",
+    "typeContractVersion": 1
+  },
   "schemaVersion": 1,
   "themeDefinitions": [
     {

@@ -5,7 +5,8 @@
 use crate::kernel_c_api::{
     orbital_kernel_destroy, orbital_kernel_dispatch, orbital_kernel_frame,
     orbital_kernel_frame_pause, orbital_kernel_frame_resume, orbital_kernel_free_string,
-    orbital_kernel_init, orbital_kernel_tick_count, OrbitalKernelHandle,
+    orbital_kernel_init, orbital_kernel_set_trait_on_screen, orbital_kernel_tick_count,
+    OrbitalKernelHandle,
 };
 use serde_json::Value;
 use std::ffi::{CStr, CString};
@@ -73,9 +74,21 @@ fn fired(frame: &Value) -> Vec<String> {
         .unwrap_or_default()
 }
 
+/// The value `response`'s frame delta writes to `frame_name.name`, if it does.
+fn written(response: &Value, frame_name: &str, name: &str) -> Option<Value> {
+    response["frames"]["ops"]
+        .as_array()?
+        .iter()
+        .find_map(|op| match op[0].as_str()? {
+            "set" => op[1].get(frame_name)?.get(name).cloned(),
+            "put" if op[1] == frame_name => op[2].get(name).cloned(),
+            _ => None,
+        })
+}
+
 fn field(frame: &Value, trait_name: &str, name: &str) -> f64 {
-    frame["response"]["entityByTrait"][trait_name][name]
-        .as_f64()
+    written(&frame["response"], trait_name, name)
+        .and_then(|v| v.as_f64())
         .unwrap_or_else(|| panic!("{trait_name}.{name} missing: {frame}"))
 }
 
@@ -135,9 +148,14 @@ fn a_frame_row_carries_only_the_fields_the_passs_ticks_wrote() {
     let kernel = booted();
     kernel.frame(0);
     let frame = kernel.frame(16);
-    let ticker = &frame["response"]["entityByTrait"]["Ticker"];
-    assert!(ticker["frames"].is_number(), "{frame}");
-    assert!(ticker.get("beats").is_none(), "beats was written by no tick in this pass: {frame}");
+    assert!(
+        written(&frame["response"], "Ticker", "frames").is_some_and(|v| v.is_number()),
+        "{frame}"
+    );
+    assert!(
+        written(&frame["response"], "Ticker", "beats").is_none(),
+        "beats was written by no tick in this pass: {frame}"
+    );
 }
 
 #[test]
@@ -145,7 +163,10 @@ fn control_a_pass_that_fires_the_interval_tick_carries_beats_too() {
     let kernel = booted();
     kernel.frame(0);
     let frame = kernel.frame(1000);
-    assert!(frame["response"]["entityByTrait"]["Ticker"]["beats"].is_number(), "{frame}");
+    assert!(
+        written(&frame["response"], "Ticker", "beats").is_some_and(|v| v.is_number()),
+        "{frame}"
+    );
 }
 
 #[test]
@@ -251,7 +272,7 @@ fn a_tick_emit_cascades_to_its_listener_through_the_dispatch_path() {
     assert_eq!(dispatches[0]["trait"], "Ticker");
     assert_eq!(dispatches[0]["orbital"], "TickCounterOrbital");
     assert_eq!(
-        dispatches[0]["response"]["entityByTrait"]["Listener"]["heard"].as_f64(),
+        written(&dispatches[0]["response"], "Listener", "heard").and_then(|v| v.as_f64()),
         Some(1.0),
         "the listener heard Ticker.BEAT: {frame}"
     );
@@ -324,7 +345,7 @@ fn persisting_listener_schema() -> String {
             ] },
             "traits": [
                 {
-                    "name": "Ticker", "linkedEntity": "Note", "local": true,
+                    "name": "Ticker", "linkedEntity": "Note", "dispatch": "client",
                     "stateMachine": {
                         "states": [{ "name": "running", "isInitial": true }],
                         "transitions": [{ "from": "running", "to": "running", "event": "INIT", "effects": [] }]
@@ -361,10 +382,16 @@ fn a_listeners_server_work_rides_a_tick_stamped_leg_and_the_ticks_own_is_counted
     assert_eq!(dispatches.len(), 1, "{frame}");
     let legs = dispatches[0]["serverLegs"].as_array().unwrap();
     assert_eq!(legs.len(), 1, "{frame}");
-    assert_eq!(legs[0]["orbital"], "Main", "the leg names the route it posts to: {frame}");
+    assert_eq!(
+        legs[0]["orbital"], "Main",
+        "the leg names the route it posts to: {frame}"
+    );
     let leg = &legs[0]["leg"];
     assert_eq!(leg["event"], "DO_CREATE", "{frame}");
-    assert_eq!(leg["tick"], "beat", "the leg carries the tick stamp: {frame}");
+    assert_eq!(
+        leg["tick"], "beat",
+        "the leg carries the tick stamp: {frame}"
+    );
     assert_eq!(leg["targetTrait"], "Persistor");
     assert_eq!(
         frame["droppedServerEffects"], 1,
@@ -410,30 +437,32 @@ fn a_frame_whose_tick_writes_a_shared_entity_repaints_the_bound_sibling_and_not_
 
 fn two_tick_schema(writer_first: bool) -> String {
     let render = |content: &str| serde_json::json!(["render-ui", "hud", { "type": "typography", "content": content }]);
-    let tick = |name: &str, effects: serde_json::Value| {
-        serde_json::json!({ "name": name, "interval": 100, "effects": effects })
-    };
+    let tick = |name: &str, effects: serde_json::Value| serde_json::json!({ "name": name, "interval": 100, "effects": effects });
     let emitter = serde_json::json!({
-        "name": "Emitter", "linkedEntity": "Board", "local": true,
+        "name": "Emitter", "linkedEntity": "Board", "dispatch": "client",
         "ticks": [tick("announce", serde_json::json!([["emit", "ANNOUNCED", {}]]))],
         "stateMachine": { "states": [{ "name": "idle", "isInitial": true }],
             "transitions": [{ "from": "idle", "to": "idle", "event": "INIT" }] }
     });
     let writer = serde_json::json!({
-        "name": "Writer", "linkedEntity": "Board", "local": true,
+        "name": "Writer", "linkedEntity": "Board", "dispatch": "client",
         "ticks": [tick("bump", serde_json::json!([["set", "@entity.score", ["+", "@entity.score", 1]]]))],
         "stateMachine": { "states": [{ "name": "idle", "isInitial": true }],
             "transitions": [{ "from": "idle", "to": "idle", "event": "INIT" }] }
     });
     let hud = serde_json::json!({
-        "name": "Hud", "linkedEntity": "Board", "local": true,
+        "name": "Hud", "linkedEntity": "Board", "dispatch": "client",
         "listens": [{ "event": "ANNOUNCED", "triggers": "SHOW", "source": { "kind": "trait", "trait": "Emitter" } }],
         "stateMachine": { "states": [{ "name": "idle", "isInitial": true }], "transitions": [
             { "from": "idle", "to": "idle", "event": "INIT" },
             { "from": "idle", "to": "idle", "event": "SHOW", "effects": [render("@entity.score")] }
         ] }
     });
-    let traits = if writer_first { vec![writer, emitter, hud] } else { vec![emitter, writer, hud] };
+    let traits = if writer_first {
+        vec![writer, emitter, hud]
+    } else {
+        vec![emitter, writer, hud]
+    };
     serde_json::json!({
         "name": "order",
         "typeContractVersion": 1,
@@ -452,7 +481,11 @@ fn two_tick_schema(writer_first: bool) -> String {
 fn host_shows(frame: &Value, trait_name: &str, slot: &str) -> Option<f64> {
     let mut shown = None;
     let mut fold = |response: &Value| {
-        for e in response["clientEffectsByTrait"].as_array().into_iter().flatten() {
+        for e in response["clientEffectsByTrait"]
+            .as_array()
+            .into_iter()
+            .flatten()
+        {
             if e["traitName"] == trait_name && e["effect"][1] == slot {
                 shown = e["effect"][2]["content"].as_f64();
             }
@@ -492,4 +525,65 @@ fn control_an_earlier_ticks_write_leaves_the_later_dispatch_render_standing() {
             .is_some_and(|e| e.iter().any(|e| e["traitName"] == "Hud")),
         "the newer dispatch render is not stripped: {frame}"
     );
+}
+
+fn visible_schema() -> String {
+    let tick = |name: &str, visible: bool| {
+        serde_json::json!({
+            "name": name, "linkedEntity": "E", "dispatch": "client",
+            "stateMachine": { "states": [{ "name": "on", "isInitial": true }], "transitions": [] },
+            "ticks": [{ "name": "beat", "interval": 0, "whileVisible": visible, "effects": [["set", "@entity.n", 1]] }]
+        })
+    };
+    serde_json::json!({
+        "name": "App", "typeContractVersion": 1,
+        "orbitals": [{
+            "name": "Main",
+            "entity": { "name": "E", "persistence": "runtime", "fields": [{ "name": "id", "type": "string" }, { "name": "n", "type": "number" }] },
+            "traits": [tick("V", true), tick("P", false)]
+        }]
+    })
+    .to_string()
+}
+
+fn fired_traits(frame: &Value) -> Vec<String> {
+    frame["fired"]
+        .as_array()
+        .map(|a| {
+            a.iter()
+                .map(|f| f["trait"].as_str().unwrap().to_string())
+                .collect()
+        })
+        .unwrap_or_default()
+}
+
+fn on_screen(kernel: &Kernel, trait_name: &str, value: bool) {
+    let name = CString::new(trait_name).unwrap();
+    unsafe { orbital_kernel_set_trait_on_screen(kernel.0, name.as_ptr(), value) };
+}
+
+#[test]
+fn a_visible_tick_is_skipped_once_the_native_host_reports_its_trait_off_screen() {
+    let kernel = Kernel::new(&visible_schema());
+    on_screen(&kernel, "V", false);
+    on_screen(&kernel, "P", false);
+    let mut names = fired_traits(&kernel.frame(0));
+    names.sort();
+    assert_eq!(
+        names,
+        ["P"],
+        "EXEC-TICK-4: only the plain tick fires off screen"
+    );
+    on_screen(&kernel, "V", true);
+    let mut names = fired_traits(&kernel.frame(1));
+    names.sort();
+    assert_eq!(names, ["P", "V"], "back on screen it resumes");
+}
+
+#[test]
+fn control_a_visible_tick_the_native_host_never_reported_fires() {
+    let kernel = Kernel::new(&visible_schema());
+    let mut names = fired_traits(&kernel.frame(0));
+    names.sort();
+    assert_eq!(names, ["P", "V"]);
 }

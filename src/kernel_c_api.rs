@@ -418,6 +418,26 @@ pub unsafe extern "C" fn orbital_kernel_tick(
     }
 }
 
+/// The frame delta a painter at version `since` of this kernel's frames needs (`FrameDelta` JSON): empty when it is
+/// current, else a snapshot of every frame (EXEC-DIST-7). Free it with `orbital_kernel_free_string`.
+///
+/// # Safety
+/// `handle` must be valid.
+#[no_mangle]
+pub unsafe extern "C" fn orbital_kernel_frames_since(handle: *mut OrbitalKernelHandle, since: u64) -> *mut c_char {
+    if handle.is_null() {
+        return ptr::null_mut();
+    }
+    let handle_ref = &*handle;
+    let _call = handle_ref.call_lock.read();
+    let result = catch_unwind(AssertUnwindSafe(|| handle_ref.embedded.frames_since(since)));
+    match result {
+        Ok(Ok(delta)) => to_json(handle_ref, &delta),
+        Ok(Err(e)) => json_error(handle_ref, e),
+        Err(_) => json_error(handle_ref, "panic during frames_since"),
+    }
+}
+
 /// Run one host frame of the native tick clock: every declared tick (across all orbitals) whose
 /// interval has elapsed runs through the kernel's `process_tick`, at most once, and the results
 /// come back as ONE envelope the host folds the way it folds a dispatch.
@@ -612,6 +632,33 @@ pub unsafe extern "C" fn orbital_kernel_set_theme_mode(
         Ok(Ok(mode)) => handle_ref.embedded.set_theme_mode(mode),
         Ok(Err(e)) => set_error(handle_ref, e),
         Err(_) => set_error(handle_ref, "panic during set_theme_mode"),
+    }
+}
+
+/// Report whether `trait_name`'s rendered output is on screen, so its `[visible]` ticks run only
+/// then (EXEC-TICK-4). Hosts call it as a trait's view appears and disappears. An invalid
+/// argument sets `last_error` and is a no-op.
+///
+/// # Safety
+/// `handle` must be valid; `trait_name` must be a valid C string.
+#[no_mangle]
+pub unsafe extern "C" fn orbital_kernel_set_trait_on_screen(
+    handle: *mut OrbitalKernelHandle,
+    trait_name: *const c_char,
+    on_screen: bool,
+) {
+    if handle.is_null() {
+        return;
+    }
+    let handle_ref = &*handle;
+    let _call = handle_ref.call_lock.write();
+    let result = catch_unwind(AssertUnwindSafe(|| {
+        read_str(trait_name).ok_or("trait_name is null/invalid utf-8")
+    }));
+    match result {
+        Ok(Ok(name)) => handle_ref.embedded.set_trait_on_screen(name, on_screen),
+        Ok(Err(e)) => set_error(handle_ref, e),
+        Err(_) => set_error(handle_ref, "panic during set_trait_on_screen"),
     }
 }
 
@@ -1016,6 +1063,7 @@ pub const KERNEL_C_SYMBOLS: &[&str] = &[
     "orbital_kernel_snapshot",
     "orbital_kernel_resolve_rows",
     "orbital_kernel_set_theme_mode",
+    "orbital_kernel_set_trait_on_screen",
     "orbital_kernel_set_current_user",
     "orbital_kernel_seed",
     "orbital_kernel_remount",
@@ -1473,13 +1521,13 @@ pub(crate) mod tests {
     #[test]
     fn remount_declares_the_mount_the_server_leg_carries() {
         unsafe {
-            let handle = init_handle();
-            let traits = cstr(r#"["TaskCRUD","Peer"]"#);
+            let handle = init_two_orbital_handle("ChoreCRUD");
+            let traits = cstr(r#"["TaskCRUD","ChoreCRUD"]"#);
             orbital_kernel_remount(handle, traits.as_ptr());
-            // TaskCRUD's own INIT leaves the mount; Peer still awaits.
+            // TaskCRUD's own INIT leaves the mount; ChoreCRUD (which handles INIT) still awaits.
             assert_eq!(
                 awaiting_on_init_leg(handle, "TaskCRUD"),
-                vec!["Peer".to_string()]
+                vec!["ChoreCRUD".to_string()]
             );
             orbital_kernel_destroy(handle);
         }
@@ -1497,8 +1545,8 @@ pub(crate) mod tests {
     #[test]
     fn remount_replaces_the_previous_mount() {
         unsafe {
-            let handle = init_handle();
-            let first = cstr(r#"["Old"]"#);
+            let handle = init_two_orbital_handle("ChoreCRUD");
+            let first = cstr(r#"["ChoreCRUD"]"#);
             orbital_kernel_remount(handle, first.as_ptr());
             let empty = cstr("[]");
             orbital_kernel_remount(handle, empty.as_ptr());
@@ -1510,10 +1558,10 @@ pub(crate) mod tests {
     #[test]
     fn remount_rejects_non_string_array_and_keeps_the_mount() {
         unsafe {
-            let handle = init_handle();
-            let good = cstr(r#"["Peer"]"#);
+            let handle = init_two_orbital_handle("ChoreCRUD");
+            let good = cstr(r#"["ChoreCRUD"]"#);
             orbital_kernel_remount(handle, good.as_ptr());
-            for bad in [r#"{"traits":[]}"#, r#"["Peer", 3]"#, "not json"] {
+            for bad in [r#"{"traits":[]}"#, r#"["ChoreCRUD", 3]"#, "not json"] {
                 let bad = cstr(bad);
                 orbital_kernel_remount(handle, bad.as_ptr());
                 let err = orbital_kernel_last_error(handle);
@@ -1523,7 +1571,7 @@ pub(crate) mod tests {
             }
             assert_eq!(
                 awaiting_on_init_leg(handle, "TaskCRUD"),
-                vec!["Peer".to_string()]
+                vec!["ChoreCRUD".to_string()]
             );
             orbital_kernel_destroy(handle);
         }
@@ -1747,7 +1795,7 @@ pub(crate) mod tests {
         }
     }
 
-    const DELETE_PAYLOAD: &str = r#"{"row":{"id":"r1"}}"#;
+    const DELETE_PAYLOAD: &str = r#"{"row":{"id":"r1","title":"one"}}"#;
     const ITERATIONS: usize = 3000;
 
     fn leg_event(wire: &serde_json::Value) -> Option<String> {

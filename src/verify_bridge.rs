@@ -2003,7 +2003,7 @@ mod tests {
                     {
                         "name": "Composer",
                         "linkedEntity": "Message",
-                        "local": true,
+                        "dispatch": "client",
                         "stateMachine": {
                             "states": [{ "name": "ready", "isInitial": true }],
                             "transitions": [
@@ -2098,7 +2098,7 @@ mod tests {
     ) -> String {
         let mut traits = vec![
             serde_json::json!({
-                "name": "Emitter", "linkedEntity": "Note", "local": true,
+                "name": "Emitter", "linkedEntity": "Note", "dispatch": "client",
                 "stateMachine": {
                     "states": [{ "name": "ready", "isInitial": true }],
                     "transitions": [{ "from": "ready", "to": "ready", "event": "GO",
@@ -2210,7 +2210,7 @@ mod tests {
                 "name": "Main",
                 "entity": { "name": "Note", "fields": [{ "name": "id", "type": "string" }] },
                 "traits": [{
-                    "name": "Board", "linkedEntity": "Note", "local": true,
+                    "name": "Board", "linkedEntity": "Note", "dispatch": "client",
                     "stateMachine": {
                         "states": [{ "name": "play", "isInitial": true }, { "name": "done" }],
                         "transitions": [

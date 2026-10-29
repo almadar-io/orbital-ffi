@@ -1,6 +1,7 @@
 [
   {
     "orbital": "Chore Management",
+    "flight": 0,
     "seed": {
       "trait": "ChoreCRUD",
       "event": "INIT"
@@ -12,8 +13,20 @@
         "ChoreCRUD": "listing"
       },
       "emittedEvents": [],
-      "entityByTrait": {
-        "ChoreCRUD": {}
+      "frames": {
+        "session": "$program",
+        "from": 0,
+        "to": 1,
+        "ops": [
+          [
+            "clear"
+          ],
+          [
+            "put",
+            "ChoreCRUD",
+            {}
+          ]
+        ]
       },
       "clientEffectsByTrait": [
         {
@@ -41,12 +54,24 @@
             "render-ui",
             "main",
             {
-              "entity": "Chore",
-              "fields": [
-                "title",
-                "completed",
-                "createdAt"
+              "columns": [
+                {
+                  "key": "title",
+                  "label": "Title"
+                },
+                {
+                  "key": "completed",
+                  "label": "Completed"
+                },
+                {
+                  "key": "createdAt",
+                  "label": "Created"
+                }
               ],
+              "entity": {
+                "completed": false,
+                "createdAt": "@now"
+              },
               "itemActions": [
                 {
                   "event": "EDIT",
@@ -57,7 +82,7 @@
                   "label": "Delete"
                 }
               ],
-              "type": "entity-table"
+              "type": "table-view"
             }
           ],
           "event": "INIT",
@@ -101,12 +126,21 @@
               "args": [
                 "main",
                 {
-                  "entity": "Chore",
-                  "fields": [
-                    "title",
-                    "completed",
-                    "createdAt"
+                  "columns": [
+                    {
+                      "key": "title",
+                      "label": "Title"
+                    },
+                    {
+                      "key": "completed",
+                      "label": "Completed"
+                    },
+                    {
+                      "key": "createdAt",
+                      "label": "Created"
+                    }
                   ],
+                  "entity": "@entity",
                   "itemActions": [
                     {
                       "event": "EDIT",
@@ -117,7 +151,7 @@
                       "label": "Delete"
                     }
                   ],
-                  "type": "entity-table"
+                  "type": "table-view"
                 }
               ],
               "status": "skipped"
@@ -168,6 +202,7 @@
   },
   {
     "orbital": "Task Management",
+    "flight": 1,
     "seed": {
       "trait": "TaskCRUD",
       "event": "INIT"
@@ -179,8 +214,17 @@
         "TaskCRUD": "listing"
       },
       "emittedEvents": [],
-      "entityByTrait": {
-        "TaskCRUD": {}
+      "frames": {
+        "session": "$program",
+        "from": 1,
+        "to": 2,
+        "ops": [
+          [
+            "put",
+            "TaskCRUD",
+            {}
+          ]
+        ]
       },
       "clientEffectsByTrait": [
         {
@@ -208,12 +252,24 @@
             "render-ui",
             "main",
             {
-              "entity": "Task",
-              "fields": [
-                "title",
-                "completed",
-                "createdAt"
+              "columns": [
+                {
+                  "key": "title",
+                  "label": "Title"
+                },
+                {
+                  "key": "completed",
+                  "label": "Completed"
+                },
+                {
+                  "key": "createdAt",
+                  "label": "Created"
+                }
               ],
+              "entity": {
+                "completed": false,
+                "createdAt": "@now"
+              },
               "itemActions": [
                 {
                   "event": "EDIT",
@@ -224,7 +280,7 @@
                   "label": "Delete"
                 }
               ],
-              "type": "entity-table"
+              "type": "table-view"
             }
           ],
           "event": "INIT",
@@ -268,12 +324,21 @@
               "args": [
                 "main",
                 {
-                  "entity": "Task",
-                  "fields": [
-                    "title",
-                    "completed",
-                    "createdAt"
+                  "columns": [
+                    {
+                      "key": "title",
+                      "label": "Title"
+                    },
+                    {
+                      "key": "completed",
+                      "label": "Completed"
+                    },
+                    {
+                      "key": "createdAt",
+                      "label": "Created"
+                    }
                   ],
+                  "entity": "@entity",
                   "itemActions": [
                     {
                       "event": "EDIT",
@@ -284,7 +349,7 @@
                       "label": "Delete"
                     }
                   ],
-                  "type": "entity-table"
+                  "type": "table-view"
                 }
               ],
               "status": "skipped"
