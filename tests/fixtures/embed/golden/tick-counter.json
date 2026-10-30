@@ -127,6 +127,7 @@
   {
     "fired": [
       {
+        "orbital": "TickCounterOrbital",
         "trait": "Ticker",
         "tick": "frameTick"
       }
@@ -160,6 +161,7 @@
   {
     "fired": [
       {
+        "orbital": "TickCounterOrbital",
         "trait": "Ticker",
         "tick": "frameTick"
       }
@@ -193,14 +195,17 @@
   {
     "fired": [
       {
+        "orbital": "TickCounterOrbital",
         "trait": "Ticker",
         "tick": "beat"
       },
       {
+        "orbital": "TickCounterOrbital",
         "trait": "Ticker",
         "tick": "frameTick"
       },
       {
+        "orbital": "TickCounterOrbital",
         "trait": "Ticker",
         "tick": "guardedTick"
       }
@@ -350,6 +355,7 @@
   {
     "fired": [
       {
+        "orbital": "TickCounterOrbital",
         "trait": "Ticker",
         "tick": "frameTick"
       }
@@ -386,6 +392,7 @@
   {
     "fired": [
       {
+        "orbital": "TickCounterOrbital",
         "trait": "Ticker",
         "tick": "frameTick"
       }
@@ -419,14 +426,17 @@
   {
     "fired": [
       {
+        "orbital": "TickCounterOrbital",
         "trait": "Ticker",
         "tick": "beat"
       },
       {
+        "orbital": "TickCounterOrbital",
         "trait": "Ticker",
         "tick": "frameTick"
       },
       {
+        "orbital": "TickCounterOrbital",
         "trait": "Ticker",
         "tick": "guardedTick"
       }
@@ -704,10 +714,12 @@
   {
     "fired": [
       {
+        "orbital": "TickCounterOrbital",
         "trait": "Ticker",
         "tick": "beat"
       },
       {
+        "orbital": "TickCounterOrbital",
         "trait": "Ticker",
         "tick": "frameTick"
       }
@@ -919,14 +931,17 @@
   {
     "fired": [
       {
+        "orbital": "TickCounterOrbital",
         "trait": "Ticker",
         "tick": "beat"
       },
       {
+        "orbital": "TickCounterOrbital",
         "trait": "Ticker",
         "tick": "frameTick"
       },
       {
+        "orbital": "TickCounterOrbital",
         "trait": "Ticker",
         "tick": "guardedTick"
       }

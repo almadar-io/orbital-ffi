@@ -246,7 +246,7 @@
           "linkedEntityId": "ent_70DG003H98RMM5P9ZQ8CB23T44",
           "name": "TaskCRUD",
           "sourceDeclaration": {
-            "fingerprint": "edf5bb2558f45440373e3b3ae066a7530fe278f601a5f1d230b92c52e0db2f61",
+            "fingerprint": "e23bc91fadfc007534349689dcb6b9a4fc7cb24fdec14e8ff4b713daa0cc508c",
             "traitId": "trt_6QFSYRAAD256HE16VT9JJ8A9S5"
           },
           "stateMachine": {
@@ -468,8 +468,12 @@
                     {
                       "entity": "@entity",
                       "fields": [
-                        "title",
-                        "description"
+                        {
+                          "name": "title"
+                        },
+                        {
+                          "name": "description"
+                        }
                       ],
                       "onCancel": "CANCEL",
                       "onSubmit": "SAVE",
@@ -629,9 +633,15 @@
                     {
                       "entity": "@entity",
                       "fields": [
-                        "title",
-                        "description",
-                        "completed"
+                        {
+                          "name": "title"
+                        },
+                        {
+                          "name": "description"
+                        },
+                        {
+                          "name": "completed"
+                        }
                       ],
                       "initialData": "@payload.row",
                       "onCancel": "CANCEL",
@@ -1012,7 +1022,7 @@
           "linkedEntityId": "ent_PA223BZSQCWVPCXSRC1QMPDN0M",
           "name": "ChoreCRUD",
           "sourceDeclaration": {
-            "fingerprint": "7a4200f5b60d9be6741646d5faae55bd12ee5951442a072d0b07967c65d5800a",
+            "fingerprint": "94dafb541401d5851199d0b581d08a48f882b4a7e37c5a63880321e9640adeab",
             "traitId": "trt_FH1JNAQXYAYZ532YYJ1WATY9PS"
           },
           "stateMachine": {
@@ -1234,8 +1244,12 @@
                     {
                       "entity": "@entity",
                       "fields": [
-                        "title",
-                        "description"
+                        {
+                          "name": "title"
+                        },
+                        {
+                          "name": "description"
+                        }
                       ],
                       "onCancel": "CANCEL",
                       "onSubmit": "SAVE",
@@ -1395,9 +1409,15 @@
                     {
                       "entity": "@entity",
                       "fields": [
-                        "title",
-                        "description",
-                        "completed"
+                        {
+                          "name": "title"
+                        },
+                        {
+                          "name": "description"
+                        },
+                        {
+                          "name": "completed"
+                        }
                       ],
                       "initialData": "@payload.row",
                       "onCancel": "CANCEL",

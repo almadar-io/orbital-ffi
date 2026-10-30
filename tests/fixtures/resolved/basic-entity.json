@@ -168,7 +168,7 @@
           "linkedEntityId": "ent_70DG003H98RMM5P9ZQ8CB23T44",
           "name": "TaskCRUD",
           "sourceDeclaration": {
-            "fingerprint": "edf5bb2558f45440373e3b3ae066a7530fe278f601a5f1d230b92c52e0db2f61",
+            "fingerprint": "e23bc91fadfc007534349689dcb6b9a4fc7cb24fdec14e8ff4b713daa0cc508c",
             "traitId": "trt_6QFSYRAAD256HE16VT9JJ8A9S5"
           },
           "stateMachine": {
@@ -390,8 +390,12 @@
                     {
                       "entity": "@entity",
                       "fields": [
-                        "title",
-                        "description"
+                        {
+                          "name": "title"
+                        },
+                        {
+                          "name": "description"
+                        }
                       ],
                       "onCancel": "CANCEL",
                       "onSubmit": "SAVE",
@@ -551,9 +555,15 @@
                     {
                       "entity": "@entity",
                       "fields": [
-                        "title",
-                        "description",
-                        "completed"
+                        {
+                          "name": "title"
+                        },
+                        {
+                          "name": "description"
+                        },
+                        {
+                          "name": "completed"
+                        }
                       ],
                       "initialData": "@payload.row",
                       "onCancel": "CANCEL",

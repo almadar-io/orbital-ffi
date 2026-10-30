@@ -247,6 +247,7 @@
   {
     "fired": [
       {
+        "orbital": "EntityRerenderOrbital",
         "trait": "Mover",
         "tick": "step"
       }

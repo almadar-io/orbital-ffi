@@ -246,8 +246,12 @@
                 "createdAt": "@now"
               },
               "fields": [
-                "title",
-                "description"
+                {
+                  "name": "title"
+                },
+                {
+                  "name": "description"
+                }
               ],
               "onCancel": "CANCEL",
               "onSubmit": "SAVE",
@@ -286,8 +290,12 @@
                 {
                   "entity": "@entity",
                   "fields": [
-                    "title",
-                    "description"
+                    {
+                      "name": "title"
+                    },
+                    {
+                      "name": "description"
+                    }
                   ],
                   "onCancel": "CANCEL",
                   "onSubmit": "SAVE",
@@ -388,9 +396,15 @@
                 "title": "first"
               },
               "fields": [
-                "title",
-                "description",
-                "completed"
+                {
+                  "name": "title"
+                },
+                {
+                  "name": "description"
+                },
+                {
+                  "name": "completed"
+                }
               ],
               "initialData": null,
               "onCancel": "CANCEL",
@@ -440,9 +454,15 @@
                 {
                   "entity": "@entity",
                   "fields": [
-                    "title",
-                    "description",
-                    "completed"
+                    {
+                      "name": "title"
+                    },
+                    {
+                      "name": "description"
+                    },
+                    {
+                      "name": "completed"
+                    }
                   ],
                   "initialData": "@payload.row",
                   "onCancel": "CANCEL",
