@@ -65,9 +65,11 @@ fn take_json(raw: *mut std::ffi::c_char) -> Value {
 
 fn fired(frame: &Value) -> Vec<String> {
     frame["fired"]
-        .as_array()
-        .map(|a| {
-            a.iter()
+        .as_object()
+        .map(|by_orbital| {
+            by_orbital
+                .values()
+                .flat_map(|ticks| ticks.as_array().unwrap())
                 .map(|f| f["tick"].as_str().unwrap().to_string())
                 .collect()
         })
@@ -548,9 +550,11 @@ fn visible_schema() -> String {
 
 fn fired_traits(frame: &Value) -> Vec<String> {
     frame["fired"]
-        .as_array()
-        .map(|a| {
-            a.iter()
+        .as_object()
+        .map(|by_orbital| {
+            by_orbital
+                .values()
+                .flat_map(|ticks| ticks.as_array().unwrap())
                 .map(|f| f["trait"].as_str().unwrap().to_string())
                 .collect()
         })

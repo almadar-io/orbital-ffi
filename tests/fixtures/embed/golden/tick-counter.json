@@ -125,13 +125,14 @@
     ]
   },
   {
-    "fired": [
-      {
-        "orbital": "TickCounterOrbital",
-        "trait": "Ticker",
-        "tick": "frameTick"
-      }
-    ],
+    "fired": {
+      "TickCounterOrbital": [
+        {
+          "trait": "Ticker",
+          "tick": "frameTick"
+        }
+      ]
+    },
     "response": {
       "success": true,
       "transitioned": true,
@@ -159,13 +160,14 @@
     "errors": []
   },
   {
-    "fired": [
-      {
-        "orbital": "TickCounterOrbital",
-        "trait": "Ticker",
-        "tick": "frameTick"
-      }
-    ],
+    "fired": {
+      "TickCounterOrbital": [
+        {
+          "trait": "Ticker",
+          "tick": "frameTick"
+        }
+      ]
+    },
     "response": {
       "success": true,
       "transitioned": true,
@@ -193,23 +195,22 @@
     "errors": []
   },
   {
-    "fired": [
-      {
-        "orbital": "TickCounterOrbital",
-        "trait": "Ticker",
-        "tick": "beat"
-      },
-      {
-        "orbital": "TickCounterOrbital",
-        "trait": "Ticker",
-        "tick": "frameTick"
-      },
-      {
-        "orbital": "TickCounterOrbital",
-        "trait": "Ticker",
-        "tick": "guardedTick"
-      }
-    ],
+    "fired": {
+      "TickCounterOrbital": [
+        {
+          "trait": "Ticker",
+          "tick": "beat"
+        },
+        {
+          "trait": "Ticker",
+          "tick": "frameTick"
+        },
+        {
+          "trait": "Ticker",
+          "tick": "guardedTick"
+        }
+      ]
+    },
     "response": {
       "success": true,
       "transitioned": true,
@@ -353,13 +354,14 @@
     "errors": []
   },
   {
-    "fired": [
-      {
-        "orbital": "TickCounterOrbital",
-        "trait": "Ticker",
-        "tick": "frameTick"
-      }
-    ],
+    "fired": {
+      "TickCounterOrbital": [
+        {
+          "trait": "Ticker",
+          "tick": "frameTick"
+        }
+      ]
+    },
     "response": {
       "success": true,
       "transitioned": true,
@@ -390,13 +392,14 @@
   null,
   null,
   {
-    "fired": [
-      {
-        "orbital": "TickCounterOrbital",
-        "trait": "Ticker",
-        "tick": "frameTick"
-      }
-    ],
+    "fired": {
+      "TickCounterOrbital": [
+        {
+          "trait": "Ticker",
+          "tick": "frameTick"
+        }
+      ]
+    },
     "response": {
       "success": true,
       "transitioned": true,
@@ -424,23 +427,22 @@
     "errors": []
   },
   {
-    "fired": [
-      {
-        "orbital": "TickCounterOrbital",
-        "trait": "Ticker",
-        "tick": "beat"
-      },
-      {
-        "orbital": "TickCounterOrbital",
-        "trait": "Ticker",
-        "tick": "frameTick"
-      },
-      {
-        "orbital": "TickCounterOrbital",
-        "trait": "Ticker",
-        "tick": "guardedTick"
-      }
-    ],
+    "fired": {
+      "TickCounterOrbital": [
+        {
+          "trait": "Ticker",
+          "tick": "beat"
+        },
+        {
+          "trait": "Ticker",
+          "tick": "frameTick"
+        },
+        {
+          "trait": "Ticker",
+          "tick": "guardedTick"
+        }
+      ]
+    },
     "response": {
       "success": true,
       "transitioned": true,
@@ -712,18 +714,18 @@
     ]
   },
   {
-    "fired": [
-      {
-        "orbital": "TickCounterOrbital",
-        "trait": "Ticker",
-        "tick": "beat"
-      },
-      {
-        "orbital": "TickCounterOrbital",
-        "trait": "Ticker",
-        "tick": "frameTick"
-      }
-    ],
+    "fired": {
+      "TickCounterOrbital": [
+        {
+          "trait": "Ticker",
+          "tick": "beat"
+        },
+        {
+          "trait": "Ticker",
+          "tick": "frameTick"
+        }
+      ]
+    },
     "response": {
       "success": true,
       "transitioned": true,
@@ -929,23 +931,22 @@
     ]
   },
   {
-    "fired": [
-      {
-        "orbital": "TickCounterOrbital",
-        "trait": "Ticker",
-        "tick": "beat"
-      },
-      {
-        "orbital": "TickCounterOrbital",
-        "trait": "Ticker",
-        "tick": "frameTick"
-      },
-      {
-        "orbital": "TickCounterOrbital",
-        "trait": "Ticker",
-        "tick": "guardedTick"
-      }
-    ],
+    "fired": {
+      "TickCounterOrbital": [
+        {
+          "trait": "Ticker",
+          "tick": "beat"
+        },
+        {
+          "trait": "Ticker",
+          "tick": "frameTick"
+        },
+        {
+          "trait": "Ticker",
+          "tick": "guardedTick"
+        }
+      ]
+    },
     "response": {
       "success": true,
       "transitioned": true,

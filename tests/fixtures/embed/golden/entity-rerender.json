@@ -245,13 +245,14 @@
   },
   null,
   {
-    "fired": [
-      {
-        "orbital": "EntityRerenderOrbital",
-        "trait": "Mover",
-        "tick": "step"
-      }
-    ],
+    "fired": {
+      "EntityRerenderOrbital": [
+        {
+          "trait": "Mover",
+          "tick": "step"
+        }
+      ]
+    },
     "response": {
       "success": true,
       "transitioned": true,

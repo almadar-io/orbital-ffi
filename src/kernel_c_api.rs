@@ -354,7 +354,7 @@ pub unsafe extern "C" fn orbital_kernel_frames_since(handle: *mut OrbitalKernelH
 /// come back as ONE envelope the host folds the way it folds a dispatch.
 /// `now_ms` is the host's monotonic frame time in milliseconds (the clock only differences it).
 ///
-/// JSON shape: `{"fired": [{"trait","tick"}], "response": EventResponse (merged tick effects),
+/// JSON shape: `{"fired": {orbital: [{"trait","tick"}]}, "response": EventResponse (merged tick effects),
 /// "dispatches": [{"trait", ...dispatch envelope}] (one per tick `emit`: its listener cascade
 /// through `RuntimeKernel::dispatch_tick`, the emitter not re-run as a seed, server leg stamped
 /// with the tick), "droppedServerEffects": n, "errors": [...]}`. NULL when no tick fired
