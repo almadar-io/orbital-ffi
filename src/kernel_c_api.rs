@@ -658,7 +658,9 @@ pub unsafe extern "C" fn orbital_kernel_remount(
     let handle_ref = &*handle;
     let _call = handle_ref.call_lock.write();
     match catch_unwind(AssertUnwindSafe(|| read_traits(traits_json))) {
-        Ok(Ok(traits)) => handle_ref.embedded.remount(traits),
+        Ok(Ok(traits)) => {
+            handle_ref.embedded.remount(traits);
+        }
         Ok(Err(e)) => set_error(handle_ref, e),
         Err(_) => set_error(handle_ref, "panic during remount"),
     }
