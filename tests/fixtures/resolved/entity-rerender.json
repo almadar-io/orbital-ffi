@@ -87,12 +87,14 @@
         "fields": [
           {
             "name": "id",
+            "nullable": false,
             "required": true,
             "type": "string"
           },
           {
             "default": 0.0,
             "name": "score",
+            "nullable": false,
             "type": "number"
           }
         ],
@@ -691,5 +693,6 @@
       }
     }
   ],
+  "typeContractVersion": 1,
   "version": "1.0.0"
 }

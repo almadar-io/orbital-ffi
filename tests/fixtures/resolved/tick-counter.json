@@ -115,12 +115,14 @@
           "fields": [
             {
               "name": "id",
+              "nullable": false,
               "required": true,
               "type": "string"
             },
             {
               "default": 0.0,
               "name": "heard",
+              "nullable": false,
               "type": "number"
             }
           ],
@@ -133,22 +135,26 @@
         "fields": [
           {
             "name": "id",
+            "nullable": false,
             "required": true,
             "type": "string"
           },
           {
             "default": 0.0,
             "name": "beats",
+            "nullable": false,
             "type": "number"
           },
           {
             "default": 0.0,
             "name": "frames",
+            "nullable": false,
             "type": "number"
           },
           {
             "default": 0.0,
             "name": "guarded",
+            "nullable": false,
             "type": "number"
           }
         ],
@@ -221,6 +227,7 @@
               "payloadSchema": [
                 {
                   "name": "beats",
+                  "nullable": false,
                   "type": "number"
                 }
               ],
@@ -235,7 +242,7 @@
           "linkedEntityId": "ent_01M4FRNC8VB6MADPSHWD0XNXCJ",
           "name": "Ticker",
           "sourceDeclaration": {
-            "fingerprint": "1b62a04820b6036576ccfeb24df6a035fa2b73e843fa0e7997bd1a4b3468d1f0",
+            "fingerprint": "4f3df489a227bc567bec04098473ec08e1909c6b51b97c327b47ee5f439edbc3",
             "traitId": "trt_01M4FRNC8V2N1A7W8BHTZAP1BJ"
           },
           "stateMachine": {
@@ -263,6 +270,7 @@
                 "payloadSchema": [
                   {
                     "name": "beats",
+                    "nullable": false,
                     "type": "number"
                   }
                 ]
@@ -309,6 +317,22 @@
                 "event": "STOP",
                 "eventId": "evt_01M4FRNC8VYPSKAA41B7C8E9ZS",
                 "from": "running",
+                "to": "stopped"
+              },
+              {
+                "effects": [
+                  [
+                    "render-ui",
+                    "main",
+                    {
+                      "title": "Stopped",
+                      "type": "card"
+                    }
+                  ]
+                ],
+                "event": "INIT",
+                "eventId": "evt_01M4FRNC8VZ787N2TJ5BSN50XB",
+                "from": "stopped",
                 "to": "stopped"
               },
               {
@@ -857,5 +881,6 @@
       }
     }
   ],
+  "typeContractVersion": 1,
   "version": "1.0.0"
 }
