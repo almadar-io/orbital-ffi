@@ -3,7 +3,6 @@
   "clientId": "golden-client",
   "steps": [
     { "op": "tickCount" },
-    { "op": "setUser", "user": { "id": "u1", "email": "u1@example.com", "roles": ["admin"] } },
     { "op": "seed", "entityType": "Task", "rows": [{ "id": "t1", "title": "first" }, { "id": "t2", "title": "second" }] },
     { "op": "remount", "traits": ["TaskCRUD"] },
     { "op": "dispatch", "trait": "TaskCRUD", "event": "INIT" },

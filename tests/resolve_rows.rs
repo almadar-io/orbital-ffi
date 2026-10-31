@@ -1,5 +1,5 @@
 //! `orbital_kernel_resolve_rows`: the C ABI over the kernel's one row-set resolver. The native renderers resolve a
-//! `$rowSet` marker's `ref` through it at paint; `@read` is re-checked for the current viewer on every call.
+//! `$rowSet` marker's `ref` through it at paint; `@read` is re-checked on every call.
 
 use orbital_ffi::kernel_c_api::*;
 use serde_json::{json, Value};
@@ -17,7 +17,7 @@ fn schema() -> CString {
             "entity": {
                 "name": "Ticket", "persistence": "runtime",
                 "fields": [{ "name": "id", "type": "string" }, { "name": "title", "type": "string" }, { "name": "owner", "type": "string" }],
-                "read_policy": ["=", ["object/get", "@entity", "owner"], "@user.id"]
+                "read_policy": ["!=", ["object/get", "@entity", "owner"], "u2"]
             },
             "traits": [{ "name": "Tickets", "linkedEntity": "Ticket", "stateMachine": {
                 "states": [{ "name": "idle", "isInitial": true }],
@@ -39,7 +39,6 @@ unsafe fn take(raw: *mut std::os::raw::c_char) -> Value {
 unsafe fn kernel() -> *mut OrbitalKernelHandle {
     let handle = orbital_kernel_init(schema().as_ptr(), c("resolve-rows").as_ptr());
     assert!(!handle.is_null());
-    orbital_kernel_set_current_user(handle, c(r#"{"id":"u1"}"#).as_ptr());
     let rows = json!([
         { "id": "t1", "title": "alpha", "owner": "u1" },
         { "id": "t2", "title": "hidden", "owner": "u2" },
@@ -78,21 +77,22 @@ fn a_reference_resolves_to_the_rows_the_viewer_may_read_in_order_with_the_recoun
 }
 
 #[test]
-fn a_viewer_change_changes_the_answer() {
+fn control_a_hidden_row_stays_hidden_on_every_resolve_since_no_call_names_a_viewer() {
     unsafe {
         let handle = kernel();
-        orbital_kernel_set_current_user(handle, c(r#"{"id":"u2"}"#).as_ptr());
-        let page = take(orbital_kernel_resolve_rows(
-            handle,
-            reference(&["t1", "t2", "t3"]).as_ptr(),
-        ));
-        let ids: Vec<_> = page["rows"]
-            .as_array()
-            .unwrap()
-            .iter()
-            .map(|r| r["id"].as_str().unwrap())
-            .collect();
-        assert_eq!(ids, vec!["t2"], "{page}");
+        for _ in 0..2 {
+            let page = take(orbital_kernel_resolve_rows(
+                handle,
+                reference(&["t1", "t2", "t3"]).as_ptr(),
+            ));
+            let ids: Vec<_> = page["rows"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .map(|r| r["id"].as_str().unwrap())
+                .collect();
+            assert_eq!(ids, vec!["t1", "t3"], "{page}");
+        }
         orbital_kernel_destroy(handle);
     }
 }

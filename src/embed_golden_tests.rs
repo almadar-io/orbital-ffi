@@ -116,11 +116,6 @@ unsafe fn run_step(handle: *mut OrbitalKernelHandle, step: &Value) -> Value {
             orbital_kernel_set_theme_mode(handle, m.as_ptr());
             Value::Null
         }
-        "setUser" => {
-            let u = json_arg("user");
-            orbital_kernel_set_current_user(handle, u.as_ptr());
-            Value::Null
-        }
         "seed" => {
             let t = s("entityType");
             let rows = json_arg("rows");

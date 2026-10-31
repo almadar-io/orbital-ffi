@@ -20,7 +20,7 @@ use crate::kernel_c_api::{
     orbital_kernel_free_string, orbital_kernel_get_state, orbital_kernel_init,
     orbital_kernel_last_error, orbital_kernel_mount, orbital_kernel_outstanding_strings,
     orbital_kernel_remount, orbital_kernel_resolve_rows, orbital_kernel_restore,
-    orbital_kernel_seed, orbital_kernel_set_current_user, orbital_kernel_set_theme_mode,
+    orbital_kernel_seed, orbital_kernel_set_theme_mode,
     orbital_kernel_set_trait_on_screen, orbital_kernel_snapshot, orbital_kernel_tick,
     orbital_kernel_tick_count, OrbitalKernelHandle,
 };
@@ -56,7 +56,6 @@ pub const KERNEL_JNI_SYMBOLS: &[&str] = &[
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeResolveRows",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeSetThemeMode",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeSetTraitOnScreen",
-    "Java_generated_patterns_core_OrbitalKernelBridge_nativeSetCurrentUser",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeSeed",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeRemount",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeMount",
@@ -388,23 +387,6 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeSe
                 on_screen != 0,
             )
         };
-        Some(())
-    });
-}
-
-/// JNI entry: `OrbitalKernelBridge.nativeSetCurrentUser(handle, userJson)`.
-#[no_mangle]
-pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeSetCurrentUser<
-    'local,
->(
-    mut env: JNIEnv<'local>,
-    _class: JClass<'local>,
-    handle: jlong,
-    user_json: JString<'local>,
-) {
-    let _ = catch_panic(|| {
-        let user_json = required_cstring(&mut env, &user_json)?;
-        unsafe { orbital_kernel_set_current_user(handle_of(handle), user_json.as_ptr()) };
         Some(())
     });
 }

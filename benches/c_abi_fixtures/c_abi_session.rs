@@ -11,9 +11,6 @@ use serde_json::{json, Map, Value as Json};
 use std::ffi::{c_char, CStr, CString};
 use std::ptr;
 
-const DEFAULT_VIEWER: &str =
-    r#"{"id":"viewer-1","name":"Dev Viewer","email":"viewer@example.com","role":""}"#;
-
 pub struct CAbiDriver;
 
 pub struct HandleSession {
@@ -69,7 +66,6 @@ impl Driver for CAbiDriver {
             .unwrap_or_default();
         let schema = cstr(&fixture.schema.to_string())?;
         let client = cstr("bench")?;
-        let user = cstr(DEFAULT_VIEWER)?;
         unsafe {
             let handle = orbital_kernel_init(schema.as_ptr(), client.as_ptr());
             if handle.is_null() {
@@ -78,7 +74,6 @@ impl Driver for CAbiDriver {
                     fixture.name
                 ));
             }
-            orbital_kernel_set_current_user(handle, user.as_ptr());
             Ok(HandleSession {
                 handle,
                 orbital_traits,

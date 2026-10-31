@@ -490,7 +490,7 @@ pub unsafe extern "C" fn orbital_kernel_snapshot(handle: *mut OrbitalKernelHandl
 
 /// Resolve a row-set reference (`ref_json` = a `RowSetRef`, the `ref` of a `$rowSet` marker) through the
 /// kernel's one resolver (`RuntimeKernel::resolve_rows`): the rows as they are now, re-checked against the
-/// current viewer's `@read` policy, with the re-counted total, as `{"rows": [...], "total": N}`. A reference
+/// `@read` policy of the identity bound to the handle's session (anonymous when none is), with the re-counted total, as `{"rows": [...], "total": N}`. A reference
 /// the client cannot resolve answers `{"error": ...}` and sets `last_error`.
 ///
 /// # Safety
@@ -570,33 +570,6 @@ pub unsafe extern "C" fn orbital_kernel_set_trait_on_screen(
         Ok(Ok(name)) => handle_ref.embedded.set_trait_on_screen(name, on_screen),
         Ok(Err(e)) => set_error(handle_ref, e),
         Err(_) => set_error(handle_ref, "panic during set_trait_on_screen"),
-    }
-}
-
-/// Bind `@user` for every subsequent dispatch on this handle. `user_json`
-/// must decode to a `Value` (an object, typically).
-///
-/// # Safety
-/// `handle` must be valid; `user_json` must be a valid C string.
-#[no_mangle]
-pub unsafe extern "C" fn orbital_kernel_set_current_user(
-    handle: *mut OrbitalKernelHandle,
-    user_json: *const c_char,
-) {
-    if handle.is_null() {
-        return;
-    }
-    let handle_ref = &*handle;
-    let _call = handle_ref.call_lock.write();
-    let result = catch_unwind(AssertUnwindSafe(|| -> Result<Value, String> {
-        let user_json = read_str(user_json).ok_or("user_json is null/invalid utf-8")?;
-        serde_json::from_str(user_json).map_err(|e| format!("parse user_json: {e}"))
-    }));
-
-    match result {
-        Ok(Ok(user)) => handle_ref.embedded.set_current_user(user),
-        Ok(Err(e)) => set_error(handle_ref, e),
-        Err(_) => set_error(handle_ref, "panic during set_current_user"),
     }
 }
 
@@ -751,7 +724,6 @@ pub const KERNEL_C_SYMBOLS: &[&str] = &[
     "orbital_kernel_resolve_rows",
     "orbital_kernel_set_theme_mode",
     "orbital_kernel_set_trait_on_screen",
-    "orbital_kernel_set_current_user",
     "orbital_kernel_seed",
     "orbital_kernel_remount",
     "orbital_kernel_mount",
@@ -1021,23 +993,6 @@ pub(crate) mod tests {
             let expected = orbital_core::runtime::motion::resolve_motion(&tokens);
             assert_eq!(v["motion"], serde_json::to_value(&expected).unwrap());
             assert!(v["motion"]["shapes"]["modalEnter"]["scale"].is_number());
-            orbital_kernel_destroy(handle);
-        }
-    }
-
-    #[test]
-    fn set_current_user_then_get_state_does_not_error() {
-        unsafe {
-            let handle = init_handle();
-            assert!(!handle.is_null());
-            let user = cstr(r#"{"id":"u1","role":"member"}"#);
-            orbital_kernel_set_current_user(handle, user.as_ptr());
-
-            let trait_name = cstr("NoSuchTrait");
-            let state = orbital_kernel_get_state(handle, trait_name.as_ptr(), ptr::null());
-            let state_s = CStr::from_ptr(state).to_str().unwrap().to_string();
-            assert_eq!(state_s, "");
-            orbital_kernel_free_string(state);
             orbital_kernel_destroy(handle);
         }
     }
