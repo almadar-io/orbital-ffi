@@ -59,7 +59,7 @@ fn r1_differences_from_r0(fixture_names: &[&str]) -> Vec<String> {
 }
 
 #[test]
-#[ignore = "needs ALMADAR_PARITY_FIXTURES and ALMADAR_PARITY_REFERENCE"]
+#[ignore = "tool: trace parity against the reference runtime; needs ALMADAR_PARITY_FIXTURES and ALMADAR_PARITY_REFERENCE"]
 fn r1_trace_equals_r0_on_audit_provenance_and_visit_key() {
     let differences = r1_differences_from_r0(&["audit-provenance", "visit-key"]);
     assert!(
@@ -70,7 +70,7 @@ fn r1_trace_equals_r0_on_audit_provenance_and_visit_key() {
 }
 
 #[test]
-#[ignore = "needs ALMADAR_PARITY_FIXTURES and ALMADAR_PARITY_REFERENCE"]
+#[ignore = "tool: trace parity against the reference runtime; needs ALMADAR_PARITY_FIXTURES and ALMADAR_PARITY_REFERENCE"]
 fn r1_trace_differs_from_r0_where_the_circuit_has_server_effects() {
     let differences = r1_differences_from_r0(&["fetch-payload"]);
     assert_eq!(differences.len(), 5, "{differences:?}");
