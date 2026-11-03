@@ -9,7 +9,7 @@
 
 </div>
 
-<p align="center"><sub>Part of <a href="https://github.com/almadar-io/orb"><b>Orb</b></a>: the language where the rule is the program. <a href="https://orb.almadar.io">orb.almadar.io</a></sub></p>
+<p align="center"><sub>Part of <a href="https://github.com/almadar-io/orb"><b>Orb</b></a>: a programming language of composable state machines. <a href="https://orb.almadar.io">orb.almadar.io</a></sub></p>
 
 `orbital-ffi` packages the embedded kernel and the canvas renderer behind a C ABI so iOS (SwiftUI) and Android (Jetpack Compose) hosts run the same kernel as every other host. It builds as `staticlib` (iOS), `cdylib` (Android) and `rlib`. It marshals; every decision is the kernel's.
 
