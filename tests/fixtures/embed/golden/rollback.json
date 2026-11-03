@@ -236,7 +236,7 @@
           "put",
           "$shared::Board",
           {
-            "score": 0.0
+            "score": 0
           }
         ]
       ]
@@ -248,7 +248,7 @@
           "render-ui",
           "sidebar",
           {
-            "content": 0.0,
+            "content": 0,
             "type": "typography"
           }
         ]
