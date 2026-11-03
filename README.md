@@ -122,9 +122,7 @@ The device libraries are built from the orbital-rust workspace with `make ios-li
 
 ## Docs
 
-- [Orbital Core](https://github.com/itechdom/kflow.ai/blob/main/docs/Almadar_Orbital_Core.md)
-- [Orbital Shell iOS](https://github.com/itechdom/kflow.ai/blob/main/docs/Almadar_Orbital_Shell_iOS.md) and [Orbital Shell Android](https://github.com/itechdom/kflow.ai/blob/main/docs/Almadar_Orbital_Shell_Android.md)
-- [Execution Semantics](https://github.com/itechdom/kflow.ai/blob/main/docs/Almadar_Execution_Semantics.md)
+- [Orb documentation](https://orb.almadar.io/docs): the language, the `orb` CLI and how the pieces fit
 
 ## License
 
