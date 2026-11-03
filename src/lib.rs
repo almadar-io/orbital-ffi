@@ -2,6 +2,7 @@
 //! C ABI + JNI forwarders. Built as staticlib (iOS) and cdylib (Android).
 
 pub use orbital_canvas::c_api;
+pub mod audio_policy_c_api;
 pub mod jni_bridge;
 pub mod jni_kernel_bridge;
 pub mod jni_util;
