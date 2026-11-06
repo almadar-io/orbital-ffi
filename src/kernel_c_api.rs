@@ -1381,6 +1381,43 @@ pub(crate) mod tests {
         wire
     }
 
+    /// G-CROSS-469 / EXEC-GPU-1: the embedded mobile kernel has no os host, so a gpu/* ask answers `unsupported`,
+    /// routed to the call's failure event; twin of the native `with_no_host_every_op_is_unsupported`.
+    #[test]
+    fn a_gpu_ask_on_the_embedded_mobile_kernel_answers_unsupported() {
+        let schema = serde_json::json!({
+            "name": "App", "typeContractVersion": 1,
+            "osGrants": { "gpu": [{ "target": "device:1024", "kinds": ["open"] }] },
+            "orbitals": [{
+                "name": "Gpu",
+                "entity": { "name": "Job", "fields": [{ "name": "id", "type": "string" }] },
+                "traits": [{
+                    "name": "Host", "linkedEntity": "Job", "dispatch": "client",
+                    "stateMachine": {
+                        "states": [{ "name": "idle", "isInitial": true }, { "name": "opening" }, { "name": "failed" }],
+                        "transitions": [
+                            { "from": "idle", "to": "opening", "event": "OPEN",
+                              "effects": [["gpu/device-open", {}, { "emit": { "success": "OPENED", "failure": "BAD" } }]] },
+                            { "from": "opening", "to": "failed", "event": "BAD", "effects": [["emit", "GPU_REFUSED", { "kind": "@payload.kind", "error": "@payload.error" }]] }
+                        ]
+                    }
+                }]
+            }]
+        })
+        .to_string();
+        unsafe {
+            let schema = cstr(&schema);
+            let client = cstr("test-client");
+            let handle = orbital_kernel_init(schema.as_ptr(), client.as_ptr());
+            assert!(!handle.is_null());
+            let wire = dispatch_on(handle, "Host", "OPEN");
+            assert_eq!(wire["response"]["states"]["Host"], "failed", "the ask fails and takes its failure route: {wire}");
+            let refused = wire["response"]["emittedEvents"].as_array().and_then(|e| e.iter().find(|e| e["event"] == "GPU_REFUSED")).cloned();
+            assert_eq!(refused.map(|e| e["payload"]["kind"].clone()), Some(serde_json::json!("unsupported")), "{wire}");
+            orbital_kernel_destroy(handle);
+        }
+    }
+
     #[test]
     fn a_leg_addressed_to_a_listener_names_the_orbital_that_owns_it() {
         unsafe {
