@@ -41,6 +41,7 @@ use std::ffi::{c_char, c_void, CStr};
 /// left for Kotlin to free.
 pub const KERNEL_JNI_SYMBOLS: &[&str] = &[
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeInit",
+    "Java_generated_patterns_core_OrbitalKernelBridge_nativeInitFromFile",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeDestroy",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeDispatch",
     "Java_generated_patterns_core_OrbitalKernelBridge_nativeApplyServerResponse",
@@ -65,6 +66,26 @@ pub const KERNEL_JNI_SYMBOLS: &[&str] = &[
 
 fn handle_of(handle: jlong) -> *mut OrbitalKernelHandle {
     handle as *mut OrbitalKernelHandle
+}
+
+/// JNI entry: `OrbitalKernelBridge.nativeInitFromFile(path, clientId)`: [`nativeInit`] with the resolved schema read
+/// from `path` on the native side, so a large program never becomes a JVM string. `0` on an unreadable file too.
+#[no_mangle]
+pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeInitFromFile<'local>(
+    mut env: JNIEnv<'local>,
+    _class: JClass<'local>,
+    path: JString<'local>,
+    client_id: JString<'local>,
+) -> jlong {
+    let outcome = catch_panic(|| {
+        let path = required_cstring(&mut env, &path)?;
+        let client = required_cstring(&mut env, &client_id)?;
+        let schema = std::fs::read(path.to_str().ok()?).ok()?;
+        let schema = std::ffi::CString::new(schema).ok()?;
+        let handle = unsafe { orbital_kernel_init(schema.as_ptr(), client.as_ptr()) };
+        Some(handle as jlong)
+    });
+    outcome.ok().flatten().unwrap_or(0)
 }
 
 /// JNI entry: `OrbitalKernelBridge.nativeInit(resolvedSchemaJson, clientId)`.
