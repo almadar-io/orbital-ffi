@@ -125,3 +125,21 @@ unsafe fn take_plain(raw: *mut std::os::raw::c_char) -> String {
     orbital_kernel_free_string(raw);
     s
 }
+
+#[test]
+fn a_refused_init_leaves_its_reason_and_a_bad_language_bundle_is_reported() {
+    let schema = std::ffi::CString::new("{not json").unwrap();
+    let client = std::ffi::CString::new("c").unwrap();
+    unsafe {
+        let handle = orbital_ffi::kernel_c_api::orbital_kernel_init(schema.as_ptr(), client.as_ptr());
+        assert!(handle.is_null());
+        let reason = orbital_ffi::kernel_c_api::orbital_kernel_init_error();
+        let text = std::ffi::CStr::from_ptr(reason).to_str().unwrap().to_string();
+        orbital_ffi::kernel_c_api::orbital_kernel_free_string(reason);
+        assert!(text.contains("parse resolved schema"), "{text}");
+        let bad = std::ffi::CString::new("{}").unwrap();
+        let refused = orbital_ffi::kernel_c_api::orbital_language_install(bad.as_ptr());
+        assert!(!refused.is_null(), "control: a bundle without the language data is refused, never silently accepted");
+        orbital_ffi::kernel_c_api::orbital_kernel_free_string(refused);
+    }
+}

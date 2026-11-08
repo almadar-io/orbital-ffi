@@ -24,6 +24,8 @@ use std::sync::Arc;
 
 /// Strings `to_c_string` handed to a host and `orbital_kernel_free_string` has not yet taken back.
 static OUTSTANDING_STRINGS: AtomicI64 = AtomicI64::new(0);
+/// Why the last `orbital_kernel_init` returned null: there is no handle to carry a `last_error`.
+static INIT_ERROR: Mutex<String> = Mutex::new(String::new());
 
 /// Opaque handle wrapping the embedded kernel. `last_error` is per-handle so two threads sharing
 /// this pointer (the UI thread + a background reconcile thread) never race on a thread-local.
@@ -133,12 +135,41 @@ pub unsafe extern "C" fn orbital_kernel_init(
     ));
 
     match result {
-        Ok(Ok(handle)) => Box::into_raw(Box::new(handle)),
+        Ok(Ok(handle)) => {
+            INIT_ERROR.lock().clear();
+            Box::into_raw(Box::new(handle))
+        }
         Ok(Err(error)) => {
-            eprintln!("orbital_kernel_init: {error}");
+            *INIT_ERROR.lock() = error.to_string();
             ptr::null_mut()
         }
-        Err(_) => ptr::null_mut(),
+        Err(_) => {
+            *INIT_ERROR.lock() = "orbital_kernel_init panicked".to_string();
+            ptr::null_mut()
+        }
+    }
+}
+
+/// Why the last `orbital_kernel_init` returned null (empty after a success). Free with `orbital_kernel_free_string`.
+#[no_mangle]
+pub extern "C" fn orbital_kernel_init_error() -> *mut c_char {
+    to_c_string(INIT_ERROR.lock().clone())
+}
+
+/// Install the language bundle a device app ships (`language.json`): a device has no `node_modules` to read the
+/// operator table from. Null on success, else the error (free with `orbital_kernel_free_string`).
+///
+/// # Safety
+/// `bundle` must be a valid NUL-terminated UTF-8 C string, or null.
+#[no_mangle]
+pub unsafe extern "C" fn orbital_language_install(bundle: *const c_char) -> *mut c_char {
+    let Some(bundle) = read_str(bundle) else {
+        return to_c_string("language bundle is null/invalid utf-8".to_string());
+    };
+    match catch_unwind(|| orbital_core::language_data::install_language_bundle(bundle)) {
+        Ok(Ok(())) => ptr::null_mut(),
+        Ok(Err(error)) => to_c_string(format!("install language bundle: {error}")),
+        Err(_) => to_c_string("install language bundle panicked".to_string()),
     }
 }
 
