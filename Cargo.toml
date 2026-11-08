@@ -25,6 +25,11 @@ chrono = { version = "0.4", features = ["serde"] }
 # these bridges only marshal args the JVM already handed them, so the crate
 # builds and typechecks on every host/cross target, not just Android.
 jni = "0.21.1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", default-features = false, features = ["fmt", "std"] }
+
+[build-dependencies]
+cc = "1"
 
 [dev-dependencies]
 criterion = { version = "0.5", default-features = false, features = ["cargo_bench_support"] }

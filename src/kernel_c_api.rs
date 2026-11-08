@@ -113,6 +113,7 @@ pub unsafe extern "C" fn orbital_kernel_init(
     resolved_schema_json: *const c_char,
     client_id: *const c_char,
 ) -> *mut OrbitalKernelHandle {
+    crate::platform_log::install();
     let result = catch_unwind(AssertUnwindSafe(
         || -> Result<OrbitalKernelHandle, InitError> {
             let schema_json = read_str(resolved_schema_json).ok_or(InitError::Argument(
@@ -163,6 +164,7 @@ pub extern "C" fn orbital_kernel_init_error() -> *mut c_char {
 /// `bundle` must be a valid NUL-terminated UTF-8 C string, or null.
 #[no_mangle]
 pub unsafe extern "C" fn orbital_language_install(bundle: *const c_char) -> *mut c_char {
+    crate::platform_log::install();
     let Some(bundle) = read_str(bundle) else {
         return to_c_string("language bundle is null/invalid utf-8".to_string());
     };
@@ -366,7 +368,10 @@ pub unsafe extern "C" fn orbital_kernel_tick(
 /// # Safety
 /// `handle` must be valid.
 #[no_mangle]
-pub unsafe extern "C" fn orbital_kernel_frames_since(handle: *mut OrbitalKernelHandle, since: u64) -> *mut c_char {
+pub unsafe extern "C" fn orbital_kernel_frames_since(
+    handle: *mut OrbitalKernelHandle,
+    since: u64,
+) -> *mut c_char {
     if handle.is_null() {
         return ptr::null_mut();
     }
@@ -1442,9 +1447,19 @@ pub(crate) mod tests {
             let handle = orbital_kernel_init(schema.as_ptr(), client.as_ptr());
             assert!(!handle.is_null());
             let wire = dispatch_on(handle, "Host", "OPEN");
-            assert_eq!(wire["response"]["states"]["Host"], "failed", "the ask fails and takes its failure route: {wire}");
-            let refused = wire["response"]["emittedEvents"].as_array().and_then(|e| e.iter().find(|e| e["event"] == "GPU_REFUSED")).cloned();
-            assert_eq!(refused.map(|e| e["payload"]["kind"].clone()), Some(serde_json::json!("unsupported")), "{wire}");
+            assert_eq!(
+                wire["response"]["states"]["Host"], "failed",
+                "the ask fails and takes its failure route: {wire}"
+            );
+            let refused = wire["response"]["emittedEvents"]
+                .as_array()
+                .and_then(|e| e.iter().find(|e| e["event"] == "GPU_REFUSED"))
+                .cloned();
+            assert_eq!(
+                refused.map(|e| e["payload"]["kind"].clone()),
+                Some(serde_json::json!("unsupported")),
+                "{wire}"
+            );
             orbital_kernel_destroy(handle);
         }
     }

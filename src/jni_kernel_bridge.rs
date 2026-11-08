@@ -12,18 +12,18 @@
 //! under [`crate::jni_util::catch_panic`]: a panic must never unwind across
 //! the JNI boundary into the JVM.
 
-use crate::jni_util::{catch_panic, optional_cstring, required_cstring, string_to_jstring, take_c_string_as_jstring};
+use crate::jni_util::{
+    catch_panic, optional_cstring, required_cstring, string_to_jstring, take_c_string_as_jstring,
+};
 use crate::kernel_c_api::{
-    orbital_kernel_apply_server_response,
-    orbital_kernel_destroy, orbital_kernel_dispatch, orbital_kernel_frame,
-    orbital_kernel_frame_pause, orbital_kernel_frame_resume, orbital_kernel_frames_since,
-    orbital_kernel_free_string, orbital_kernel_get_state, orbital_kernel_init, orbital_kernel_init_error,
-    orbital_language_install,
-    orbital_kernel_last_error, orbital_kernel_mount, orbital_kernel_outstanding_strings,
-    orbital_kernel_remount, orbital_kernel_resolve_rows, orbital_kernel_restore,
-    orbital_kernel_seed, orbital_kernel_set_theme_mode,
-    orbital_kernel_set_trait_on_screen, orbital_kernel_snapshot, orbital_kernel_tick,
-    orbital_kernel_tick_count, OrbitalKernelHandle,
+    orbital_kernel_apply_server_response, orbital_kernel_destroy, orbital_kernel_dispatch,
+    orbital_kernel_frame, orbital_kernel_frame_pause, orbital_kernel_frame_resume,
+    orbital_kernel_frames_since, orbital_kernel_free_string, orbital_kernel_get_state,
+    orbital_kernel_init, orbital_kernel_init_error, orbital_kernel_last_error,
+    orbital_kernel_mount, orbital_kernel_outstanding_strings, orbital_kernel_remount,
+    orbital_kernel_resolve_rows, orbital_kernel_restore, orbital_kernel_seed,
+    orbital_kernel_set_theme_mode, orbital_kernel_set_trait_on_screen, orbital_kernel_snapshot,
+    orbital_kernel_tick, orbital_kernel_tick_count, orbital_language_install, OrbitalKernelHandle,
 };
 use jni::objects::{GlobalRef, JClass, JObject, JString, JValue};
 use jni::sys::{jboolean, jint, jlong, jstring};
@@ -74,7 +74,9 @@ fn handle_of(handle: jlong) -> *mut OrbitalKernelHandle {
 /// JNI entry: `OrbitalKernelBridge.nativeInitFromFile(path, clientId)`: [`nativeInit`] with the resolved schema read
 /// from `path` on the native side, so a large program never becomes a JVM string. `0` on an unreadable file too.
 #[no_mangle]
-pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeInitFromFile<'local>(
+pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeInitFromFile<
+    'local,
+>(
     mut env: JNIEnv<'local>,
     _class: JClass<'local>,
     path: JString<'local>,
@@ -484,7 +486,11 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeIn
     _class: JClass<'local>,
 ) -> jstring {
     let outcome = catch_panic(|| unsafe {
-        take_c_string_as_jstring(&mut env, orbital_kernel_init_error(), orbital_kernel_free_string)
+        take_c_string_as_jstring(
+            &mut env,
+            orbital_kernel_init_error(),
+            orbital_kernel_free_string,
+        )
     });
     outcome.unwrap_or(std::ptr::null_mut())
 }
@@ -492,7 +498,9 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeIn
 /// JNI entry: `OrbitalKernelBridge.nativeInstallLanguage(bundle)`: `null` when the bundled `language.json` installed,
 /// else why it did not.
 #[no_mangle]
-pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeInstallLanguage<'local>(
+pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeInstallLanguage<
+    'local,
+>(
     mut env: JNIEnv<'local>,
     _class: JClass<'local>,
     bundle: JString<'local>,
@@ -502,7 +510,11 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalKernelBridge_nativeIn
             return string_to_jstring(&mut env, "language bundle is null");
         };
         unsafe {
-            take_c_string_as_jstring(&mut env, orbital_language_install(bundle.as_ptr()), orbital_kernel_free_string)
+            take_c_string_as_jstring(
+                &mut env,
+                orbital_language_install(bundle.as_ptr()),
+                orbital_kernel_free_string,
+            )
         }
     });
     outcome.unwrap_or(std::ptr::null_mut())

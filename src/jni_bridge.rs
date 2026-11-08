@@ -17,17 +17,14 @@ use jni::objects::{JByteArray, JClass, JObject, JString};
 use jni::sys::{jbyteArray, jdouble, jfloat, jint, jlong, jstring};
 use jni::JNIEnv;
 use orbital_canvas::c_api::{
-    orbital_canvas_add_font, orbital_canvas_asset_generation,
-    orbital_canvas_destroy, orbital_canvas_free_rgba,
-    orbital_canvas_free_string, orbital_canvas_init, orbital_canvas_input,
-    orbital_canvas_last_error, orbital_canvas_render,
-    orbital_canvas_render_scene_rgba, orbital_canvas_render_to_rgba,
-    orbital_canvas_resize, orbital_canvas_scene_size,
-    orbital_canvas_set_clock, orbital_canvas_set_motion,
+    orbital_canvas_add_font, orbital_canvas_asset_generation, orbital_canvas_destroy,
+    orbital_canvas_free_rgba, orbital_canvas_free_string, orbital_canvas_init,
+    orbital_canvas_input, orbital_canvas_last_error, orbital_canvas_render,
+    orbital_canvas_render_scene_rgba, orbital_canvas_render_to_rgba, orbital_canvas_resize,
+    orbital_canvas_scene_size, orbital_canvas_set_clock, orbital_canvas_set_motion,
     orbital_canvas_set_scale, orbital_canvas_set_scene, orbital_canvas_submit,
-    orbital_canvas_take_events, orbital_canvas_take_missing_scripts,
-    orbital_canvas_view_command, orbital_canvas_wants_frames,
-    orbital_canvas_zoom,
+    orbital_canvas_take_events, orbital_canvas_take_missing_scripts, orbital_canvas_view_command,
+    orbital_canvas_wants_frames, orbital_canvas_zoom,
 };
 use orbital_canvas::Canvas;
 use std::ffi::c_void;
@@ -219,9 +216,7 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalGameBridge_nativeSetS
 ) -> jint {
     let outcome = catch_panic(|| {
         let scene_json = required_cstring(&mut env, &scene_json)?;
-        Some(unsafe {
-            orbital_canvas_set_scene(renderer_of(renderer_ptr), scene_json.as_ptr())
-        })
+        Some(unsafe { orbital_canvas_set_scene(renderer_of(renderer_ptr), scene_json.as_ptr()) })
     });
     outcome.ok().flatten().unwrap_or(0)
 }
@@ -275,8 +270,7 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalGameBridge_nativeSetC
     renderer_ptr: jlong,
     ms: jdouble,
 ) {
-    let _ =
-        catch_panic(|| unsafe { orbital_canvas_set_clock(renderer_of(renderer_ptr), ms) });
+    let _ = catch_panic(|| unsafe { orbital_canvas_set_clock(renderer_of(renderer_ptr), ms) });
 }
 
 /// JNI entry: allow (non-zero) or forbid (0) motion; the host passes the OS reduced-motion setting.
@@ -287,9 +281,8 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalGameBridge_nativeSetM
     renderer_ptr: jlong,
     enabled: jint,
 ) {
-    let _ = catch_panic(|| unsafe {
-        orbital_canvas_set_motion(renderer_of(renderer_ptr), enabled)
-    });
+    let _ =
+        catch_panic(|| unsafe { orbital_canvas_set_motion(renderer_of(renderer_ptr), enabled) });
 }
 
 /// JNI entry: 1 while the host should keep drawing frames, 0 once a static scene has settled.
@@ -299,8 +292,7 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalGameBridge_nativeWant
     _class: JClass<'local>,
     renderer_ptr: jlong,
 ) -> jint {
-    catch_panic(|| unsafe { orbital_canvas_wants_frames(renderer_of(renderer_ptr)) })
-        .unwrap_or(0)
+    catch_panic(|| unsafe { orbital_canvas_wants_frames(renderer_of(renderer_ptr)) }).unwrap_or(0)
 }
 
 /// JNI entry: forward a touch/key input event. Returns 1 if consumed.
@@ -501,9 +493,7 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalGameBridge_nativeZoom
     x: jfloat,
     y: jfloat,
 ) {
-    let _ = catch_panic(|| unsafe {
-        orbital_canvas_zoom(renderer_of(renderer_ptr), factor, x, y)
-    });
+    let _ = catch_panic(|| unsafe { orbital_canvas_zoom(renderer_of(renderer_ptr), factor, x, y) });
 }
 
 /// JNI entry: a view button (`zoom-in` | `zoom-out` | `reset`); 1, or 0 with `nativeLastError` set.
@@ -516,9 +506,7 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalGameBridge_nativeView
 ) -> jint {
     let outcome = catch_panic(|| {
         let command = required_cstring(&mut env, &command)?;
-        Some(unsafe {
-            orbital_canvas_view_command(renderer_of(renderer_ptr), command.as_ptr())
-        })
+        Some(unsafe { orbital_canvas_view_command(renderer_of(renderer_ptr), command.as_ptr()) })
     });
     outcome.ok().flatten().unwrap_or(0)
 }
@@ -536,11 +524,7 @@ pub extern "system" fn Java_generated_patterns_core_OrbitalGameBridge_nativeRend
         let mut out_pixels: *mut u8 = std::ptr::null_mut();
         let mut out_len: usize = 0;
         let ok = unsafe {
-            orbital_canvas_render_to_rgba(
-                renderer_of(renderer_ptr),
-                &mut out_pixels,
-                &mut out_len,
-            )
+            orbital_canvas_render_to_rgba(renderer_of(renderer_ptr), &mut out_pixels, &mut out_len)
         };
         if ok == 0 || out_pixels.is_null() {
             return None;
