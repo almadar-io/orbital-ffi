@@ -10,6 +10,15 @@
         "owner": "workspace",
         "renames": []
       },
+      "evt_2HPAWJYSVZCXZWXHHW047ZVWB8": {
+        "bakedName": "LOAD_FAILED",
+        "curName": "LOAD_FAILED",
+        "id": "evt_2HPAWJYSVZCXZWXHHW047ZVWB8",
+        "kind": "event",
+        "owner": "workspace",
+        "parent": "trt_6QFSYRAAD256HE16VT9JJ8A9S5",
+        "renames": []
+      },
       "evt_2SR48WYS9SCMWX2QRA93YMFDM8": {
         "bakedName": "SAVE",
         "curName": "SAVE",
@@ -158,6 +167,10 @@
             {
               "kind": "render-ui",
               "resource": "main"
+            },
+            {
+              "kind": "render-ui",
+              "resource": "toast"
             }
           ],
           "entityRefIds": {
@@ -168,7 +181,7 @@
           "linkedEntityId": "ent_70DG003H98RMM5P9ZQ8CB23T44",
           "name": "TaskCRUD",
           "sourceDeclaration": {
-            "fingerprint": "e23bc91fadfc007534349689dcb6b9a4fc7cb24fdec14e8ff4b713daa0cc508c",
+            "fingerprint": "3d05f5bdc0803443bdc6ce9651ae95f68206001fd43a6d62ec44d90eecd32b72",
             "traitId": "trt_6QFSYRAAD256HE16VT9JJ8A9S5"
           },
           "stateMachine": {
@@ -299,6 +312,11 @@
                 "id": "evt_41NXT6D6PYKBFB8JG1F1K5E1FV",
                 "key": "CANCEL",
                 "name": "Cancel"
+              },
+              {
+                "id": "evt_2HPAWJYSVZCXZWXHHW047ZVWB8",
+                "key": "LOAD_FAILED",
+                "name": "Load Failed"
               }
             ],
             "states": [
@@ -318,7 +336,12 @@
                 "effects": [
                   [
                     "fetch",
-                    "Task"
+                    "Task",
+                    {
+                      "emit": {
+                        "failure": "LOAD_FAILED"
+                      }
+                    }
                   ],
                   [
                     "render-ui",
@@ -414,11 +437,21 @@
                     "persist",
                     "create",
                     "Task",
-                    "@payload.data"
+                    "@payload.data",
+                    {
+                      "emit": {
+                        "failure": "LOAD_FAILED"
+                      }
+                    }
                   ],
                   [
                     "fetch",
-                    "Task"
+                    "Task",
+                    {
+                      "emit": {
+                        "failure": "LOAD_FAILED"
+                      }
+                    }
                   ],
                   [
                     "render-ui",
@@ -476,7 +509,12 @@
                 "effects": [
                   [
                     "fetch",
-                    "Task"
+                    "Task",
+                    {
+                      "emit": {
+                        "failure": "LOAD_FAILED"
+                      }
+                    }
                   ],
                   [
                     "render-ui",
@@ -536,6 +574,9 @@
                     "fetch",
                     "Task",
                     {
+                      "emit": {
+                        "failure": "LOAD_FAILED"
+                      },
                       "id": "@payload.row.id"
                     }
                   ],
@@ -583,11 +624,21 @@
                     "persist",
                     "update",
                     "Task",
-                    "@payload.data"
+                    "@payload.data",
+                    {
+                      "emit": {
+                        "failure": "LOAD_FAILED"
+                      }
+                    }
                   ],
                   [
                     "fetch",
-                    "Task"
+                    "Task",
+                    {
+                      "emit": {
+                        "failure": "LOAD_FAILED"
+                      }
+                    }
                   ],
                   [
                     "render-ui",
@@ -645,7 +696,12 @@
                 "effects": [
                   [
                     "fetch",
-                    "Task"
+                    "Task",
+                    {
+                      "emit": {
+                        "failure": "LOAD_FAILED"
+                      }
+                    }
                   ],
                   [
                     "render-ui",
@@ -705,11 +761,21 @@
                     "persist",
                     "delete",
                     "Task",
-                    "@payload.row.id"
+                    "@payload.row.id",
+                    {
+                      "emit": {
+                        "failure": "LOAD_FAILED"
+                      }
+                    }
                   ],
                   [
                     "fetch",
-                    "Task"
+                    "Task",
+                    {
+                      "emit": {
+                        "failure": "LOAD_FAILED"
+                      }
+                    }
                   ],
                   [
                     "render-ui",
@@ -767,7 +833,12 @@
                 "effects": [
                   [
                     "fetch",
-                    "Task"
+                    "Task",
+                    {
+                      "emit": {
+                        "failure": "LOAD_FAILED"
+                      }
+                    }
                   ],
                   [
                     "render-ui",
@@ -825,7 +896,12 @@
                 "effects": [
                   [
                     "fetch",
-                    "Task"
+                    "Task",
+                    {
+                      "emit": {
+                        "failure": "LOAD_FAILED"
+                      }
+                    }
                   ],
                   [
                     "render-ui",
@@ -878,6 +954,40 @@
                 "eventId": "evt_DM12TZJ9DZ4PZW7AN34AWTZKCV",
                 "from": "editing",
                 "to": "listing"
+              },
+              {
+                "effects": [
+                  [
+                    "render-ui",
+                    "toast",
+                    {
+                      "message": "Could not load or save.",
+                      "type": "alert",
+                      "variant": "error"
+                    }
+                  ]
+                ],
+                "event": "LOAD_FAILED",
+                "eventId": "evt_2HPAWJYSVZCXZWXHHW047ZVWB8",
+                "from": "listing",
+                "to": "listing"
+              },
+              {
+                "effects": [
+                  [
+                    "render-ui",
+                    "toast",
+                    {
+                      "message": "Could not load or save.",
+                      "type": "alert",
+                      "variant": "error"
+                    }
+                  ]
+                ],
+                "event": "LOAD_FAILED",
+                "eventId": "evt_2HPAWJYSVZCXZWXHHW047ZVWB8",
+                "from": "editing",
+                "to": "editing"
               }
             ]
           }
@@ -886,8 +996,8 @@
     }
   ],
   "resolved": {
-    "orb": "18.0.5",
-    "typeContractVersion": 1
+    "orb": "19.0.0",
+    "typeContractVersion": 2
   },
   "schemaVersion": 1,
   "themeDefinitions": [
@@ -914,7 +1024,7 @@
           "foreground": "#18181b",
           "info": "#2563eb",
           "info-foreground": "#ffffff",
-          "input": "#d4d4d8",
+          "input": "#8f8f99",
           "muted": "#f4f4f5",
           "muted-foreground": "#65656e",
           "primary": "#18181b",
@@ -1075,7 +1185,9 @@
         },
         "typeScale": {
           "bodyFamily": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "bodyFile": "https://raw.githubusercontent.com/google/fonts/main/ofl/plusjakartasans/PlusJakartaSans%5Bwght%5D.ttf",
           "displayFamily": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "displayFile": "https://raw.githubusercontent.com/google/fonts/main/ofl/plusjakartasans/PlusJakartaSans%5Bwght%5D.ttf",
           "fontImport": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap",
           "headingShadow": "none",
           "headingStyle": "normal",
@@ -1209,7 +1321,7 @@
             "foreground": "#fafafa",
             "info": "#60a5fa",
             "info-foreground": "#000000",
-            "input": "#3f3f46",
+            "input": "#71717a",
             "muted": "#27272a",
             "muted-foreground": "#a1a1aa",
             "primary": "#fafafa",

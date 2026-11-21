@@ -505,8 +505,8 @@
     }
   ],
   "resolved": {
-    "orb": "18.0.5",
-    "typeContractVersion": 1
+    "orb": "19.0.0",
+    "typeContractVersion": 2
   },
   "schemaVersion": 1,
   "themeDefinitions": [
@@ -533,7 +533,7 @@
           "foreground": "#18181b",
           "info": "#2563eb",
           "info-foreground": "#ffffff",
-          "input": "#d4d4d8",
+          "input": "#8f8f99",
           "muted": "#f4f4f5",
           "muted-foreground": "#65656e",
           "primary": "#18181b",
@@ -694,7 +694,9 @@
         },
         "typeScale": {
           "bodyFamily": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "bodyFile": "https://raw.githubusercontent.com/google/fonts/main/ofl/plusjakartasans/PlusJakartaSans%5Bwght%5D.ttf",
           "displayFamily": "\"Plus Jakarta Sans\", -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+          "displayFile": "https://raw.githubusercontent.com/google/fonts/main/ofl/plusjakartasans/PlusJakartaSans%5Bwght%5D.ttf",
           "fontImport": "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap",
           "headingShadow": "none",
           "headingStyle": "normal",
@@ -828,7 +830,7 @@
             "foreground": "#fafafa",
             "info": "#60a5fa",
             "info-foreground": "#000000",
-            "input": "#3f3f46",
+            "input": "#71717a",
             "muted": "#27272a",
             "muted-foreground": "#a1a1aa",
             "primary": "#fafafa",
