@@ -99,72 +99,7 @@
           "to": "listing",
           "event": "INIT",
           "firedArm": 0,
-          "effects": [
-            {
-              "type": "fetch",
-              "args": [
-                "Chore",
-                {
-                  "emit": {
-                    "failure": "LOAD_FAILED"
-                  }
-                }
-              ],
-              "status": "executed"
-            },
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "actions": [
-                    {
-                      "event": "CREATE",
-                      "label": "New Chore"
-                    }
-                  ],
-                  "title": "Chores",
-                  "type": "page-header"
-                }
-              ],
-              "status": "skipped"
-            },
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "columns": [
-                    {
-                      "key": "title",
-                      "label": "Title"
-                    },
-                    {
-                      "key": "completed",
-                      "label": "Completed"
-                    },
-                    {
-                      "key": "createdAt",
-                      "label": "Created"
-                    }
-                  ],
-                  "entity": "@entity",
-                  "itemActions": [
-                    {
-                      "event": "EDIT",
-                      "label": "Edit"
-                    },
-                    {
-                      "event": "DELETE",
-                      "label": "Delete"
-                    }
-                  ],
-                  "type": "table-view"
-                }
-              ],
-              "status": "skipped"
-            }
-          ]
+          "effects": []
         }
       ]
     },
@@ -305,72 +240,7 @@
           "to": "listing",
           "event": "INIT",
           "firedArm": 0,
-          "effects": [
-            {
-              "type": "fetch",
-              "args": [
-                "Task",
-                {
-                  "emit": {
-                    "failure": "LOAD_FAILED"
-                  }
-                }
-              ],
-              "status": "executed"
-            },
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "actions": [
-                    {
-                      "event": "CREATE",
-                      "label": "New Task"
-                    }
-                  ],
-                  "title": "Tasks",
-                  "type": "page-header"
-                }
-              ],
-              "status": "skipped"
-            },
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "columns": [
-                    {
-                      "key": "title",
-                      "label": "Title"
-                    },
-                    {
-                      "key": "completed",
-                      "label": "Completed"
-                    },
-                    {
-                      "key": "createdAt",
-                      "label": "Created"
-                    }
-                  ],
-                  "entity": "@entity",
-                  "itemActions": [
-                    {
-                      "event": "EDIT",
-                      "label": "Edit"
-                    },
-                    {
-                      "event": "DELETE",
-                      "label": "Delete"
-                    }
-                  ],
-                  "type": "table-view"
-                }
-              ],
-              "status": "skipped"
-            }
-          ]
+          "effects": []
         }
       ]
     },

@@ -49,19 +49,7 @@
           "to": "idle",
           "event": "INIT",
           "firedArm": 0,
-          "effects": [
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "content": "driver",
-                  "type": "typography"
-                }
-              ],
-              "status": "skipped"
-            }
-          ]
+          "effects": []
         }
       ]
     },
@@ -110,19 +98,7 @@
           "to": "idle",
           "event": "INIT",
           "firedArm": 0,
-          "effects": [
-            {
-              "type": "render-ui",
-              "args": [
-                "sidebar",
-                {
-                  "content": "@entity.score",
-                  "type": "typography"
-                }
-              ],
-              "status": "skipped"
-            }
-          ]
+          "effects": []
         }
       ]
     },
@@ -191,20 +167,7 @@
           "to": "idle",
           "event": "BUMP",
           "firedArm": 0,
-          "effects": [
-            {
-              "type": "set",
-              "args": [
-                "@entity.score",
-                [
-                  "+",
-                  "@entity.score",
-                  1.0
-                ]
-              ],
-              "status": "executed"
-            }
-          ]
+          "effects": []
         }
       ]
     },
@@ -317,20 +280,7 @@
           "to": "idle",
           "event": "BUMP",
           "firedArm": 0,
-          "effects": [
-            {
-              "type": "set",
-              "args": [
-                "@entity.score",
-                [
-                  "+",
-                  "@entity.score",
-                  1.0
-                ]
-              ],
-              "status": "executed"
-            }
-          ]
+          "effects": []
         }
       ]
     },

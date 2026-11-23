@@ -102,72 +102,7 @@
           "to": "listing",
           "event": "INIT",
           "firedArm": 0,
-          "effects": [
-            {
-              "type": "fetch",
-              "args": [
-                "Task",
-                {
-                  "emit": {
-                    "failure": "LOAD_FAILED"
-                  }
-                }
-              ],
-              "status": "executed"
-            },
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "actions": [
-                    {
-                      "event": "CREATE",
-                      "label": "New Task"
-                    }
-                  ],
-                  "title": "Tasks",
-                  "type": "page-header"
-                }
-              ],
-              "status": "skipped"
-            },
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "columns": [
-                    {
-                      "key": "title",
-                      "label": "Title"
-                    },
-                    {
-                      "key": "completed",
-                      "label": "Completed"
-                    },
-                    {
-                      "key": "createdAt",
-                      "label": "Created"
-                    }
-                  ],
-                  "entity": "@entity",
-                  "itemActions": [
-                    {
-                      "event": "EDIT",
-                      "label": "Edit"
-                    },
-                    {
-                      "event": "DELETE",
-                      "label": "Delete"
-                    }
-                  ],
-                  "type": "table-view"
-                }
-              ],
-              "status": "skipped"
-            }
-          ]
+          "effects": []
         }
       ]
     },
@@ -279,42 +214,7 @@
           "to": "creating",
           "event": "CREATE",
           "firedArm": 0,
-          "effects": [
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "backEvent": "CANCEL",
-                  "showBack": true,
-                  "title": "New Task",
-                  "type": "page-header"
-                }
-              ],
-              "status": "skipped"
-            },
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "entity": "@entity",
-                  "fields": [
-                    {
-                      "name": "title"
-                    },
-                    {
-                      "name": "description"
-                    }
-                  ],
-                  "onCancel": "CANCEL",
-                  "onSubmit": "SAVE",
-                  "type": "form-section"
-                }
-              ],
-              "status": "skipped"
-            }
-          ]
+          "effects": []
         }
       ]
     },
@@ -430,86 +330,7 @@
           "to": "listing",
           "event": "SAVE",
           "firedArm": 0,
-          "effects": [
-            {
-              "type": "persist",
-              "args": [
-                "create",
-                "Task",
-                "@payload.data",
-                {
-                  "emit": {
-                    "failure": "LOAD_FAILED"
-                  }
-                }
-              ],
-              "status": "executed"
-            },
-            {
-              "type": "fetch",
-              "args": [
-                "Task",
-                {
-                  "emit": {
-                    "failure": "LOAD_FAILED"
-                  }
-                }
-              ],
-              "status": "executed"
-            },
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "actions": [
-                    {
-                      "event": "CREATE",
-                      "label": "New Task"
-                    }
-                  ],
-                  "title": "Tasks",
-                  "type": "page-header"
-                }
-              ],
-              "status": "skipped"
-            },
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "columns": [
-                    {
-                      "key": "title",
-                      "label": "Title"
-                    },
-                    {
-                      "key": "completed",
-                      "label": "Completed"
-                    },
-                    {
-                      "key": "createdAt",
-                      "label": "Created"
-                    }
-                  ],
-                  "entity": "@entity",
-                  "itemActions": [
-                    {
-                      "event": "EDIT",
-                      "label": "Edit"
-                    },
-                    {
-                      "event": "DELETE",
-                      "label": "Delete"
-                    }
-                  ],
-                  "type": "table-view"
-                }
-              ],
-              "status": "skipped"
-            }
-          ]
+          "effects": []
         }
       ]
     },
@@ -646,59 +467,7 @@
           "to": "editing",
           "event": "EDIT",
           "firedArm": 0,
-          "effects": [
-            {
-              "type": "fetch",
-              "args": [
-                "Task",
-                {
-                  "emit": {
-                    "failure": "LOAD_FAILED"
-                  },
-                  "id": "@payload.row.id"
-                }
-              ],
-              "status": "executed"
-            },
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "backEvent": "CANCEL",
-                  "showBack": true,
-                  "title": "Edit Task",
-                  "type": "page-header"
-                }
-              ],
-              "status": "skipped"
-            },
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "entity": "@entity",
-                  "fields": [
-                    {
-                      "name": "title"
-                    },
-                    {
-                      "name": "description"
-                    },
-                    {
-                      "name": "completed"
-                    }
-                  ],
-                  "initialData": "@payload.row",
-                  "onCancel": "CANCEL",
-                  "onSubmit": "SAVE",
-                  "type": "form-section"
-                }
-              ],
-              "status": "skipped"
-            }
-          ]
+          "effects": []
         }
       ]
     },

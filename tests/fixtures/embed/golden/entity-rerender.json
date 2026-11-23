@@ -49,19 +49,7 @@
           "to": "running",
           "event": "INIT",
           "firedArm": 0,
-          "effects": [
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "content": "Mover",
-                  "type": "typography"
-                }
-              ],
-              "status": "skipped"
-            }
-          ]
+          "effects": []
         }
       ]
     },
@@ -111,20 +99,7 @@
           "to": "showing",
           "event": "INIT",
           "firedArm": 0,
-          "effects": [
-            {
-              "type": "render-ui",
-              "args": [
-                "hud",
-                {
-                  "label": "Score",
-                  "type": "stat-display",
-                  "value": "@entity.score"
-                }
-              ],
-              "status": "skipped"
-            }
-          ]
+          "effects": []
         }
       ]
     },
@@ -173,19 +148,7 @@
           "to": "showing",
           "event": "INIT",
           "firedArm": 0,
-          "effects": [
-            {
-              "type": "render-ui",
-              "args": [
-                "sidebar",
-                {
-                  "content": "Static caption",
-                  "type": "typography"
-                }
-              ],
-              "status": "skipped"
-            }
-          ]
+          "effects": []
         }
       ]
     },

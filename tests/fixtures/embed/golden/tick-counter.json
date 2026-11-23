@@ -51,20 +51,7 @@
           "to": "running",
           "event": "INIT",
           "firedArm": 0,
-          "effects": [
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "label": "Beats",
-                  "type": "stat-display",
-                  "value": "@entity.beats"
-                }
-              ],
-              "status": "skipped"
-            }
-          ]
+          "effects": []
         }
       ]
     },
@@ -321,20 +308,7 @@
               "to": "idle",
               "event": "HEARD",
               "firedArm": 0,
-              "effects": [
-                {
-                  "type": "set",
-                  "args": [
-                    "@entity.heard",
-                    [
-                      "+",
-                      "@entity.heard",
-                      1.0
-                    ]
-                  ],
-                  "status": "executed"
-                }
-              ]
+              "effects": []
             }
           ]
         },
@@ -553,20 +527,7 @@
               "to": "idle",
               "event": "HEARD",
               "firedArm": 0,
-              "effects": [
-                {
-                  "type": "set",
-                  "args": [
-                    "@entity.heard",
-                    [
-                      "+",
-                      "@entity.heard",
-                      1.0
-                    ]
-                  ],
-                  "status": "executed"
-                }
-              ]
+              "effects": []
             }
           ]
         },
@@ -687,19 +648,7 @@
           "to": "stopped",
           "event": "STOP",
           "firedArm": 0,
-          "effects": [
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "title": "Stopped",
-                  "type": "card"
-                }
-              ],
-              "status": "skipped"
-            }
-          ]
+          "effects": []
         }
       ]
     },
@@ -835,20 +784,7 @@
               "to": "idle",
               "event": "HEARD",
               "firedArm": 0,
-              "effects": [
-                {
-                  "type": "set",
-                  "args": [
-                    "@entity.heard",
-                    [
-                      "+",
-                      "@entity.heard",
-                      1.0
-                    ]
-                  ],
-                  "status": "executed"
-                }
-              ]
+              "effects": []
             }
           ]
         },
@@ -903,20 +839,7 @@
           "to": "running",
           "event": "RESUME",
           "firedArm": 0,
-          "effects": [
-            {
-              "type": "render-ui",
-              "args": [
-                "main",
-                {
-                  "label": "Beats",
-                  "type": "stat-display",
-                  "value": "@entity.beats"
-                }
-              ],
-              "status": "skipped"
-            }
-          ]
+          "effects": []
         }
       ]
     },
@@ -1057,20 +980,7 @@
               "to": "idle",
               "event": "HEARD",
               "firedArm": 0,
-              "effects": [
-                {
-                  "type": "set",
-                  "args": [
-                    "@entity.heard",
-                    [
-                      "+",
-                      "@entity.heard",
-                      1.0
-                    ]
-                  ],
-                  "status": "executed"
-                }
-              ]
+              "effects": []
             }
           ]
         },
