@@ -122,7 +122,7 @@ pub unsafe extern "C" fn orbital_kernel_init(
             let client_id = read_str(client_id).ok_or(InitError::Argument(
                 "client_id is null/invalid utf-8".to_string(),
             ))?;
-            let schema: OrbitalSchema = serde_json::from_str(schema_json)
+            let schema: OrbitalSchema = orbital_core::json_value::program_from_json(schema_json.as_bytes())
                 .map_err(|e| InitError::Argument(format!("parse resolved schema: {e}")))?;
 
             let embedded = EmbeddedKernel::new(schema, client_id)?;
